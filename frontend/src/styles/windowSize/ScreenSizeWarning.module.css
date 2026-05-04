@@ -1,0 +1,47 @@
+.screen-block-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.screen-block-message > div {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    width: 75%;
+    background: var(--raindrops-on-roses);
+    border: 12px solid var(--scarlet-smile);
+    box-shadow: 8px 8px 8px var(--cloud-cover);
+    border-radius: 64px;
+    height: auto;
+    margin-top: 60px;
+}
+
+.screen-block-title {
+    width: 75%;
+    font-family: 'Roboto Serif';
+    font-style: normal;
+    font-weight: 700;
+    font-size: clamp(18px, 2vw, 34px);
+    line-height: 250%;
+    text-align: center;
+    color: #2B2C30;
+}
+
+.screen-block-text {
+    width: 85%;
+    font-family: 'Roboto Serif';
+    font-style: normal;
+    font-weight: 400;
+    font-size: clamp(14px, 2vw, 24px);
+    line-height: 230%;
+    color: #2B2C30;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.min-need-size{
+    font-weight: bold;
+}
