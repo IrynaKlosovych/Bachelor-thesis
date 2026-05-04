@@ -1,0 +1,124 @@
+.title-page {
+    margin-top: 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title-block {
+    box-sizing: border-box;
+    width: 75%;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    background: url("../assets/wave-border.svg") no-repeat center;
+    background-size: 100% 100%;
+    padding: 1.5% 3.5%;
+}
+
+h1 {
+    width: fit-content;
+    font-family: 'Roboto Slab';
+    font-style: normal;
+    font-weight: 700;
+    font-size: clamp(28px, 4vw, 64px);
+    line-height: 125%;
+    text-align: center;
+    color: #2B2C30;
+}
+
+.alert-message,
+.button-create-country-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.alert-message>div {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    width: 75%;
+    background: var(--raindrops-on-roses);
+    border: 12px solid var(--scarlet-smile);
+    box-shadow: 8px 8px 8px var(--cloud-cover);
+    border-radius: 64px;
+    height: auto;
+}
+
+.alert-title-message {
+    width: 75%;
+    font-family: 'Roboto Serif';
+    font-style: normal;
+    font-weight: 700;
+    font-size: clamp(16px, 2vw, 32px);
+    line-height: 250%;
+    text-align: center;
+    color: #2B2C30;
+}
+
+.alert-text-message {
+    width: 85%;
+    font-family: 'Roboto Serif';
+    font-style: normal;
+    font-weight: 400;
+    font-size: clamp(14px, 2vw, 24px);
+    line-height: 230%;
+    color: #2B2C30;
+}
+
+.hidden{
+    display: none;
+}
+
+.block{
+    display: block;
+}
+
+.screen-block-message,
+.button-create-country-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.screen-block-message > div {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    width: 75%;
+    background: var(--raindrops-on-roses);
+    border: 12px solid var(--scarlet-smile);
+    box-shadow: 8px 8px 8px var(--cloud-cover);
+    border-radius: 64px;
+    height: auto;
+    margin-top: 60px;
+}
+
+.screen-block-title {
+    width: 75%;
+    font-family: 'Roboto Serif';
+    font-style: normal;
+    font-weight: 700;
+    font-size: clamp(18px, 2vw, 34px);
+    line-height: 250%;
+    text-align: center;
+    color: #2B2C30;
+}
+
+.screen-block-text {
+    width: 85%;
+    font-family: 'Roboto Serif';
+    font-style: normal;
+    font-weight: 400;
+    font-size: clamp(14px, 2vw, 24px);
+    line-height: 230%;
+    color: #2B2C30;
+    text-align: center;
+    padding-bottom: 20px;
+}

@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import styles from '../src/styles/App.module.css';
+import useWindowWidth from "./hooks/useWindowWidth";
+import { SCREEN_BLOCK_MESSAGE } from "./ui/messages";
+import { SCREEN } from "./constants/constants";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const width = useWindowWidth();
+  const isBlocked = width < SCREEN.MIN_WORKING_WIDTH;
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className={isBlocked ? styles.block : styles.hidden}>
+        <div className={styles["screen-block-message"]}>
+          <div>
+            {SCREEN_BLOCK_MESSAGE}
+          </div>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <div className={isBlocked ? styles.hidden : styles.block}>
+        <div className={styles["title-page"]}>
+          <div className={styles['title-block']}>
+            <h1>Симулятор для аналізу та прогнозу результатів виборів</h1>
+          </div>
+        </div>
+        <div className={styles['alert-message']}>
+          <div>
+            <div className={styles['alert-title-message']}>Цей симулятор розроблено з навчально-дослідницькою метою!</div>
+            <div className={styles['alert-text-message']}>Метою симулятора для політичного аналізу та прогнозування результатів виборів є на основі характеристик представників електорату, зовнішніх чинників (що можуть описувати стан країни), характеристик кандидатів дослідити фактори, що впливають на голосування за певного кандидата, а також проаналізуваати результати за різними виборчими системами.</div>
+          </div>
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

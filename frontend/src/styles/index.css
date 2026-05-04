@@ -1,0 +1,62 @@
+:root {
+    --cloud-dancer: #F0EEE9;
+    --veiled-vista: #C7E4CA;
+    --baltic-sea: #79B6D8;
+    --golden-mist: #D6CD95;
+    --quiet-violet: #A793AC;
+    --cloud-cover: #9A9393;
+    --hematite: #756F6A;
+    --blue-fusion: #4A6275;
+    --lemon-icing: #F5EBC8;
+    --nimbus-cloud: #D5D5D7;
+    --raindrops-on-roses: #EBD8DC;
+    --ice-melt: #D4E4F1;
+    --peach-dust: #F0D9CC;
+    --almost-aqua: #C9D3C0;
+    --orchid-tint: #DBD3DC;
+    --stretch-limo: #2B2C30;
+    --scarlet-smile: #9F2336;
+    --bordeaux: #97637C;
+    --dragonfly: #2A5D69;
+    --graphite: #55543B;
+    --satin-slipper: #948A76;
+    --micron: #646667;
+    --iced-coffee: #B28F6B;
+    --mango-mojito: #D79D31;
+    --cocoa-creme: #876D58;
+    --pink-lemonade: #EE6E8B;
+    --tea: #9A9B86;
+    --papaya: #FFA266;
+    --caramel: #C37C54;
+    --nantucket-breeze: #B7D0EA;
+    --alaskan-blue: #6EA9D2;
+    --cosmic-sky: #AAABC4;
+    --aqua-gray: #A6B2A9;
+    --regatta: #497AB7;
+    --rinsing-rivulet: #5DC6C3;
+    --dusky-citron: #E4CC82;
+    --shifting-sand: #D8C0AD;
+    --coral-haze: #E38E84;
+    --mountain-trail: #8A756A;
+    --amberlight: #E3BEA2;
+    --ashes-of-roses: #B5ACAB;
+    --woodrose: #AE8C8E;
+    --rose-brown: #80565B;
+    --iris-orchid: #A867A4;
+    --capri: #45BBCA;
+    --kiwi-colada: #BDCA24;
+    --sunny-lime: #E0EE88;
+    --bright-marigold: #FF8E00;
+    --paradise-pink: #E4465E;
+    --blazing-yellow: #FEE815;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--cloud-dancer);
+}
+
+
