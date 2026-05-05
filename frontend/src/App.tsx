@@ -10,10 +10,14 @@ function App() {
 
   return (
     <>
-      <div className={isBlocked ? styles.block : styles.hidden}>
+      <div data-testid="warning"
+        aria-hidden={!isBlocked}
+        className={isBlocked ? styles.block : styles.hidden}>
         <ScreenSizeWarning />
       </div>
-      <div className={isBlocked ? styles.hidden : styles.block}>
+      <div data-testid="layout"
+        aria-hidden={isBlocked}
+        className={isBlocked ? styles.hidden : styles.block}>
         <DefaultLayout></DefaultLayout>
       </div>
     </>
