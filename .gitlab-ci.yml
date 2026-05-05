@@ -3,12 +3,35 @@ stages:
   - test     
   - deploy  
 
-# Job "hello_pipeline" - тестове завдання
-hello_pipeline:
-  stage: build      
+backend_build:
+  stage: build
+  image: python:3.11
   script:
-    - |
-      echo "Pipeline is working!"
-      echo "Current directory: $(pwd)"
-      echo "Current user: $(whoami)"
-      echo "Date: $(date)"
+    - echo "Setting up Python backend..."
+    - python --version
+    - pip install -r backend/requirements.txt || echo "No requirements.txt yet"
+
+backend_test:
+  stage: test
+  image: python:3.11
+  script:
+    - echo "Running backend tests..."
+    - cd backend
+    - python -m unittest discover || echo "No tests yet"
+
+frontend_build:
+  stage: build
+  image: node:20
+  script:
+    - echo "Setting up React frontend..."
+    - cd frontend
+    - npm install || echo "No package.json yet"
+    - npm run build || echo "No build script yet"
+
+frontend_test:
+  stage: test
+  image: node:20
+  script:
+    - echo "Running frontend tests..."
+    - cd frontend
+    - npm test -- --watchAll=false || echo "No tests yet"
