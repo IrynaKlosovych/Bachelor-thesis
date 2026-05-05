@@ -6,12 +6,9 @@ stages:
 # Job "hello_pipeline" - тестове завдання
 hello_pipeline:
   stage: build      
-
   script:
-    - echo "Pipeline is working!"            
-
-    - echo "Current directory: $(pwd)"       
-
-    - echo "Current user: $(whoami)"         
-
-    - echo "Date: $(date)"               
+    - |
+      echo "Pipeline is working!"
+      echo "Current directory: $(pwd)"
+      echo "Current user: $(whoami)"
+      echo "Date: $(date)"
