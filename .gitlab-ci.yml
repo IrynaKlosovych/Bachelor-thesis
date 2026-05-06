@@ -33,13 +33,15 @@ backend_docker:
   stage: docker
   image: docker:24.0.5-cli
   services:
-    - docker:24.0.5-dind
-      # alias: docker
+    - name: docker:24.0.5-dind
+      alias: docker
   variables:
-    # DOCKER_HOST: tcp://docker:2376
+    DOCKER_HOST: "tcp://docker:2376"
     DOCKER_TLS_CERTDIR: "/certs"
-    # DOCKER_TLS_VERIFY: 1
-    # DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+    DOCKER_TLS_VERIFY: 1
+    DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+  before_script:
+    - docker info
   script:
     - echo "Building backend Docker image..."
     - cd backend
@@ -70,12 +72,12 @@ frontend_docker:
   stage: docker
   image: docker:24.0.5-cli
   services:
-    - docker:24.0.5-dind
-      # alias: docker
+    - name: docker:24.0.5-dind
+      alias: docker
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
-    # DOCKER_TLS_VERIFY: 1
-    # DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+  before_script:
+    - docker info
   script:
     - echo "Building frontend Docker image..."
     - cd frontend
