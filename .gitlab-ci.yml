@@ -33,8 +33,8 @@ backend_docker:
   stage: docker
   image: docker:24.0.5-cli
   services:
-    - name: docker:24.0.5-dind
-      alias: docker
+     - name: registry.hub.docker.com/library/docker:24.0.5-dind
+       alias: docker
   variables:
     DOCKER_HOST: tcp://docker:2376
     DOCKER_TLS_CERTDIR: "/certs"
@@ -71,8 +71,8 @@ frontend_docker:
   stage: docker
   image: docker:24.0.5-cli
   services:
-    - name: docker:24.0.5-dind
-      # alias: docker
+     - name: registry.hub.docker.com/library/docker:24.0.5-dind
+       alias: docker
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
