@@ -31,10 +31,10 @@ backend_test:
 
 backend_docker:
   stage: docker
-  image: docker:24
+  image: docker:24.0.5-cli
   services:
-    - name: docker:24-dind
-      alias: docker
+    - docker:24.0.5-dind
+      # alias: docker
   variables:
     # DOCKER_HOST: tcp://docker:2376
     DOCKER_TLS_CERTDIR: "/certs"
@@ -68,9 +68,9 @@ frontend_test:
 
 frontend_docker:
   stage: docker
-  image: docker:24
+  image: docker:24.0.5-cli
   services:
-    - name: docker:24-dind
+    - docker:24.0.5-dind
       # alias: docker
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
