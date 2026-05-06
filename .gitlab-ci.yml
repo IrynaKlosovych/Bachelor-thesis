@@ -1,32 +1,64 @@
+# ----------------------------
+# стадії виконання
+# ----------------------------
 stages:
   - build    
-  - test     
+  - test
+  - docker
   - deploy  
-
+# ----------------------------
+# для серверної частини
+# ----------------------------
 backend_build:
   stage: build
   image: python:3.11
+  allow_failure: true
   script:
     - echo "Setting up Python backend..."
     - python --version
-    - pip install -r backend/requirements.txt || echo "No requirements.txt yet"
+    - cd backend
+    # тимчасово поки нічого не робиться
+    # - pip install -r requirements.txt 
 
 backend_test:
   stage: test
   image: python:3.11
+  allow_failure: true
   script:
     - echo "Running backend tests..."
     - cd backend
-    - python -m unittest discover || echo "No tests yet"
+    # - python -m unittest discover
 
+backend_docker:
+  stage: docker
+  image: docker:24.0.5-cli
+  services:
+     - name: registry.hub.docker.com/library/docker:24.0.5-dind
+       alias: docker
+  variables:
+    DOCKER_HOST: tcp://docker:2376
+    DOCKER_TLS_CERTDIR: "/certs"
+
+  before_script:
+    - docker info
+  script:
+    - echo "Building backend Docker image..."
+    - cd backend
+    - docker build -t backend:$CI_COMMIT_SHORT_SHA .
+    - docker images
+    - docker run --rm backend:$CI_COMMIT_SHORT_SHA python --version
+
+# ----------------------------
+# для клієнтської частини
+# ----------------------------
 frontend_build:
   stage: build
   image: node:20
   script:
     - echo "Setting up React frontend..."
     - cd frontend
-    - npm install || echo "No package.json yet"
-    - npm run build || echo "No build script yet"
+    - npm install
+    - npm run build
 
 frontend_test:
   stage: test
@@ -34,4 +66,25 @@ frontend_test:
   script:
     - echo "Running frontend tests..."
     - cd frontend
-    - npm test -- --watchAll=false || echo "No tests yet"
+    - npm install
+    - npm run test
+
+frontend_docker:
+  stage: docker
+  image: docker:24.0.5-cli
+  services:
+     - name: registry.hub.docker.com/library/docker:24.0.5-dind
+       alias: docker
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+  before_script:
+    - docker info
+  script:
+    - echo "Building frontend Docker image..."
+    - cd frontend
+    - docker build -t frontend:$CI_COMMIT_SHORT_SHA .
+    - docker images
+    - docker run -d -p 5173:5173 frontend:$CI_COMMIT_SHORT_SHA
+    - sleep 5
+    - docker logs $(docker ps -q --filter ancestor=frontend:$CI_COMMIT_SHORT_SHA)
