@@ -35,7 +35,10 @@ backend_docker:
   services:
     - docker:24-dind
   variables:
+    DOCKER_HOST: tcp://docker:2376
     DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_TLS_VERIFY: 1
+    DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
   script:
     - echo "Building backend Docker image..."
     - cd backend
@@ -69,6 +72,9 @@ frontend_docker:
     - docker:24-dind
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_TLS_VERIFY: 1
+    DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
   script:
     - echo "Building frontend Docker image..."
     - cd frontend
