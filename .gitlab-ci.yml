@@ -45,6 +45,8 @@ backend_docker:
     - echo "Building backend Docker image..."
     - cd backend
     - docker build -t backend:$CI_COMMIT_SHORT_SHA .
+    - docker images
+    - docker run --rm backend:$CI_COMMIT_SHORT_SHA python --version
 
 # ----------------------------
 # для клієнтської частини
@@ -82,3 +84,7 @@ frontend_docker:
     - echo "Building frontend Docker image..."
     - cd frontend
     - docker build -t frontend:$CI_COMMIT_SHORT_SHA .
+    - docker images
+    - docker run -d -p 5173:5173 frontend:$CI_COMMIT_SHORT_SHA
+    - sleep 5
+    - docker logs $(docker ps -q --filter ancestor=frontend:$CI_COMMIT_SHORT_SHA)
