@@ -36,10 +36,9 @@ backend_docker:
     - name: docker:24.0.5-dind
       alias: docker
   variables:
-    DOCKER_HOST: "tcp://docker:2376"
+    DOCKER_HOST: tcp://docker:2376
     DOCKER_TLS_CERTDIR: "/certs"
-    DOCKER_TLS_VERIFY: 1
-    DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+
   before_script:
     - docker info
   script:
@@ -73,9 +72,10 @@ frontend_docker:
   image: docker:24.0.5-cli
   services:
     - name: docker:24.0.5-dind
-      alias: docker
+      # alias: docker
   variables:
-    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
   before_script:
     - docker info
   script:
