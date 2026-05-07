@@ -12,7 +12,7 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
             className={styles['country-template']}>
             <div>
                 <div className={styles['country-settings-panel']}>
-                    <div className={styles.wrapper}>
+                    <div>
                         <CountryNameInput id={id} label={label}/>
                     </div>
                     <div>

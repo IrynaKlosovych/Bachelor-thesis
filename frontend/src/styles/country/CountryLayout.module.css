@@ -27,6 +27,7 @@
 .country-settings-panel>div {
     width: 50%;
     display: block;
+    height: 100px;
 }
 
 .country-settings-panel>div:last-child {
@@ -34,54 +35,13 @@
     justify-content: flex-end;
 }
 
-/* .country-name {
+.country-settings-panel>div:first-child>div {
+    width: 40%;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    padding: 0px 20px;
-
-    width: 40%; */
-    /* height: 100px; */
-
-    /* background: var(--rose-brown);
-
-    font-family: 'Roboto Slab';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 233%;
-
-    color: var(--peach-dust);
-
-    border: none;
-    outline: none;
-
-} */
-
-.wrapper {
-    position: relative;
-    width: 300px;
-    height: 100px;
-
-    display: flex;
-    align-items: center;
-
-    padding: 0 20px;
     background: var(--rose-brown);
 }
 
-.country-name {
-    width: 100%;
-    border: none;
-    outline: none;
-    background: transparent;
-
-    font-family: 'Roboto Slab';
-    font-weight: 700;
-    font-size: 24px;
-    line-height: normal;
-
-    color: var(--peach-dust);
-}
