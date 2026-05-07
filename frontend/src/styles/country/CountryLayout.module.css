@@ -1,0 +1,87 @@
+.country-template {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.country-template>div {
+    width: 75%;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+
+    border: 4px solid var(--hematite);
+    border-radius: 24px;
+}
+
+.country-settings-panel {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.country-settings-panel>div {
+    width: 50%;
+    display: block;
+}
+
+.country-settings-panel>div:last-child {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* .country-name {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0px 20px;
+
+    width: 40%; */
+    /* height: 100px; */
+
+    /* background: var(--rose-brown);
+
+    font-family: 'Roboto Slab';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 233%;
+
+    color: var(--peach-dust);
+
+    border: none;
+    outline: none;
+
+} */
+
+.wrapper {
+    position: relative;
+    width: 300px;
+    height: 100px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 20px;
+    background: var(--rose-brown);
+}
+
+.country-name {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+
+    font-family: 'Roboto Slab';
+    font-weight: 700;
+    font-size: 24px;
+    line-height: normal;
+
+    color: var(--peach-dust);
+}

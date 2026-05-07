@@ -11,3 +11,4 @@ export const SCREEN_DEFAULT_MESSAGE = {
 };
 
 export const CREATE_COUNTRY_BUTTON_MESSAGE = "Створити країну"
+export const DEFAULT_VISIBLE_COUNTRY_NAME = "Країна №"
