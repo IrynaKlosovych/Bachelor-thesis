@@ -1,0 +1,20 @@
+.button-create-country-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.button-create-country-container>div {
+    width: 75%;
+    align-content: center;
+}
+
+
+.button-create-country-container>div>div {
+    width: 50%;
+    align-content: center;
+}
