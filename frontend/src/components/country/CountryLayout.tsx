@@ -1,6 +1,7 @@
 import styles from "../../styles/country/CountryLayout.module.css";
 import CountryNameInput from "./CountryNameInput";
 import CopyCountryButton from "./CopyCountryButton";
+import DeleteCountryButton from "./DeleteCountryButton"
 interface CountryLayoutProps {
     id: string;
     label: string;
@@ -18,6 +19,7 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
                     </div>
                     <div>
                         <CopyCountryButton countryId={id}/>
+                        <DeleteCountryButton countryId={id}/>
                     </div>
                 </div>
             </div>

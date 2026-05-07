@@ -8,7 +8,7 @@ interface CountryStore {
     addCountry: () => void;
     updateCountryLabel: (id: string, label: string) => void;
     copyCountry: (id: string) => void;
-
+    deleteCountry: (id: string) => void;
 }
 
 export const useCountryStore = create<CountryStore>((set) => ({
@@ -66,4 +66,10 @@ export const useCountryStore = create<CountryStore>((set) => ({
                 ],
             };
         }),
+    deleteCountry: (id) =>
+        set((state) => ({
+            countries: state.countries.filter(
+                (country) => country.id !== id
+            ),
+        })),
 }));
