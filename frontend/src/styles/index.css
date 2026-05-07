@@ -59,4 +59,7 @@ body {
     background-color: var(--cloud-dancer);
 }
 
+button{
+    appearance: none;
+}
 

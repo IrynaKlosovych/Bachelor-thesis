@@ -7,6 +7,8 @@ interface CountryStore {
     countries: Country[];
     addCountry: () => void;
     updateCountryLabel: (id: string, label: string) => void;
+    copyCountry: (id: string) => void;
+
 }
 
 export const useCountryStore = create<CountryStore>((set) => ({
@@ -39,5 +41,29 @@ export const useCountryStore = create<CountryStore>((set) => ({
                 ),
             };
             return updated;
+        }),
+
+    copyCountry: (id) =>
+        set((state) => {
+            const countryToCopy = state.countries.find(
+                (country) => country.id === id
+            );
+
+            if (!countryToCopy) {
+                return state;
+            }
+
+            const newId = uuidv4();
+
+            return {
+                countries: [
+                    ...state.countries,
+                    {
+                        ...countryToCopy,
+                        id: newId,
+                        componentId: `country_${newId}`,
+                    },
+                ],
+            };
         }),
 }));
