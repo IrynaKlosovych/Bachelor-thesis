@@ -1,6 +1,6 @@
-import { CREATE_COUNTRY_BUTTON_MESSAGE } from "../../ui/messages";
-import styles from "../../styles/country/CreateCountryButton.module.css";
-import { useCountryStore } from "../../store/countryStore";
+import { CREATE_COUNTRY_BUTTON_MESSAGE } from "../../../ui/messages";
+import styles from "../../../styles/country/create-country-container/CreateCountryButton.module.css";
+import { useCountryStore } from "../../../store/countryStore";
 
 export default function CreateCountryButton() {
     const addCountry = useCountryStore(

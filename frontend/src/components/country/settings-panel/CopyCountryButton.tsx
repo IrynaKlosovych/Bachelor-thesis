@@ -1,5 +1,5 @@
-import styles from "../../styles/country/CopyCountryButton.module.css";
-import { useCountryStore } from "../../store/countryStore";
+import styles from "../../../styles/country/settings-panel/CopyCountryButton.module.css";
+import { useCountryStore } from "../../../store/countryStore";
 interface CopyCountryButtonProps {
     countryId: string;
 }

@@ -1,5 +1,5 @@
-import styles from "../../styles/country/DeleteCountryButton.module.css";
-import { useCountryStore } from "../../store/countryStore";
+import styles from "../../../styles/country/settings-panel/DeleteCountryButton.module.css";
+import { useCountryStore } from "../../../store/countryStore";
 
 type DeleteCountryButtonProps = {
     countryId: string;

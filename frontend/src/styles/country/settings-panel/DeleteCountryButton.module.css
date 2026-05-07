@@ -19,17 +19,17 @@
 }
 
 .delete-icon .icon-bg {
-    fill: #80565B;
+    fill: var(--rose-brown)
 }
 
 .delete-icon .icon-shape {
-    fill: #F0D9CC;
+    fill: var(--peach-dust)
 }
 
 .delete-icon:hover .icon-bg {
-    fill: #F0D9CC;
+    fill: var(--peach-dust)
 }
 
 .delete-icon:hover .icon-shape {
-    fill: #80565B;
+    fill: var(--rose-brown)
 }

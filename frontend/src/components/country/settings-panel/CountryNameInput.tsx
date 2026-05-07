@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useCountryStore } from "../../store/countryStore";
-import styles from "../../styles/country/CountryNameInput.module.css";
+import { useCountryStore } from "../../../store/countryStore";
+import styles from "../../../styles/country/settings-panel/CountryNameInput.module.css";
 interface CountryNameProps {
     id: string;
     label: string;

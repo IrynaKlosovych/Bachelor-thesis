@@ -1,7 +1,7 @@
 import styles from "../../styles/country/CountryLayout.module.css";
-import CountryNameInput from "./CountryNameInput";
-import CopyCountryButton from "./CopyCountryButton";
-import DeleteCountryButton from "./DeleteCountryButton"
+import CountryNameInput from "./settings-panel/CountryNameInput";
+import CopyCountryButton from "./settings-panel/CopyCountryButton";
+import DeleteCountryButton from "./settings-panel/DeleteCountryButton"
 interface CountryLayoutProps {
     id: string;
     label: string;

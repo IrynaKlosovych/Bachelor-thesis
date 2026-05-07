@@ -1,4 +1,4 @@
-import styles from "../../styles/country/CreateCountryButtonContainer.module.css";
+import styles from "../../../styles/country/create-country-container/CreateCountryButtonContainer.module.css"
 
 import CreateCountryButton from "./CreateCountryButton";
 
