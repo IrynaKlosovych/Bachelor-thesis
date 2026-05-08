@@ -50,16 +50,17 @@
     --paradise-pink: #E4465E;
     --blazing-yellow: #FEE815;
 }
-*{
+
+* {
     margin: 0;
     padding: 0;
+    user-select: none;
 }
 
 body {
     background-color: var(--cloud-dancer);
 }
 
-button{
+button {
     appearance: none;
 }
-

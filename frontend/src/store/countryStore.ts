@@ -38,7 +38,7 @@ export const useCountryStore = create<CountryStore>((set) => ({
                         component_id:
                             `country_${countryId}_map_region_${regionId}`,
 
-                        safety_level: 1,
+                        safety_level: 5,
                     };
                 }
             );

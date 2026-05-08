@@ -1,0 +1,115 @@
+.map-popup-choose-safety {
+    box-sizing: border-box;
+    position: fixed;
+    width: 80px;
+    top: 100px;
+    left: 4px;
+    background: var(--rose-brown);
+    border: none;
+    padding: 10px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.map-popup-choose-safety>button {
+    height: 35px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.safety-level-1 {
+    background-color: var(--pink-lemonade)
+}
+
+.safety-level-2 {
+    background-color: var(--mango-mojito)
+}
+
+.safety-level-3 {
+    background-color: var(--blazing-yellow)
+}
+
+.safety-level-4 {
+    background-color: var(--shifting-sand)
+}
+
+.safety-level-5 {
+    background-color: var(--almost-aqua)
+}
+
+.map-popup-choose-safety>.close-button {
+    background-color: transparent;
+    color: var(--peach-dust);
+    border: 1px solid var(--peach-dust);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+path {
+    cursor: pointer;
+}
+
+.safety-level-button {
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.safety-level-button:hover {
+    transform: translateY(-2px);
+}
+
+.safety-level-1:hover {
+    box-shadow:
+        0 4px 12px var(--pink-lemonade)
+}
+
+.safety-level-2:hover {
+    box-shadow:
+        0 4px 12px var(--mango-mojito)
+}
+
+.safety-level-3:hover {
+    box-shadow:
+        0 4px 12px var(--blazing-yellow)
+}
+
+.safety-level-4:hover {
+    box-shadow:
+        0 4px 12px var(--shifting-sand)
+}
+
+.safety-level-5:hover {
+    box-shadow:
+        0 4px 12px var(--almost-aqua)
+}
+
+.map-popup-choose-safety>.close-button:hover {
+    transform: rotate(15deg);
+
+    box-shadow:
+        0 0 10px var(--peach-dust);
+}
+
+.active-region {
+    stroke: var(--scarlet-smile);
+    stroke-width: 2;
+    filter: drop-shadow(0 0 3px rgba(0,0,0,0.5));
+    animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        filter: drop-shadow(0 0 2px rgba(159, 35, 54, 0.4));
+    }
+    50% {
+        filter: drop-shadow(0 0 8px rgba(159, 35, 54, 0.8));
+    }
+    100% {
+        filter: drop-shadow(0 0 2px rgba(159, 35, 54, 0.4));
+    }
+}

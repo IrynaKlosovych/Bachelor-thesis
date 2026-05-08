@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "../../styles/country/AddVoterButton.module.css"
+import styles from "../../../styles/country/map-container-settings/AddVoterButton.module.css"
 
 export default function AddVoterButton() {
     const [isHovered, setIsHovered] = useState(false);

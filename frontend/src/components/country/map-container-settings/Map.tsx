@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useCountryStore } from "../../store/countryStore";
-import { safetyColors } from "../../types/country";
-import { SAFETY_LEVELS } from "../../types/country";
-import { CountryBorders } from "../../constants/country_borders";
+import { useCountryStore } from "../../../store/countryStore";
+import { safetyColors, SAFETY_LEVELS } from "../../../types/country";
+import { CLOSE_CHOOSE_SAFETY_BUTTON_POPUP, textRegions } from "../../../ui/messages";
+import { CountryBorders } from "../../../constants/country_borders";
+import styles from "../../../styles/country/map-container-settings/Map.module.css";
 
 interface MapProps {
     countryId: string;
@@ -22,6 +23,13 @@ export default function Map({ countryId }: MapProps) {
     const [selectedRegionId, setSelectedRegionId] =
         useState<string | null>(null);
 
+    const regionIds = Object.fromEntries(
+        Object.entries(country.regions).map(([key, region]) => [
+            key,
+            region.id
+        ])
+    );
+
     return (
         <>
             <svg width="334" height="423" viewBox="0 0 334 423" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -33,35 +41,27 @@ export default function Map({ countryId }: MapProps) {
                         onClick={() => setSelectedRegionId(region.id)}
                     />
                 ))}
+                <path d={CountryBorders.path6.d} stroke="black" />
 
-                {/* <path d="" fill="#EE6E8B" />
-            <path d="" fill="#C9D3C0" /> */}
-                <path d={CountryBorders.path1.d} stroke="black" />
-                <path d={CountryBorders.path2.d} fill="black" />
-                <path d={CountryBorders.path3.d} fill="black" />
-                <path d={CountryBorders.path4.d} fill="black" />
-                <path d={CountryBorders.path5.d} fill="black" />
-                <path d={CountryBorders.path6.d} fill="black" />
+                {textRegions.map((path) => (
+                    <path
+                        key={`text_regions_${path.key}_${regionIds[path.key]}`}
+                        d={path.d}
+                        fill="black"
+                        className={
+                            selectedRegionId === regionIds[path.key]
+                                ? styles["active-region"]
+                                : ""
+                        }
+                    />
+                ))}
             </svg>
             {selectedRegionId && (
-                <div
-                    style={{
-                        position: "fixed",
-                        top: "0%",
-                        left: "50%",
-                        transform: "translate(-50%, 0%)",
-                        background: "white",
-                        padding: "20px",
-                        borderRadius: "12px",
-                        border: "1px solid black",
-                        display: "flex",
-                        gap: "10px",
-                        zIndex: 1000,
-                    }}
-                >
+                <div className={styles["map-popup-choose-safety"]}>
                     {SAFETY_LEVELS.map((level) => (
                         <button
-                            key={level}
+                            className={`${styles["safety-level-button"]} ${styles[`safety-level-${level}`]}`}
+                            key={`country_${countryId}__level_${level}`}
                             onClick={() => {
                                 changeRegionSafetyLevel(
                                     countryId,
@@ -76,11 +76,12 @@ export default function Map({ countryId }: MapProps) {
                         </button>
                     ))}
                     <button
+                        className={styles["close-button"]}
                         onClick={() => {
                             setSelectedRegionId(null);
                         }}
                     >
-                        Close
+                        {CLOSE_CHOOSE_SAFETY_BUTTON_POPUP}
                     </button>
                 </div>
             )}

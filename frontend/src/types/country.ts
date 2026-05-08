@@ -19,14 +19,13 @@ export interface Region {
     id: string;
     d: string;
     component_id: `country_${string}_map_region_${string}`;
-
     safety_level: SafetyLevel;
 }
 
-export const safetyColors: Record<number, string> = {
-    1: "#2ecc71",
-    2: "#a3d977",
-    3: "#f1c40f",
-    4: "#e67e22",
-    5: "#e74c3c",
+export const safetyColors: Record<SafetyLevel, string> = {
+    1: "var(--pink-lemonade)",
+    2: "var(--mango-mojito)",
+    3: "var(--blazing-yellow)",
+    4: "var(--shifting-sand)",
+    5: "var(--almost-aqua)",
 };

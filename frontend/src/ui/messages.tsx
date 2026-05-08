@@ -1,3 +1,4 @@
+import { CountryBorders } from "../constants/country_borders";
 export const SCREEN_SIZE_WARNING = {
   title: "Обмежений розмір екрана",
   description: "Поточний розмір екрана є замалим для коректної роботи симулятора.",
@@ -10,5 +11,29 @@ export const SCREEN_DEFAULT_MESSAGE = {
   textMessage: "Метою симулятора для аналізу та прогнозування результатів виборів є на основі характеристик представників електорату, зовнішніх чинників (що можуть описувати стан країни), характеристик кандидатів дослідити фактори, що впливають на голосування за певного кандидата, а також проаналізувати результати за різними виборчими системами."
 };
 
-export const CREATE_COUNTRY_BUTTON_MESSAGE = "Створити країну"
-export const DEFAULT_VISIBLE_COUNTRY_NAME = "Країна №"
+export const CREATE_COUNTRY_BUTTON_MESSAGE = "Створити країну";
+export const DEFAULT_VISIBLE_COUNTRY_NAME = "Країна №";
+export const CLOSE_CHOOSE_SAFETY_BUTTON_POPUP = "X";
+
+export const textRegions = [
+  {
+    key: "region1",
+    d: CountryBorders.path1.d,
+  },
+  {
+    key: "region2",
+    d: CountryBorders.path2.d,
+  },
+  {
+    key: "region3",
+    d: CountryBorders.path3.d,
+  },
+  {
+    key: "region4",
+    d: CountryBorders.path4.d,
+  },
+  {
+    key: "region5",
+    d: CountryBorders.path5.d,
+  },
+];
