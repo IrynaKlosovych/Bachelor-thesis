@@ -24,8 +24,8 @@ export default function VotingGroupCircle({ size = 44, color, voting_group_id }:
                 </g>
 
                 <defs>
-                    <filter id={`filter0_i_${voting_group_id}`} x="-4" y="-4" width={size + 4} height={size + 4} filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <filter id={`filter0_i_${voting_group_id}`} x="-4" y="-4" width={size + 4} height={size + 4} filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
                         <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
                         <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
                         <feOffset dx="-4" dy="-4" />
