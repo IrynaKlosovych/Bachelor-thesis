@@ -27,7 +27,7 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
                 <div className={styles["map-container-settings"]}>
                     <div className={styles['map-voters-container']}>
                         <div>
-                            <div><AddVoterButton /></div>
+                            <div><AddVoterButton countryId={id}/></div>
                             <div><Map countryId={id}></Map></div>
                         </div>
                     </div>

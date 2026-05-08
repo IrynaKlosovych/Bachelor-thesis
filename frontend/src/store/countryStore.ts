@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { v4 as uuidv4 } from "uuid";
 import type { Country, Region, SafetyLevel, VotingGroup } from "../types/country";
-import { DEFAULT_VISIBLE_COUNTRY_NAME } from "../ui/messages";
+import { DEFAULT_VISIBLE_COUNTRY_NAME, VOTING_GROUP_NAME_TEXT } from "../ui/messages";
 import { REGIONS_SETTINGS } from "../constants/constants";
 
 interface CountryStore {
@@ -9,6 +9,7 @@ interface CountryStore {
     countryCounter: number;
     regions: Region[];
     voting_groups: VotingGroup[];
+    voting_groups_counter: Record<string, number>;
 
     addCountry: () => void;
     updateCountryLabel: (id: string, label: string) => void;
@@ -18,8 +19,7 @@ interface CountryStore {
         regionId: string,
         safetyLevel: SafetyLevel
     ) => void;
-
-    // addGroup: (group: VotingGroup) => void;
+    addGroup: (countryId: string) => void;
     // updateGroup: (id: string, data: Partial<VotingGroup>) => void;
     // deleteGroup: (id: string) => void;
 }
@@ -29,6 +29,7 @@ export const useCountryStore = create<CountryStore>((set) => ({
     countryCounter: 0,
     regions: [],
     voting_groups: [],
+    voting_groups_counter: {},
 
     addCountry: () => {
         const countryId = uuidv4();
@@ -67,7 +68,11 @@ export const useCountryStore = create<CountryStore>((set) => ({
                 regions: [
                     ...state.regions,
                     ...regions
-                ]
+                ],
+                voting_groups_counter: {
+                    ...state.voting_groups_counter,
+                    [countryId]: 0,
+                },
             };
         });
     },
@@ -130,10 +135,36 @@ export const useCountryStore = create<CountryStore>((set) => ({
         }));
     },
 
-    // addGroup: (group) =>
-    //     set((state) => ({
-    //         groups: [...state.groups, group]
-    //     })),
+    addGroup: (countryId: string) => {
+        const groupId = uuidv4();
+        set((state) => {
+            const voter_number =
+                state.voting_groups_counter[countryId] + 1;
+            const region = state.regions.find(
+                (r) => r.regionKeyName === "region1"
+            );
+            if (!region) return state;
+            return {
+                voting_groups: [
+                    ...state.voting_groups,
+                    {
+                        id: groupId,
+                        countryId,
+                        regionId: region.id,
+                        componentId: `country_${countryId}_region_${region.id}_group_${groupId}`,
+                        name: `${VOTING_GROUP_NAME_TEXT} ${voter_number}`,
+                        peopleCount: 0,
+                        x: 239,
+                        y: 150,
+                    },
+                ],
+                voting_groups_counter: {
+                    ...state.voting_groups_counter,
+                    [countryId]: voter_number + 1,
+                },
+            };
+        });
+    },
 
     // updateGroup: (id, data) =>
     //     set((state) => ({

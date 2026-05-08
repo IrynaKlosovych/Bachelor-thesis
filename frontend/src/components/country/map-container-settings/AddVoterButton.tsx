@@ -1,14 +1,20 @@
 import { useState } from "react";
-import styles from "../../../styles/country/map-container-settings/AddVoterButton.module.css"
-
-export default function AddVoterButton() {
+import styles from "../../../styles/country/map-container-settings/AddVoterButton.module.css";
+import { useCountryStore } from "../../../store/countryStore";
+interface addGroup{
+    countryId:string
+}
+export default function AddVoterButton({countryId}:addGroup) {
     const [isHovered, setIsHovered] = useState(false);
-
+    const addGroup = useCountryStore(
+        (state) => state.addGroup
+    );
     return (
         <button
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             className={styles["button-add-voter"]}
+            onClick={()=>addGroup(countryId) }
         >
             {isHovered ? (
                 <svg
