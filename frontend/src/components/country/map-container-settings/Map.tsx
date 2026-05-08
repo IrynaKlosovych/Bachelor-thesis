@@ -4,6 +4,7 @@ import { safetyColors, SAFETY_LEVELS } from "../../../types/country";
 import { CLOSE_CHOOSE_SAFETY_BUTTON_POPUP, textRegions } from "../../../ui/messages";
 import { CountryBorders } from "../../../constants/country_borders";
 import styles from "../../../styles/country/map-container-settings/Map.module.css";
+import VotingGroupCircle from "./VotingGroupCircle";
 
 interface MapProps {
     countryId: string;
@@ -55,6 +56,7 @@ export default function Map({ countryId }: MapProps) {
                         }
                     />
                 ))}
+                <VotingGroupCircle size={44} color="#123456" voting_group_id="123" />
             </svg>
             {selectedRegionId && (
                 <div className={styles["map-popup-choose-safety"]}>

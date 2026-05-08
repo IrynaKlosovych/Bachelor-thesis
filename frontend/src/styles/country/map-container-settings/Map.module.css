@@ -98,7 +98,7 @@ path {
 .active-region {
     stroke: var(--scarlet-smile);
     stroke-width: 2;
-    filter: drop-shadow(0 0 3px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
     animation: pulse 1.2s infinite;
 }
 
@@ -106,9 +106,11 @@ path {
     0% {
         filter: drop-shadow(0 0 2px rgba(159, 35, 54, 0.4));
     }
+
     50% {
         filter: drop-shadow(0 0 8px rgba(159, 35, 54, 0.8));
     }
+
     100% {
         filter: drop-shadow(0 0 2px rgba(159, 35, 54, 0.4));
     }
