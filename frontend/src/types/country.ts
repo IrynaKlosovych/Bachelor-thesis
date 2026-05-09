@@ -33,7 +33,7 @@ export type VotingGroup = {
     id: string;
     countryId: string;
     regionId: string;
-    componentId:string;
+    componentId:`country_${string}_group_${string}`;
     name: string;
     peopleCount: number;
     // SVG coords

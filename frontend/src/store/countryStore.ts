@@ -20,6 +20,8 @@ interface CountryStore {
         safetyLevel: SafetyLevel
     ) => void;
     addGroup: (countryId: string) => void;
+    updateVotingGroupPosition: (id: string, x: number, y: number, regionId: string
+    ) => void;
     // updateGroup: (id: string, data: Partial<VotingGroup>) => void;
     // deleteGroup: (id: string) => void;
 }
@@ -166,6 +168,21 @@ export const useCountryStore = create<CountryStore>((set) => ({
         });
     },
 
+    updateVotingGroupPosition: (id, x, y, regionId
+    ) => {
+        set((state) => ({
+            voting_groups: state.voting_groups.map((group) =>
+                group.id === id
+                    ? {
+                        ...group,
+                        x,
+                        y,
+                        regionId,
+                    }
+                    : group
+            ),
+        }));
+    },
     // updateGroup: (id, data) =>
     //     set((state) => ({
     //         groups: state.groups.map((g) =>

@@ -16,8 +16,7 @@ export default function Map({ countryId }: MapProps) {
         (region) => region.countryId === countryId
     );
     const allVoters = useCountryStore(state => state.voting_groups);
-    const voters = allVoters.filter(voter => voter.countryId === countryId);
-
+    const voters = allVoters.filter(voter => voter.countryId === countryId);    
     const changeRegionSafetyLevel = useCountryStore(
         (state) => state.changeRegionSafetyLevel
     );
@@ -31,6 +30,7 @@ export default function Map({ countryId }: MapProps) {
                 <g>
                     {regions.map((region: Region) => (
                         <path
+                            id={`${region.id}`}
                             key={region.component_id}
                             d={region.d}
                             fill={safetyColors[region.safety_level]}
@@ -61,11 +61,12 @@ export default function Map({ countryId }: MapProps) {
                 </g>
                 {voters.map((voter: VotingGroup) => (
                     <VotingGroupCircle key={voter.componentId}
-                        size={44} color="#9A9B86" voter={voter} />
+                        size={44} color="#9A9B86" voter={voter} regions={regions}
+                    />
                 ))
                 }
                 <defs>
-                    <filter id={`voter_shadow`} x="-4" y="-4"  filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                    <filter id={`voter_shadow`} x="-4" y="-4" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
                         <feFlood floodOpacity="0" result="BackgroundImageFix" />
                         <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
                         <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
