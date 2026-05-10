@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
 import App from "../App";
-import useWindowWidth from "../hooks/useWindowWidth";
 import { TEST_SCREEN_WIDTHS } from "../constants/constants";
+import useWindowWidth from "../hooks/useWindowWidth";
 
 vi.mock("../hooks/useWindowWidth", () => ({
   default: vi.fn(),

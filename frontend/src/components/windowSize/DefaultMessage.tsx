@@ -1,5 +1,6 @@
-import styles from "../../styles/windowSize/DefaultMessage.module.css";
 import { SCREEN_DEFAULT_MESSAGE } from "../../ui/messages";
+
+import styles from "../../styles/windowSize/DefaultMessage.module.css";
 export default function DefaultMessage() {
     return (
         <>

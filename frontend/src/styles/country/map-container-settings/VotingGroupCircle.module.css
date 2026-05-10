@@ -1,0 +1,9 @@
+.voting-circle {
+    cursor: grab;
+}
+
+.voting-circle-grabbing {
+    cursor: grabbing;
+    stroke: var(--paradise-pink);
+    stroke-width: 4px;
+}

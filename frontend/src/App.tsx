@@ -1,9 +1,11 @@
 import { useEffect } from "react";
-import styles from '../src/styles/App.module.css';
-import useWindowWidth from "./hooks/useWindowWidth";
-import { SCREEN } from "./constants/constants";
-import ScreenSizeWarning from './components/windowSize/ScreenSizeWarning';
+
 import DefaultLayout from './components/windowSize/DefaultLayout';
+import ScreenSizeWarning from './components/windowSize/ScreenSizeWarning';
+import { SCREEN } from "./constants/constants";
+import useWindowWidth from "./hooks/useWindowWidth";
+
+import styles from '../src/styles/App.module.css';
 
 function App() {
   const width = useWindowWidth();

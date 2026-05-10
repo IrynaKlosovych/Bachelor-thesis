@@ -1,6 +1,6 @@
-import styles from "../../../styles/country/create-country-container/CreateCountryButtonContainer.module.css"
-
 import CreateCountryButton from "./CreateCountryButton";
+
+import styles from "../../../styles/country/create-country-container/CreateCountryButtonContainer.module.css"
 
 export default function CreateCountryButtonContainer() {
     return (

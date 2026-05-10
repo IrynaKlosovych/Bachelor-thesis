@@ -1,39 +1,32 @@
+export type UUID = string;
+export type CountryComponentId = `country_${UUID}`;
+export type RegionsNumber = 1 | 2 | 3 | 4 | 5;
+export type RegionKeyName = `region${RegionsNumber}`;
+export type RegionComponentId = `country_${UUID}_map_region_${UUID}`;
+export type VotingGroupComponentId = `country_${UUID}_group_${UUID}`
+
 export interface Country {
-    id: string;
-    componentId: `country_${string}`;
+    id: UUID;
+    componentId: CountryComponentId;
     label: string;
 }
 
 export type SafetyLevel = 1 | 2 | 3 | 4 | 5;
-export const SAFETY_LEVELS: SafetyLevel[] = [
-    1,
-    2,
-    3,
-    4,
-    5,
-];
+export const SAFETY_LEVELS: SafetyLevel[] = [1, 2, 3, 4, 5,];
 export interface Region {
-    id: string;
-    countryId: string;
-    regionKeyName: string;
+    id: UUID;
+    countryId: UUID;
+    regionKeyName: RegionKeyName;
     d: string;
-    component_id: `country_${string}_map_region_${string}`;
+    component_id: RegionComponentId;
     safety_level: SafetyLevel;
 }
 
-export const safetyColors: Record<SafetyLevel, string> = {
-    1: "var(--pink-lemonade)",
-    2: "var(--mango-mojito)",
-    3: "var(--blazing-yellow)",
-    4: "var(--shifting-sand)",
-    5: "var(--almost-aqua)",
-};
-
 export type VotingGroup = {
-    id: string;
-    countryId: string;
-    regionId: string;
-    componentId:`country_${string}_group_${string}`;
+    id: UUID;
+    countryId: UUID;
+    regionId: UUID;
+    componentId: VotingGroupComponentId;
     name: string;
     peopleCount: number;
     // SVG coords

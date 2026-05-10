@@ -1,6 +1,7 @@
-import styles from "./../../styles/windowSize/ScreenSizeWarning.module.css";
-import { SCREEN_SIZE_WARNING } from "../../ui/messages";
 import { SCREEN, UNITS } from "../../constants/constants";
+import { SCREEN_SIZE_WARNING } from "../../ui/messages";
+
+import styles from "./../../styles/windowSize/ScreenSizeWarning.module.css";
 
 export default function ScreenSizeWarning() {
   return (

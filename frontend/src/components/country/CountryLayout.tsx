@@ -1,9 +1,10 @@
-import styles from "../../styles/country/CountryLayout.module.css";
-import CountryNameInput from "./settings-panel/CountryNameInput";
-import CopyCountryButton from "./settings-panel/CopyCountryButton";
-import DeleteCountryButton from "./settings-panel/DeleteCountryButton";
-import Map from "./map-container-settings/Map";
 import AddVoterButton from "./map-container-settings/AddVoterButton";
+import Map from "./map-container-settings/Map";
+import CopyCountryButton from "./settings-panel/CopyCountryButton";
+import CountryNameInput from "./settings-panel/CountryNameInput";
+import DeleteCountryButton from "./settings-panel/DeleteCountryButton";
+
+import styles from "../../styles/country/CountryLayout.module.css";
 interface CountryLayoutProps {
     id: string;
     label: string;

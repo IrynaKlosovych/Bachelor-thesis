@@ -1,29 +1,33 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
+
+import { MAP_HEIGHT, MAP_WIDTH } from "../../../constants/constants";
 import { useCountryStore } from "../../../store/countryStore";
-import type { VotingGroup, Region } from "../../../types/country";
+import type { Region,VotingGroup } from "../../../types/country";
+
+import styles from "../../../styles/country/map-container-settings/VotingGroupCircle.module.css";
 
 type VotingGroupCircleProps = {
     size?: number;
     color: string;
     voter: VotingGroup;
     regions: Region[];
-
 };
-const MAP_WIDTH = 334;
-const MAP_HEIGHT = 423;
+
 export default function VotingGroupCircle({ size = 44, color, voter, regions, }: VotingGroupCircleProps) {
     const updateVotingGroupPosition = useCountryStore(
         (state) => state.updateVotingGroupPosition
     );
-
+    const [isDraggingStyles, setIsDraggingStyles] = useState(false);
     const isDragging = useRef(false);
 
     const handlePointerDown = () => {
         isDragging.current = true;
+        setIsDraggingStyles(true);
     };
 
     const handlePointerUp = () => {
         isDragging.current = false;
+        setIsDraggingStyles(false);
     };
 
     const handlePointerMove = (
@@ -97,9 +101,9 @@ export default function VotingGroupCircle({ size = 44, color, voter, regions, }:
                     onPointerDown={handlePointerDown}
                     onPointerUp={handlePointerUp}
                     onPointerMove={handlePointerMove}
-                    style={{
-                        cursor: "grab",
-                    }}
+                    className={isDraggingStyles
+                        ? styles["voting-circle-grabbing"]
+                        : styles["voting-circle"]}
                 />
             </g>
         </>

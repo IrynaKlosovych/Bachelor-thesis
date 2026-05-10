@@ -1,27 +1,26 @@
-import { create } from "zustand";
 import { v4 as uuidv4 } from "uuid";
-import type { Country, Region, SafetyLevel, VotingGroup } from "../types/country";
+import { create } from "zustand";
+
+import { DEFAULT_VOTING_GROUP_SETTING,REGIONS_SETTINGS } from "../constants/constants";
+import type { Country, Region, RegionKeyName, SafetyLevel, UUID,VotingGroup } from "../types/country";
 import { DEFAULT_VISIBLE_COUNTRY_NAME, VOTING_GROUP_NAME_TEXT } from "../ui/messages";
-import { REGIONS_SETTINGS } from "../constants/constants";
+import { ComponentIdFactory } from "../utils/countryTypesFunctions";
 
 interface CountryStore {
     countries: Country[];
     countryCounter: number;
     regions: Region[];
     voting_groups: VotingGroup[];
-    voting_groups_counter: Record<string, number>;
+    voting_groups_counter: Record<UUID, number>;
 
     addCountry: () => void;
-    updateCountryLabel: (id: string, label: string) => void;
-    copyCountry: (id: string) => void; //!need return later to this task
-    deleteCountry: (id: string) => void; //!need return later to this task
-    changeRegionSafetyLevel: (
-        regionId: string,
-        safetyLevel: SafetyLevel
-    ) => void;
-    addGroup: (countryId: string) => void;
-    updateVotingGroupPosition: (id: string, x: number, y: number, regionId: string
-    ) => void;
+    updateCountryLabel: (id: UUID, label: string) => void;
+    copyCountry: (id: UUID) => void; //!need return later to this task
+    deleteCountry: (id: UUID) => void; //!need return later to this task
+    changeRegionSafetyLevel: (regionId: UUID, safetyLevel: SafetyLevel) => void;
+    addGroup: (countryId: UUID) => void;
+    updateVotingGroupPosition: (id: UUID, x: number,
+        y: number, regionId: UUID) => void;
     // updateGroup: (id: string, data: Partial<VotingGroup>) => void;
     // deleteGroup: (id: string) => void;
 }
@@ -43,14 +42,13 @@ export const useCountryStore = create<CountryStore>((set) => ({
             Object.entries(REGIONS_SETTINGS).forEach(
                 ([regionKey, regionSettings]) => {
                     const regionId = uuidv4();
-
                     regions.push({
                         id: regionId,
                         countryId: countryId,
-                        regionKeyName: regionKey,
+                        regionKeyName: regionKey as RegionKeyName,
                         d: regionSettings.d,
                         component_id:
-                            `country_${countryId}_map_region_${regionId}`,
+                            ComponentIdFactory.region(countryId, regionId),
                         safety_level: 5,
                     });
                 }
@@ -63,7 +61,7 @@ export const useCountryStore = create<CountryStore>((set) => ({
                     ...state.countries,
                     {
                         id: countryId,
-                        componentId: `country_${countryId}`,
+                        componentId: ComponentIdFactory.country(countryId),
                         label: `${DEFAULT_VISIBLE_COUNTRY_NAME} ${countryNumForName}`
                     },
                 ],
@@ -143,7 +141,7 @@ export const useCountryStore = create<CountryStore>((set) => ({
             const voter_number =
                 state.voting_groups_counter[countryId] + 1;
             const region = state.regions.find(
-                (r) => r.regionKeyName === "region1"
+                (r) => r.regionKeyName === DEFAULT_VOTING_GROUP_SETTING.regionKey
             );
             if (!region) return state;
             return {
@@ -153,11 +151,11 @@ export const useCountryStore = create<CountryStore>((set) => ({
                         id: groupId,
                         countryId,
                         regionId: region.id,
-                        componentId: `country_${countryId}_region_${region.id}_group_${groupId}`,
+                        componentId: ComponentIdFactory.group(countryId, groupId),
                         name: `${VOTING_GROUP_NAME_TEXT} ${voter_number}`,
                         peopleCount: 0,
-                        x: 239,
-                        y: 150,
+                        x: DEFAULT_VOTING_GROUP_SETTING.x,
+                        y: DEFAULT_VOTING_GROUP_SETTING.y,
                     },
                 ],
                 voting_groups_counter: {

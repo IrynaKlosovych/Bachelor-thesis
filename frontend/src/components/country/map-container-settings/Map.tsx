@@ -1,11 +1,14 @@
 import { useState } from "react";
+
+import { COUNTRY_BORDERS } from "../../../constants/country_borders";
 import { useCountryStore } from "../../../store/countryStore";
-import { safetyColors, SAFETY_LEVELS } from "../../../types/country";
 import type { Region, VotingGroup } from "../../../types/country";
-import { CLOSE_CHOOSE_SAFETY_BUTTON_POPUP, textRegions } from "../../../ui/messages";
-import { CountryBorders } from "../../../constants/country_borders";
-import styles from "../../../styles/country/map-container-settings/Map.module.css";
+import { SAFETY_LEVELS } from "../../../types/country";
+import { CLOSE_CHOOSE_SAFETY_BUTTON_POPUP, TEXT_REGIONS } from "../../../ui/messages";
+
 import VotingGroupCircle from "./VotingGroupCircle";
+
+import styles from "../../../styles/country/map-container-settings/Map.module.css";
 
 interface MapProps {
     countryId: string;
@@ -16,7 +19,7 @@ export default function Map({ countryId }: MapProps) {
         (region) => region.countryId === countryId
     );
     const allVoters = useCountryStore(state => state.voting_groups);
-    const voters = allVoters.filter(voter => voter.countryId === countryId);    
+    const voters = allVoters.filter(voter => voter.countryId === countryId);
     const changeRegionSafetyLevel = useCountryStore(
         (state) => state.changeRegionSafetyLevel
     );
@@ -30,16 +33,16 @@ export default function Map({ countryId }: MapProps) {
                 <g>
                     {regions.map((region: Region) => (
                         <path
+                            className={styles[`safety-level-path-${region.safety_level}`]}
                             id={`${region.id}`}
                             key={region.component_id}
                             d={region.d}
-                            fill={safetyColors[region.safety_level]}
                             onClick={() => setSelectedRegionId(region.id)}
                         />
                     ))}
-                    <path d={CountryBorders.path6.d} stroke="black" />
+                    <path d={COUNTRY_BORDERS.path6.d} stroke="black" />
 
-                    {textRegions.map((path) => {
+                    {TEXT_REGIONS.map((path) => {
                         const region = regions.find((r) => {
 
                             return r.regionKeyName === path.key;
@@ -83,8 +86,8 @@ export default function Map({ countryId }: MapProps) {
                 <div className={styles["map-popup-choose-safety"]}>
                     {SAFETY_LEVELS.map((level) => (
                         <button
-                            className={`${styles["safety-level-button"]} ${styles[`safety-level-${level}`]}`}
-                            key={`country_${countryId}_${selectedRegionId}_level_${level}`}
+                            className={`${styles["safety-level-button"]} ${styles[`safety-level-button-${level}`]}`}
+                            key={`country_${countryId}_level_${level}`}
                             onClick={() => {
                                 changeRegionSafetyLevel(
                                     selectedRegionId,
