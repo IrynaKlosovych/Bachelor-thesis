@@ -3,7 +3,10 @@ export type CountryComponentId = `country_${UUID}`;
 export type RegionsNumber = 1 | 2 | 3 | 4 | 5;
 export type RegionKeyName = `region${RegionsNumber}`;
 export type RegionComponentId = `country_${UUID}_map_region_${UUID}`;
-export type VotingGroupComponentId = `country_${UUID}_group_${UUID}`
+export type VotingGroupComponentId = `country_${UUID}_group_${UUID}`;
+export type StageFilled = "not filled" | "almost" | "ready";
+export type GroupFormData = Record<string, Record<string, string>>;
+
 
 export interface Country {
     id: UUID;
@@ -17,7 +20,7 @@ export interface Region {
     id: UUID;
     countryId: UUID;
     regionKeyName: RegionKeyName;
-    d: string;
+    displayInTable: string,
     component_id: RegionComponentId;
     safety_level: SafetyLevel;
 }
@@ -29,6 +32,12 @@ export type VotingGroup = {
     componentId: VotingGroupComponentId;
     name: string;
     peopleCount: number;
+    details_descr: {
+        age: string,
+        sex: string,
+        nationality: string,
+    },
+    stageFilled: StageFilled;
     // SVG coords
     x: number;
     y: number;

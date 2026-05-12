@@ -1,0 +1,108 @@
+.region-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px;
+    gap: 12px;
+}
+
+
+.region-title,
+.security-level {
+    font-family: 'Roboto Serif';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 130%;
+}
+
+.region-container>div:last-child {
+    border: 4px solid var(--mango-mojito);
+    border-radius: 8px;
+}
+
+.table {
+    box-sizing: border-box;
+    border-collapse: collapse;
+    padding: 0px;
+
+    table-layout: auto;
+    width: max-content;
+}
+
+.table th,
+.table td {
+    box-sizing: border-box;
+
+    align-items: center;
+    border: 1px solid var(--mango-mojito);
+}
+
+.table th {
+    background: var(--shifting-sand);
+    padding: 12px;
+}
+
+.table td {
+    background: var(--amberlight);
+    padding: 12px;
+}
+
+.select {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: inherit;
+    cursor: pointer;
+    padding-left: 4px;
+}
+
+.select::after {
+    box-sizing: border-box;
+    content: "";
+    width: 12px;
+
+    transition: transform 0.2s ease;
+
+    pointer-events: none;
+
+    background-image: url("../../../assets/chevron.svg");
+
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.select.open::after {
+    transform: rotate(180deg);
+}
+
+select,
+::picker(select) {
+    appearance: base-select;
+}
+
+::picker(select) {
+    border: 2px solid var(--coral-haze);
+    border-radius: 8px;
+    position: relative;
+    top: 4px;
+    left: -12px;
+    overflow: scroll;
+    scrollbar-width: none;
+}
+
+option {
+    padding: 4px 12px;
+    background: var(--raindrops-on-roses);
+    color: var(--stretch-limo);
+}
+
+select::picker-icon {
+    display: none;
+}
+
+option:hover {
+    background-color: var(--nantucket-breeze);
+    color: var(--paradise-pink);
+}

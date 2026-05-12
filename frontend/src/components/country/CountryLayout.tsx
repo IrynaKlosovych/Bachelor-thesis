@@ -1,5 +1,6 @@
 import AddVoterButton from "./map-container-settings/AddVoterButton";
 import Map from "./map-container-settings/Map";
+import VotersTable from "./map-container-settings/VotersTable"
 import CopyCountryButton from "./settings-panel/CopyCountryButton";
 import CountryNameInput from "./settings-panel/CountryNameInput";
 import DeleteCountryButton from "./settings-panel/DeleteCountryButton";
@@ -34,7 +35,7 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
                     </div>
                     <div className={styles["voters-params-table-container"]}>
                         <div>
-
+                            <VotersTable countryId={id} />
                         </div>
                     </div>
                 </div>

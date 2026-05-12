@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 import { create } from "zustand";
 
-import { DEFAULT_VOTING_GROUP_SETTING,REGIONS_SETTINGS } from "../constants/constants";
-import type { Country, Region, RegionKeyName, SafetyLevel, UUID,VotingGroup } from "../types/country";
-import { DEFAULT_VISIBLE_COUNTRY_NAME, VOTING_GROUP_NAME_TEXT } from "../ui/messages";
+import { DEFAULT_VOTING_GROUP_SETTING, REGIONS_SETTINGS } from "../constants/constants";
+import type { Country, Region, RegionKeyName, SafetyLevel, UUID, VotingGroup } from "../types/country";
+import { DEFAULT_VISIBLE_COUNTRY_NAME, TEXT_REGIONS, VOTING_GROUP_NAME_TEXT } from "../ui/messages";
 import { ComponentIdFactory } from "../utils/countryTypesFunctions";
 
 interface CountryStore {
@@ -34,26 +34,27 @@ export const useCountryStore = create<CountryStore>((set) => ({
 
     addCountry: () => {
         const countryId = uuidv4();
+        const regionsInCountry: Region[] = [];
 
+        Object.entries(REGIONS_SETTINGS).forEach(
+            ([regionKey]) => {
+                const regionId = uuidv4();
+                const displayInTable = TEXT_REGIONS.find(region => region.key === regionKey)?.displayInTable;
+                if (!displayInTable) return;
+                regionsInCountry.push({
+                    id: regionId,
+                    countryId: countryId,
+                    regionKeyName: regionKey as RegionKeyName,
+                    displayInTable: displayInTable,
+                    component_id:
+                        ComponentIdFactory.region(countryId, regionId),
+                    safety_level: 5,
+                });
+            }
+        );
         set((state) => {
             const countryNumForName = state.countryCounter + 1;
-            const regions: Region[] = [];
-
-            Object.entries(REGIONS_SETTINGS).forEach(
-                ([regionKey, regionSettings]) => {
-                    const regionId = uuidv4();
-                    regions.push({
-                        id: regionId,
-                        countryId: countryId,
-                        regionKeyName: regionKey as RegionKeyName,
-                        d: regionSettings.d,
-                        component_id:
-                            ComponentIdFactory.region(countryId, regionId),
-                        safety_level: 5,
-                    });
-                }
-            );
-
+            state.regions.forEach(r => Object.freeze(r));
             return {
                 countryCounter: state.countryCounter + 1,
 
@@ -65,10 +66,8 @@ export const useCountryStore = create<CountryStore>((set) => ({
                         label: `${DEFAULT_VISIBLE_COUNTRY_NAME} ${countryNumForName}`
                     },
                 ],
-                regions: [
-                    ...state.regions,
-                    ...regions
-                ],
+                regions:
+                    state.regions.concat(regionsInCountry),
                 voting_groups_counter: {
                     ...state.voting_groups_counter,
                     [countryId]: 0,
@@ -141,7 +140,7 @@ export const useCountryStore = create<CountryStore>((set) => ({
             const voter_number =
                 state.voting_groups_counter[countryId] + 1;
             const region = state.regions.find(
-                (r) => r.regionKeyName === DEFAULT_VOTING_GROUP_SETTING.regionKey
+                (r) => r.regionKeyName === DEFAULT_VOTING_GROUP_SETTING.regionKey && r.countryId === countryId
             );
             if (!region) return state;
             return {
@@ -154,13 +153,19 @@ export const useCountryStore = create<CountryStore>((set) => ({
                         componentId: ComponentIdFactory.group(countryId, groupId),
                         name: `${VOTING_GROUP_NAME_TEXT} ${voter_number}`,
                         peopleCount: 0,
+                        details_descr: {
+                            age: "",
+                            sex: "",
+                            nationality: "",
+                        },
+                        stageFilled: "not filled",
                         x: DEFAULT_VOTING_GROUP_SETTING.x,
                         y: DEFAULT_VOTING_GROUP_SETTING.y,
                     },
                 ],
                 voting_groups_counter: {
                     ...state.voting_groups_counter,
-                    [countryId]: voter_number + 1,
+                    [countryId]: voter_number,
                 },
             };
         });

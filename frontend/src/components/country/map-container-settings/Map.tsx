@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { REGIONS_SETTINGS } from "../../../constants/constants";
 import { COUNTRY_BORDERS } from "../../../constants/country_borders";
 import { useCountryStore } from "../../../store/countryStore";
 import type { Region, VotingGroup } from "../../../types/country";
@@ -31,15 +32,17 @@ export default function Map({ countryId }: MapProps) {
         <>
             <svg width="334" height="423" viewBox="0 0 334 423" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g>
-                    {regions.map((region: Region) => (
-                        <path
-                            className={styles[`safety-level-path-${region.safety_level}`]}
-                            id={`${region.id}`}
-                            key={region.component_id}
-                            d={region.d}
-                            onClick={() => setSelectedRegionId(region.id)}
-                        />
-                    ))}
+                    {regions.map((region: Region) => {
+                        return (
+                            <path
+                                className={styles[`safety-level-path-${region.safety_level}`]}
+                                id={`${region.id}`}
+                                key={region.component_id}
+                                d={REGIONS_SETTINGS[region.regionKeyName].d}
+                                onClick={() => setSelectedRegionId(region.id)}
+                            />
+                        );
+                    })}
                     <path d={COUNTRY_BORDERS.path6.d} stroke="black" />
 
                     {TEXT_REGIONS.map((path) => {
