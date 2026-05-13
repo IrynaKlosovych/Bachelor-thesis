@@ -6,6 +6,7 @@ export type RegionComponentId = `country_${UUID}_map_region_${UUID}`;
 export type VotingGroupComponentId = `country_${UUID}_group_${UUID}`;
 export type StageFilled = "not filled" | "almost" | "ready";
 export type GroupFormData = Record<string, Record<string, string>>;
+export type OpenPopupData = { voter: VotingGroup; };
 
 
 export interface Country {

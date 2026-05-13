@@ -4,7 +4,7 @@
     justify-content: center;
 }
 
-.screen-block-message > div {
+.screen-block-message>div {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -27,7 +27,7 @@
     font-size: clamp(18px, 2vw, 34px);
     line-height: 250%;
     text-align: center;
-    color: #2B2C30;
+    color: var(--stretch-limo);
 }
 
 .screen-block-text {
@@ -37,11 +37,11 @@
     font-weight: 400;
     font-size: clamp(14px, 2vw, 24px);
     line-height: 230%;
-    color: #2B2C30;
+    color: var(--stretch-limo);
     text-align: center;
     padding-bottom: 20px;
 }
 
-.min-need-size{
+.min-need-size {
     font-weight: bold;
 }

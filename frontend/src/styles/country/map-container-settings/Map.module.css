@@ -118,21 +118,21 @@ path {
 .active-region {
     stroke: var(--scarlet-smile);
     stroke-width: 2;
-    filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 0 3px var(--shadow2));
     animation: pulse 1.2s infinite;
 }
 
 @keyframes pulse {
     0% {
-        filter: drop-shadow(0 0 2px rgba(159, 35, 54, 0.4));
+        filter: drop-shadow(0 0 2px var(--pulse-shadow1));
     }
 
     50% {
-        filter: drop-shadow(0 0 8px rgba(159, 35, 54, 0.8));
+        filter: drop-shadow(0 0 8px var(--pulse-shadow2));
     }
 
     100% {
-        filter: drop-shadow(0 0 2px rgba(159, 35, 54, 0.4));
+        filter: drop-shadow(0 0 2px var(--pulse-shadow3));
     }
 }
 

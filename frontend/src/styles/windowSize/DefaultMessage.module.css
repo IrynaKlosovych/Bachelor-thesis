@@ -25,7 +25,7 @@ h1 {
     font-size: clamp(28px, 4vw, 64px);
     line-height: 125%;
     text-align: center;
-    color: #2B2C30;
+    color: var(--stretch-limo);
 }
 
 .alert-message {
@@ -56,7 +56,7 @@ h1 {
     font-size: clamp(16px, 2vw, 32px);
     line-height: 250%;
     text-align: center;
-    color: #2B2C30;
+    color: var(--stretch-limo);
 }
 
 .alert-text-message {
@@ -66,5 +66,5 @@ h1 {
     font-weight: 400;
     font-size: clamp(14px, 2vw, 24px);
     line-height: 230%;
-    color: #2B2C30;
+    color: var(--stretch-limo);
 }

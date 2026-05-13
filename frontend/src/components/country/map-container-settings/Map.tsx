@@ -3,7 +3,7 @@ import { useState } from "react";
 import { REGIONS_SETTINGS } from "../../../constants/constants";
 import { COUNTRY_BORDERS } from "../../../constants/country_borders";
 import { useCountryStore } from "../../../store/countryStore";
-import type { Region, VotingGroup } from "../../../types/country";
+import type { OpenPopupData, Region, VotingGroup } from "../../../types/country";
 import { SAFETY_LEVELS } from "../../../types/country";
 import { CLOSE_CHOOSE_SAFETY_BUTTON_POPUP, TEXT_DELETE, TEXT_REGIONS } from "../../../ui/messages";
 
@@ -11,7 +11,6 @@ import VotingGroupCircle from "./VotingGroupCircle";
 
 import styles from "../../../styles/country/map-container-settings/Map.module.css";
 
-type OpenPopupData = { voter: VotingGroup; };
 interface MapProps {
     countryId: string;
 }

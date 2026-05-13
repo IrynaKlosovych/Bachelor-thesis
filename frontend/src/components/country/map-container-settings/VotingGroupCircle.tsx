@@ -2,11 +2,10 @@ import { useRef, useState } from "react";
 
 import { MAP_HEIGHT, MAP_WIDTH } from "../../../constants/constants";
 import { useCountryStore } from "../../../store/countryStore";
-import type { Region, VotingGroup } from "../../../types/country";
+import type { OpenPopupData, Region, VotingGroup } from "../../../types/country";
 
 import styles from "../../../styles/country/map-container-settings/VotingGroupCircle.module.css";
 
-type OpenPopupData = { voter: VotingGroup; };
 type VotingGroupCircleProps = {
     size?: number;
     color: string;
