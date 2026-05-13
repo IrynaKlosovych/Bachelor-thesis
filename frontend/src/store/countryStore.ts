@@ -22,7 +22,7 @@ interface CountryStore {
     updateVotingGroupPosition: (id: UUID, x: number,
         y: number, regionId: UUID) => void;
     // updateGroup: (id: string, data: Partial<VotingGroup>) => void;
-    // deleteGroup: (id: string) => void;
+    deleteGroup: (id: string) => void;
 }
 
 export const useCountryStore = create<CountryStore>((set) => ({
@@ -193,8 +193,8 @@ export const useCountryStore = create<CountryStore>((set) => ({
     //         )
     //     })),
 
-    // deleteGroup: (id) =>
-    //     set((state) => ({
-    //         groups: state.groups.filter((g) => g.id !== id)
-    //     })),
+    deleteGroup: (id) =>
+        set((state) => ({
+            voting_groups: state.voting_groups.filter((g) => g.id !== id)
+        })),
 }));

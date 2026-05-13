@@ -5,16 +5,21 @@ import { COUNTRY_BORDERS } from "../../../constants/country_borders";
 import { useCountryStore } from "../../../store/countryStore";
 import type { Region, VotingGroup } from "../../../types/country";
 import { SAFETY_LEVELS } from "../../../types/country";
-import { CLOSE_CHOOSE_SAFETY_BUTTON_POPUP, TEXT_REGIONS } from "../../../ui/messages";
+import { CLOSE_CHOOSE_SAFETY_BUTTON_POPUP, TEXT_DELETE, TEXT_REGIONS } from "../../../ui/messages";
 
 import VotingGroupCircle from "./VotingGroupCircle";
 
 import styles from "../../../styles/country/map-container-settings/Map.module.css";
 
+type OpenPopupData = { voter: VotingGroup; };
 interface MapProps {
     countryId: string;
 }
 export default function Map({ countryId }: MapProps) {
+    const [openedPopup, setOpenedPopup] = useState<OpenPopupData | null>(null);
+    const removeVotingGroup = useCountryStore(
+        (state) => state.deleteGroup
+    );
     const allRegions = useCountryStore((state) => state.regions);
     const regions = allRegions.filter(
         (region) => region.countryId === countryId
@@ -67,7 +72,7 @@ export default function Map({ countryId }: MapProps) {
                 </g>
                 {voters.map((voter: VotingGroup) => (
                     <VotingGroupCircle key={voter.componentId}
-                        size={44} color="#9A9B86" voter={voter} regions={regions}
+                        size={44} color="#9A9B86" voter={voter} regions={regions} onOpenPopup={setOpenedPopup}
                     />
                 ))
                 }
@@ -110,6 +115,24 @@ export default function Map({ countryId }: MapProps) {
                         }}
                     >
                         {CLOSE_CHOOSE_SAFETY_BUTTON_POPUP}
+                    </button>
+                </div>
+            )}
+            {openedPopup && (
+                <div className={styles.popup}>
+                    <div>
+                        <div>{openedPopup.voter.name}</div>
+                        <button onClick={() => setOpenedPopup(null)}>
+                            {CLOSE_CHOOSE_SAFETY_BUTTON_POPUP}                    </button>
+                    </div>
+
+                    <button
+                        onClick={() => {
+                            removeVotingGroup(openedPopup.voter.id);
+                            setOpenedPopup(null);
+                        }}
+                    >
+                        {TEXT_DELETE}
                     </button>
                 </div>
             )}

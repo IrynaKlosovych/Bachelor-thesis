@@ -2,32 +2,41 @@ import { useRef, useState } from "react";
 
 import { MAP_HEIGHT, MAP_WIDTH } from "../../../constants/constants";
 import { useCountryStore } from "../../../store/countryStore";
-import type { Region,VotingGroup } from "../../../types/country";
+import type { Region, VotingGroup } from "../../../types/country";
 
 import styles from "../../../styles/country/map-container-settings/VotingGroupCircle.module.css";
 
+type OpenPopupData = { voter: VotingGroup; };
 type VotingGroupCircleProps = {
     size?: number;
     color: string;
     voter: VotingGroup;
     regions: Region[];
+    onOpenPopup: (data: OpenPopupData) => void;
 };
 
-export default function VotingGroupCircle({ size = 44, color, voter, regions, }: VotingGroupCircleProps) {
+export default function VotingGroupCircle({ size = 44, color, voter, regions, onOpenPopup }: VotingGroupCircleProps) {
     const updateVotingGroupPosition = useCountryStore(
         (state) => state.updateVotingGroupPosition
     );
     const [isDraggingStyles, setIsDraggingStyles] = useState(false);
     const isDragging = useRef(false);
+    const moved = useRef(false);
 
     const handlePointerDown = () => {
         isDragging.current = true;
+        moved.current = false;
         setIsDraggingStyles(true);
     };
 
     const handlePointerUp = () => {
         isDragging.current = false;
         setIsDraggingStyles(false);
+        if (!moved.current) {
+            onOpenPopup({
+                voter,
+            });
+        }
     };
 
     const handlePointerMove = (
@@ -35,6 +44,7 @@ export default function VotingGroupCircle({ size = 44, color, voter, regions, }:
     ) => {
 
         if (!isDragging.current) return;
+        moved.current = true;
 
         const svg = e.currentTarget.ownerSVGElement;
 
