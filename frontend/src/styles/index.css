@@ -28,6 +28,8 @@
     --pulse-shadow2: rgba(159, 35, 54, 0.8);
     --pulse-shadow3: rgba(159, 35, 54, 0.4);
 
+    /*some text*/
+    --text: #000000;
     /*other*/
     --veiled-vista: #C7E4CA;
     --baltic-sea: #79B6D8;

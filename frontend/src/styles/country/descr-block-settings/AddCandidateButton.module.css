@@ -1,0 +1,61 @@
+.add-candidate-block {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.add-candidate {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    isolation: isolate;
+    border: none;
+    width: 222px;
+    height: 42px;
+
+    background: var(--amberlight);
+    box-shadow: 4px 4px 4px var(--shadow1);
+    border-radius: 16px;
+    font-family: 'Roboto Slab';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 130%;
+
+    text-align: center;
+
+    color: var(--stretch-limo);
+    cursor: pointer;
+
+}
+
+.add-candidate-blur-1 {
+    position: absolute;
+    width: 42px;
+    height: 20px;
+    left: 0px;
+    top: 0px;
+
+    background: var(--lemon-icing);
+    filter: blur(12.5px);
+}
+
+.add-candidate-blur-2 {
+    position: absolute;
+    width: 42px;
+    height: 12px;
+    right: 0px;
+    bottom: 0px;
+
+    background: var(--lemon-icing);
+    filter: blur(9px);
+}
+
+.add-candidate:hover {
+    background-color: var(--lemon-icing);
+}

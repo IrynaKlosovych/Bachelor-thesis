@@ -17,6 +17,9 @@ export const CLOSE_CHOOSE_SAFETY_BUTTON_POPUP = "X";
 export const VOTING_GROUP_NAME_TEXT = "Категорія";
 export const TEXT_TABLE_SAFETY_LEVEL = "Рівень безпеки:";
 export const TEXT_DELETE = "Видалити";
+export const TEXT_COUNTRY_DESCR = "Опис країни";
+export const TEXT_ADD_CANDIDATE = "Додати кандидата";
+export const TEXT_MODE_TO_CHOOSE = "Орган, що обирається";
 
 export const TEXT_REGIONS = [
   {

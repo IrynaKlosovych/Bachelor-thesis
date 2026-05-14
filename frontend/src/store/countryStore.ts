@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 import { create } from "zustand";
 
-import { DEFAULT_VOTING_GROUP_SETTING, REGIONS_SETTINGS } from "../constants/constants";
-import type { Country, Region, RegionKeyName, SafetyLevel, UUID, VotingGroup } from "../types/country";
+import { DEFAULT_VOTING_GROUP_SETTING, ELECTION_MODE_SETTINGS, REGIONS_SETTINGS } from "../constants/constants";
+import type { Country, ElectionMode, Region, RegionKeyName, SafetyLevel, UUID, VotingGroup } from "../types/country";
 import { DEFAULT_VISIBLE_COUNTRY_NAME, TEXT_REGIONS, VOTING_GROUP_NAME_TEXT } from "../ui/messages";
 import { ComponentIdFactory } from "../utils/countryTypesFunctions";
 
@@ -23,6 +23,10 @@ interface CountryStore {
         y: number, regionId: UUID) => void;
     // updateGroup: (id: string, data: Partial<VotingGroup>) => void;
     deleteGroup: (id: string) => void;
+    changeElectionMode: (
+        countryId: string,
+        electionMode: ElectionMode
+    ) => void;
 }
 
 export const useCountryStore = create<CountryStore>((set) => ({
@@ -54,7 +58,6 @@ export const useCountryStore = create<CountryStore>((set) => ({
         );
         set((state) => {
             const countryNumForName = state.countryCounter + 1;
-            state.regions.forEach(r => Object.freeze(r));
             return {
                 countryCounter: state.countryCounter + 1,
 
@@ -63,7 +66,8 @@ export const useCountryStore = create<CountryStore>((set) => ({
                     {
                         id: countryId,
                         componentId: ComponentIdFactory.country(countryId),
-                        label: `${DEFAULT_VISIBLE_COUNTRY_NAME} ${countryNumForName}`
+                        label: `${DEFAULT_VISIBLE_COUNTRY_NAME} ${countryNumForName}`,
+                        electionMode: ELECTION_MODE_SETTINGS.presidential.key as ElectionMode
                     },
                 ],
                 regions:
@@ -197,4 +201,20 @@ export const useCountryStore = create<CountryStore>((set) => ({
         set((state) => ({
             voting_groups: state.voting_groups.filter((g) => g.id !== id)
         })),
+
+    changeElectionMode: (
+        countryId: string,
+        electionMode: ElectionMode
+    ) => {
+        set((state) => ({
+            countries: state.countries.map(country =>
+                country.id === countryId
+                    ? {
+                        ...country,
+                        electionMode
+                    }
+                    : country
+            )
+        }));
+    },
 }));

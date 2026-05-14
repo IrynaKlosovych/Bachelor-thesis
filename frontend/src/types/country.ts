@@ -7,12 +7,14 @@ export type VotingGroupComponentId = `country_${UUID}_group_${UUID}`;
 export type StageFilled = "not filled" | "almost" | "ready";
 export type GroupFormData = Record<string, Record<string, string>>;
 export type OpenPopupData = { voter: VotingGroup; };
-
+export type ElectionMode = "presidential" | "parliamentary";
+export type MapMode = "edit" | "view";
 
 export interface Country {
     id: UUID;
     componentId: CountryComponentId;
     label: string;
+    electionMode: ElectionMode;
 }
 
 export type SafetyLevel = 1 | 2 | 3 | 4 | 5;
