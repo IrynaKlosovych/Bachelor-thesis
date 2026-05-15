@@ -27,6 +27,11 @@ interface CountryStore {
         countryId: string,
         electionMode: ElectionMode
     ) => void;
+
+    updateCountryDescr: (
+        countryId: string,
+        descr: string
+    ) => void;
 }
 
 export const useCountryStore = create<CountryStore>((set) => ({
@@ -67,7 +72,8 @@ export const useCountryStore = create<CountryStore>((set) => ({
                         id: countryId,
                         componentId: ComponentIdFactory.country(countryId),
                         label: `${DEFAULT_VISIBLE_COUNTRY_NAME} ${countryNumForName}`,
-                        electionMode: ELECTION_MODE_SETTINGS.presidential.key as ElectionMode
+                        electionMode: ELECTION_MODE_SETTINGS.presidential.key as ElectionMode,
+                        descr: "",
                     },
                 ],
                 regions:
@@ -217,4 +223,14 @@ export const useCountryStore = create<CountryStore>((set) => ({
             )
         }));
     },
+
+    updateCountryDescr: (countryId, descr) => {
+        set((state) => ({
+            countries: state.countries.map((country) =>
+                country.id === countryId
+                    ? { ...country, descr }
+                    : country
+            )
+        }));
+    }
 }));

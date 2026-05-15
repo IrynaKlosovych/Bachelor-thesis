@@ -15,6 +15,7 @@ export interface Country {
     componentId: CountryComponentId;
     label: string;
     electionMode: ElectionMode;
+    descr: string;
 }
 
 export type SafetyLevel = 1 | 2 | 3 | 4 | 5;
