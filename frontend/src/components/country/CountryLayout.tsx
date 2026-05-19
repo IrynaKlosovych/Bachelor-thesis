@@ -1,3 +1,9 @@
+import { useShallow } from "zustand/react/shallow";
+
+import { ELECTION_MODE_SETTINGS } from "../../constants/constants";
+import { useCountryStore } from "../../store/countryStore";
+
+import PersonCandidate from "./candidates/PersonCandidate";
 import AddCandidateButton from "./descr-block-settings/AddCandidateButton";
 import CountryDescr from "./descr-block-settings/CountryDescr";
 import ElectionModeChoosen from "./descr-block-settings/ElectionModeChoosen";
@@ -15,6 +21,22 @@ interface CountryLayoutProps {
 }
 
 export default function CountryLayout({ id, label }: CountryLayoutProps) {
+    const {
+        countries,
+        president_person_candidates,
+    } = useCountryStore(
+        useShallow((state) => ({
+            countries: state.countries,
+            president_person_candidates:
+                state.president_person_candidates,
+        }))
+    );
+    const country = countries.find((c) => c.id === id);
+    if (!country) return;
+    const presidentCandidates =
+        president_person_candidates.filter(
+            (c) => c.countryId === id
+        );
 
     return (
         <div
@@ -52,8 +74,14 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
                         <CountryDescr countryId={id} />
                     </div>
                 </div>
-                <div>
-                    /*candidates */
+                <div className={styles["candidate-block"]}>
+                    {country.electionMode === ELECTION_MODE_SETTINGS.presidential.key &&
+                        presidentCandidates.map((candidate) => (
+                            <PersonCandidate
+                                key={`country_${id}_candidate_${candidate.id}`}
+                                candidate={candidate}
+                            />
+                        ))}
                 </div>
                 <div>
                     /*send button */

@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 import { create } from "zustand";
 
-import { DEFAULT_VOTING_GROUP_SETTING, ELECTION_MODE_SETTINGS, REGIONS_SETTINGS } from "../constants/constants";
-import type { Country, ElectionMode, Region, RegionKeyName, SafetyLevel, UUID, VotingGroup } from "../types/country";
+import { CANDIDATE_SETTINGS, DEFAULT_VOTING_GROUP_SETTING, ELECTION_MODE_SETTINGS, REGIONS_SETTINGS } from "../constants/constants";
+import type { Country, ElectionMode, PartyCandidate, PartyPersonCandidate, PresidentPersonCandidate, Region, RegionKeyName, SafetyLevel, UUID, VotingGroup } from "../types/country";
 import { DEFAULT_VISIBLE_COUNTRY_NAME, TEXT_REGIONS, VOTING_GROUP_NAME_TEXT } from "../ui/messages";
-import { ComponentIdFactory } from "../utils/countryTypesFunctions";
+import { ComponentIdFactory, generateUniqueColor } from "../utils/countryTypesFunctions";
 
 interface CountryStore {
     countries: Country[];
@@ -12,6 +12,11 @@ interface CountryStore {
     regions: Region[];
     voting_groups: VotingGroup[];
     voting_groups_counter: Record<UUID, number>;
+    party_candidates: PartyCandidate[],
+    president_person_candidates: PresidentPersonCandidate[];
+    party_person_candidates: PartyPersonCandidate[];
+    used_president_candidate_hues: Record<UUID, number[]>;
+    used_party_candidate_hues: Record<UUID, number[]>;
 
     addCountry: () => void;
     updateCountryLabel: (id: UUID, label: string) => void;
@@ -32,6 +37,11 @@ interface CountryStore {
         countryId: string,
         descr: string
     ) => void;
+
+    addPresidentCandidate: (countryId: UUID) => void;
+    updatePresidentCandidate: (candidateId: UUID,
+        data: Partial<PresidentPersonCandidate>) => void;
+
 }
 
 export const useCountryStore = create<CountryStore>((set) => ({
@@ -40,6 +50,12 @@ export const useCountryStore = create<CountryStore>((set) => ({
     regions: [],
     voting_groups: [],
     voting_groups_counter: {},
+    party_candidates: [],
+    president_person_candidates: [],
+    party_person_candidates: [],
+    used_president_candidate_hues: {},
+    used_party_candidate_hues: {},
+
 
     addCountry: () => {
         const countryId = uuidv4();
@@ -232,5 +248,60 @@ export const useCountryStore = create<CountryStore>((set) => ({
                     : country
             )
         }));
-    }
+    },
+
+    addPresidentCandidate: (countryId) => {
+        const candidateId = uuidv4();
+
+        set((state) => {
+            const used =
+                state.used_president_candidate_hues[countryId] ?? [];
+
+            const { color, hue } = generateUniqueColor(used);
+
+            return {
+                president_person_candidates: [
+                    ...state.president_person_candidates,
+                    {
+                        id: candidateId,
+                        countryId,
+                        componentId:
+                            ComponentIdFactory.personCandidate(countryId, candidateId),
+                        color,
+
+                        name: "",
+                        experience: "",
+                        promise: "",
+
+                        media: {
+                            positive: CANDIDATE_SETTINGS.min_media,
+                            negative: CANDIDATE_SETTINGS.max_madia,
+                        },
+
+                        election_rating: CANDIDATE_SETTINGS.min_rating,
+                    },
+                ],
+
+                used_president_candidate_hues: {
+                    ...state.used_president_candidate_hues,
+                    [countryId]: [...used, hue],
+                },
+            };
+        });
+    },
+
+    updatePresidentCandidate: (candidateId, data) => {
+        set((state) => ({
+            president_person_candidates:
+                state.president_person_candidates.map((candidate) =>
+                    candidate.id === candidateId
+                        ? {
+                            ...candidate,
+                            ...data,
+                        }
+                        : candidate
+                ),
+        }));
+    },
+
 }));
