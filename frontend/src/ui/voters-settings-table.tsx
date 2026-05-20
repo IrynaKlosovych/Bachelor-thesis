@@ -1,6 +1,18 @@
-export const VOTERS_SETTINGS_TABLE = [
+import type { VotingGroup } from "../types/country";
+
+type VotingGroupField = keyof VotingGroup["details_descr"];
+
+type VoterSettingField = {
+    name: VotingGroupField;
+    display_name: string;
+    default_message?: string;
+    possible_variants?: Record<string, string>;
+    type?: string;
+};
+
+export const VOTERS_SETTINGS_TABLE: VoterSettingField[] = [
     {
-        name: "age_group",
+        name: "age",
         display_name: "Вікова група",
         default_message: "Оберіть вікову групу",
         possible_variants: {
@@ -11,7 +23,7 @@ export const VOTERS_SETTINGS_TABLE = [
         }
     },
     {
-        name: "sex_group",
+        name: "sex",
         display_name: "Стать",
         default_message: "Оберіть стать",
         possible_variants: {
@@ -20,7 +32,7 @@ export const VOTERS_SETTINGS_TABLE = [
         }
     },
     {
-        name: "nationality_group",
+        name: "nationality",
         display_name: "Національність",
         default_message: "Оберіть національність",
         possible_variants: {
@@ -29,7 +41,7 @@ export const VOTERS_SETTINGS_TABLE = [
         }
     },
     {
-        name: "identity_group",
+        name: "identity",
         display_name: "Ідентичність",
         default_message: "Оберіть ідентичність",
         possible_variants: {
@@ -39,7 +51,7 @@ export const VOTERS_SETTINGS_TABLE = [
         }
     },
     {
-        name: "religion_group",
+        name: "religion",
         display_name: "Вплив релігії на політичні погляди",
         default_message: "Оберіть рівень впливу",
         possible_variants: Object.fromEntries(
@@ -48,5 +60,9 @@ export const VOTERS_SETTINGS_TABLE = [
                 String(i)
             ])
         )
-    }
+    },
+    {
+        name: "peopleCount",
+        display_name: "Кількість людей",
+    },
 ];

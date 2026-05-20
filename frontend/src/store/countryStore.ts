@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { CANDIDATE_SETTINGS, DEFAULT_VOTING_GROUP_SETTING, ELECTION_MODE_SETTINGS, REGIONS_SETTINGS } from "../constants/constants";
 import type { Country, ElectionMode, PartyCandidate, PartyPersonCandidate, PresidentPersonCandidate, Region, RegionKeyName, SafetyLevel, UUID, VotingGroup } from "../types/country";
 import { DEFAULT_VISIBLE_COUNTRY_NAME, TEXT_REGIONS, VOTING_GROUP_NAME_TEXT } from "../ui/messages";
-import { ComponentIdFactory, generateUniqueColor } from "../utils/countryTypesFunctions";
+import { calculateStageFilled, ComponentIdFactory, generateUniqueColor } from "../utils/countryTypesFunctions";
 
 interface CountryStore {
     countries: Country[];
@@ -26,7 +26,7 @@ interface CountryStore {
     addGroup: (countryId: UUID) => void;
     updateVotingGroupPosition: (id: UUID, x: number,
         y: number, regionId: UUID) => void;
-    // updateGroup: (id: string, data: Partial<VotingGroup>) => void;
+    updateGroup: (id: string, data: Partial<VotingGroup>) => void;
     deleteGroup: (id: string) => void;
     changeElectionMode: (
         countryId: string,
@@ -178,11 +178,13 @@ export const useCountryStore = create<CountryStore>((set) => ({
                         regionId: region.id,
                         componentId: ComponentIdFactory.group(countryId, groupId),
                         name: `${VOTING_GROUP_NAME_TEXT} ${voter_number}`,
-                        peopleCount: 0,
                         details_descr: {
                             age: "",
                             sex: "",
                             nationality: "",
+                            identity: "",
+                            religion: "",
+                            peopleCount: 0,
                         },
                         stageFilled: "not filled",
                         x: DEFAULT_VOTING_GROUP_SETTING.x,
@@ -212,12 +214,28 @@ export const useCountryStore = create<CountryStore>((set) => ({
             ),
         }));
     },
-    // updateGroup: (id, data) =>
-    //     set((state) => ({
-    //         groups: state.groups.map((g) =>
-    //             g.id === id ? { ...g, ...data } : g
-    //         )
-    //     })),
+    updateGroup: (id, data) =>
+        set((state) => {
+            const voting_groups = state.voting_groups.map((g) => {
+                if (g.id !== id) return g;
+
+                const updated = {
+                    ...g,
+                    ...data,
+                    details_descr: {
+                        ...g.details_descr,
+                        ...(data.details_descr ?? {}),
+                    },
+                };
+
+                return {
+                    ...updated,
+                    stageFilled: calculateStageFilled(updated),
+                };
+            });
+
+            return { voting_groups };
+        }),
 
     deleteGroup: (id) =>
         set((state) => ({

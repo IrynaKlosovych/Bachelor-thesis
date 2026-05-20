@@ -36,6 +36,14 @@
 
     align-items: center;
     border: 1px solid var(--mango-mojito);
+
+    font-family: 'Roboto Slab';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 130%;
+
+    color: var(--stretch-limo);
 }
 
 .table th {
@@ -49,12 +57,21 @@
 }
 
 .select {
+    box-sizing: border-box;
     border: none;
     background: transparent;
     outline: none;
-    font-family: inherit;
     cursor: pointer;
     padding-left: 4px;
+
+    font-family: 'Roboto Slab';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 130%;
+
+    color: var(--stretch-limo);
+    width: stretch;
 }
 
 .select::after {
@@ -90,6 +107,7 @@ select,
     left: -12px;
     overflow: scroll;
     scrollbar-width: none;
+    max-height: 200px;
 }
 
 option {
@@ -105,4 +123,19 @@ select::picker-icon {
 option:hover {
     background-color: var(--nantucket-breeze);
     color: var(--paradise-pink);
+}
+
+.table input {
+    border: none;
+    background: transparent;
+    outline: none;
+    cursor: pointer;
+    padding-left: 4px;
+    font-family: 'Roboto Slab';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 130%;
+
+    color: var(--stretch-limo);
 }

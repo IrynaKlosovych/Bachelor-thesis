@@ -26,7 +26,7 @@ export default function SelectComponentRegionTable({ id, value, defaultMessage, 
             onBlur={() => setIsOpen(false)}
         >
 
-            <option value="" onClick={() => setIsOpen(false)}>
+            <option value="" disabled hidden onClick={() => setIsOpen(false)}>
                 {defaultMessage}
             </option>
 

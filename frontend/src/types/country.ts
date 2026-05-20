@@ -5,7 +5,6 @@ export type RegionKeyName = `region${RegionsNumber}`;
 export type RegionComponentId = `country_${UUID}_map_region_${UUID}`;
 export type VotingGroupComponentId = `country_${UUID}_group_${UUID}`;
 export type StageFilled = "not filled" | "almost" | "ready";
-export type GroupFormData = Record<string, Record<string, string>>;
 export type OpenPopupData = { voter: VotingGroup; };
 export type ElectionMode = "presidential" | "parliamentary";
 export type MapMode = "edit" | "view"; //?
@@ -41,11 +40,13 @@ export type VotingGroup = {
     regionId: UUID;
     componentId: VotingGroupComponentId;
     name: string;
-    peopleCount: number;
     details_descr: {
         age: string,
         sex: string,
         nationality: string,
+        identity: string,
+        religion: string,
+        peopleCount: number,
     },
     stageFilled: StageFilled;
     // SVG coords

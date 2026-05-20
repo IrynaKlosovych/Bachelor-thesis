@@ -1,11 +1,9 @@
-import { useState } from "react";
-
 import { useCountryStore } from "../../../store/countryStore";
 import type { VotingGroup } from "../../../types/country";
-import type { GroupFormData } from "../../../types/country";
 import { TEXT_TABLE_SAFETY_LEVEL } from "../../../ui/messages";
 import { VOTERS_SETTINGS_TABLE } from "../../../ui/voters-settings-table";
 
+import NumericInput from "./NumericInput";
 import SelectComponentRegionTable from "./SelectComponentRegionTable";
 
 import styles from "../../../styles/country/map-container-settings/RegionTable.module.css";
@@ -13,7 +11,6 @@ import styles from "../../../styles/country/map-container-settings/RegionTable.m
 
 interface RegionTableProps {
     regionId: string;
-
     regionGroups: VotingGroup[];
 }
 
@@ -21,14 +18,15 @@ export default function RegionTable({
     regionId,
     regionGroups,
 }: RegionTableProps) {
-
-    const [formData, setFormData] =
-        useState<GroupFormData>({});
+    const updateGroup = useCountryStore(
+        (state) => state.updateGroup
+    );
     const allRegions = useCountryStore(
         state => state.regions
     );
 
     const region = allRegions.find(r => r.id === regionId);
+    console.log(regionGroups);
     return (
         <div className={styles["region-container"]}>
 
@@ -69,21 +67,30 @@ export default function RegionTable({
                                         {field.possible_variants ? (
 
                                             <SelectComponentRegionTable id={`table_region_${regionId}_group_${group.id}_field_${field.name}`}
-                                            value={formData[group.id]?.[field.name] || ""}
-                                                defaultMessage={field.default_message}
+                                                value={String(group.details_descr[field.name] ?? "")}
+                                                defaultMessage={field.default_message ?? ""}
                                                 variants={field.possible_variants}
                                                 onChange={(value) => {
-                                                    setFormData(prev => ({
-                                                        ...prev,
-                                                        [group.id]: {
-                                                            ...prev[group.id],
-                                                            [field.name]: value
-                                                        }
-                                                    }));
+                                                    updateGroup(group.id, {
+                                                        details_descr: {
+                                                            ...group.details_descr,
+                                                            [field.name]: value,
+                                                        },
+                                                    });
                                                 }} />
 
                                         ) : (<>
-                                            {/* code later */}
+                                            <NumericInput
+                                                value={group.details_descr.peopleCount}
+                                                onChange={(num) =>
+                                                    updateGroup(group.id, {
+                                                        details_descr: {
+                                                            ...group.details_descr,
+                                                            peopleCount: num,
+                                                        },
+                                                    })
+                                                }
+                                            />
                                         </>)}
                                     </td>
                                 ))}

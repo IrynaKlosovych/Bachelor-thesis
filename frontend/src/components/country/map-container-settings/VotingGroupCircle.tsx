@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-import { MAP_HEIGHT, MAP_WIDTH } from "../../../constants/constants";
+import { MAP_HEIGHT, MAP_WIDTH, STAGE_FILLED_COLORS } from "../../../constants/constants";
 import { useCountryStore } from "../../../store/countryStore";
 import type { OpenPopupData, Region, VotingGroup } from "../../../types/country";
 
@@ -8,13 +8,12 @@ import styles from "../../../styles/country/map-container-settings/VotingGroupCi
 
 type VotingGroupCircleProps = {
     size?: number;
-    color: string;
     voter: VotingGroup;
     regions: Region[];
     onOpenPopup: (data: OpenPopupData) => void;
 };
 
-export default function VotingGroupCircle({ size = 44, color, voter, regions, onOpenPopup }: VotingGroupCircleProps) {
+export default function VotingGroupCircle({ size = 44, voter, regions, onOpenPopup }: VotingGroupCircleProps) {
     const updateVotingGroupPosition = useCountryStore(
         (state) => state.updateVotingGroupPosition
     );
@@ -99,6 +98,7 @@ export default function VotingGroupCircle({ size = 44, color, voter, regions, on
             region.id
         );
     };
+    const color = STAGE_FILLED_COLORS[voter.stageFilled];
     return (
         <>
             <g filter={`url(#voter_shadow)`}>
