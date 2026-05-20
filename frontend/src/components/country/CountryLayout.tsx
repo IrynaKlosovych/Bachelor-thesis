@@ -4,6 +4,7 @@ import { ELECTION_MODE_SETTINGS } from "../../constants/constants";
 import { useCountryStore } from "../../store/countryStore";
 
 import PersonCandidate from "./candidates/PersonCandidate";
+import PopulationPyramid from "./charts/PopulationPyramid";
 import AddCandidateButton from "./descr-block-settings/AddCandidateButton";
 import CountryDescr from "./descr-block-settings/CountryDescr";
 import ElectionModeChoosen from "./descr-block-settings/ElectionModeChoosen";
@@ -32,7 +33,12 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
         }))
     );
     const country = countries.find((c) => c.id === id);
+    const allRegions = useCountryStore((s) => s.regions);
+    const allGroups = useCountryStore((s) => s.voting_groups);
+
     if (!country) return;
+    const regions = allRegions.filter(r => r.countryId === id);
+    const voting_groups = allGroups.filter(g => g.countryId === id);
     const presidentCandidates =
         president_person_candidates.filter(
             (c) => c.countryId === id
@@ -64,7 +70,16 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
                         </div>
                     </div>
                 </div>
-                <div>/*sex age pyramids*/</div>
+                <div className={styles["charts-container"]}>
+                    <PopulationPyramid region={null} voting_group={voting_groups} />
+                    {regions.map((region) => (
+                        <PopulationPyramid
+                            key={`country_${id}_region_${region.id}_chart`}
+                            region={region}
+                            voting_group={voting_groups.filter(g => g.regionId === region.id)}
+                        />
+                    ))}
+                </div>
                 <div className={styles["descr-block-settings"]}>
                     <div>
                         <ElectionModeChoosen countryId={id} />

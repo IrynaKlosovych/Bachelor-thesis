@@ -1,0 +1,22 @@
+.population-block {
+    width: 640px;
+}
+
+.population-pyramid-container {
+    box-sizing: border-box;
+    width: 640px;
+    height: 520px;
+    background: var(--lemon-icing);
+    border: 4px solid var(--mountain-trail);
+    box-shadow: 4px 4px 4px var(--shadow1);
+    border-radius: 32px;
+}
+
+.population-pyramid-container>div {
+    width: 100%;
+    height: 100%;
+}
+
+.population-block>div:last-child {
+    height: 50px;
+}

@@ -33,7 +33,11 @@ export const TEXT_CANDIDATES = {
   election_rating_text: "Електоральний рейтинг",
 
 };
-
+export const CHART_TEXT = {
+  text_general: "Загалом",
+  text_age: "Вік",
+  text_sex: { male: "Чоловіків", female: "Жінок" }
+};
 export const TEXT_REGIONS = [
   {
     key: "region1",

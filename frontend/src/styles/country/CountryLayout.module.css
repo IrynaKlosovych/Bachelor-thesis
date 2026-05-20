@@ -155,3 +155,17 @@
     overflow: scroll;
     scrollbar-width: none;
 }
+
+.charts-container {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 4px 16px;
+    gap: 16px;
+
+    width: 100%;
+    height: max-content;
+    overflow-x: scroll;
+    scrollbar-width: none;
+}
