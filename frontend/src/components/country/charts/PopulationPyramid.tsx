@@ -1,17 +1,22 @@
 import { useEffect, useMemo, useRef } from "react";
 import * as echarts from "echarts";
 
-import type { Region, VotingGroup } from "../../../types/country";
+import type { Country, Region, VotingGroup } from "../../../types/country";
 import { CHART_TEXT } from "../../../ui/messages";
 import { VOTERS_SETTINGS_TABLE } from "../../../ui/voters-settings-table";
 
 import styles from "../../../styles/country/charts/PopulationPyramid.module.css";
 
 interface PopulationPyramidProps {
+    country: Country;
     region: Region | null;
     voting_group: VotingGroup[];
 }
-export default function PopulationPyramid({ region, voting_group }: PopulationPyramidProps) {
+interface AxisValue {
+    min: number;
+    max: number;
+}
+export default function PopulationPyramid({ country, region, voting_group }: PopulationPyramidProps) {
     const ref = useRef<HTMLDivElement>(null);
 
     const ageField = VOTERS_SETTINGS_TABLE.find(f => f.name === "age");
@@ -39,7 +44,6 @@ export default function PopulationPyramid({ region, voting_group }: PopulationPy
                 female[index] += count;
             }
         }
-
         return { male, female };
     }, [voting_group, ageLabels, sexVariants.male,
         sexVariants.female]);
@@ -50,41 +54,45 @@ export default function PopulationPyramid({ region, voting_group }: PopulationPy
         const chart = echarts.init(ref.current);
 
         chart.setOption({
+            animation: false,
             title: {
                 text: region?.displayInTable || CHART_TEXT.text_general,
                 textStyle: {
                     fontFamily: "Roboto Serif",
                     fontStyle: "normal",
                     fontWeight: 700,
-                    fontSize: "24px",
-                    color: "#000000"
+                    fontSize: 24,
+                    color: "#000000",
+                    lineHeight: 31,
                 },
+                top: 0,
+                left: "center"
             },
             xAxis: {
                 type: "value",
+                min: (value: AxisValue) => -Math.max(Math.abs(value.max), Math.abs(value.min), 1),
+                max: (value: AxisValue) => Math.max(Math.abs(value.max), Math.abs(value.min), 1),
                 axisLabel: {
                     formatter: (v: number) => Math.abs(v)
                 }
             },
-
             yAxis: {
                 type: "category",
                 data: ageLabels,
-                name: CHART_TEXT.text_age,
-                textStyle: {
-                    fontFamily: "Roboto Serif",
-                    fontStyle: "normal",
-                    fontWeight: 700,
-                    fontSize: "20px",
-                    color: "#000000",
-                }
             },
-
+            grid: {
+                top: 90,
+                left: 50,
+                right: 50,
+                bottom: 40,
+                containLabel: true
+            },
             series: [
                 {
                     name: CHART_TEXT.text_sex.male,
                     color: "#6EA9D2",
                     type: "bar",
+                    cursor: "default",
                     stack: "total",
                     data: male.map(v => -v)
                 },
@@ -92,6 +100,7 @@ export default function PopulationPyramid({ region, voting_group }: PopulationPy
                     name: CHART_TEXT.text_sex.female,
                     color: "#E38E84",
                     type: "bar",
+                    cursor: "default",
                     stack: "total",
                     data: female
                 }
@@ -99,35 +108,49 @@ export default function PopulationPyramid({ region, voting_group }: PopulationPy
             graphic: [
                 {
                     type: "text",
-                    left: "25%",
+                    left: 70,
                     top: 40,
+                    cursor: "default",
                     style: {
-                        text: "Чоловіки",
-                        font: "600 18px Roboto Serif",
+                        text: CHART_TEXT.text_age,
+                        font: "normal 700 20px 'Roboto Serif'",
+                        fill: "#000"
+                    }
+                },
+                {
+                    type: "text",
+                    left: "25%",
+                    top: 27,
+                    cursor: "default",
+                    style: {
+                        text: CHART_TEXT.text_sex.male,
+                        font: "normal 400 20px 'Roboto Serif'",
                         fill: "#000"
                     }
                 },
                 {
                     type: "text",
                     right: "25%",
-                    top: 40,
+                    top: 27,
+                    cursor: "default",
                     style: {
-                        text: "Жінки",
-                        font: "600 18px Roboto Serif",
+                        text: CHART_TEXT.text_sex.female,
+                        font: "normal 400 20px 'Roboto Serif'",
                         fill: "#000"
                     }
-                }
-            ]
+                },
+            ],
         });
         return () => chart.dispose();
     }, [male, female, region, ageLabels]);
-
     return (
         <div className={styles["population-block"]}>
             <div className={styles["population-pyramid-container"]}>
                 <div ref={ref} />
             </div>
-            <div>Голоси</div>
+            <div>
+                {CHART_TEXT.text_votes[country.electionMode]}{(region) ? region.seats : country.totalSeats}
+            </div>
         </div>
     );
 }

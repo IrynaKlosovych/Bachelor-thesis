@@ -71,9 +71,13 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
                     </div>
                 </div>
                 <div className={styles["charts-container"]}>
-                    <PopulationPyramid region={null} voting_group={voting_groups} />
+                    <PopulationPyramid
+                        region={null}
+                        voting_group={voting_groups}
+                        country={country} />
                     {regions.map((region) => (
                         <PopulationPyramid
+                            country={country}
                             key={`country_${id}_region_${region.id}_chart`}
                             region={region}
                             voting_group={voting_groups.filter(g => g.regionId === region.id)}

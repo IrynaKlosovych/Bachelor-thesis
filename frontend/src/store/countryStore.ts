@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 import { create } from "zustand";
 
-import { CANDIDATE_SETTINGS, DEFAULT_VOTING_GROUP_SETTING, ELECTION_MODE_SETTINGS, REGIONS_SETTINGS } from "../constants/constants";
-import type { Country, ElectionMode, PartyCandidate, PartyPersonCandidate, PresidentPersonCandidate, Region, RegionKeyName, SafetyLevel, UUID, VotingGroup } from "../types/country";
+import { CANDIDATE_SETTINGS, DEFAULT_VOTING_GROUP_SETTING, ELECTION_MODE_SETTINGS, REGION_SEATS, REGIONS_SETTINGS } from "../constants/constants";
+import type { Country, ElectionMode, PartyCandidate, PartyPersonCandidate, PresidentPersonCandidate, Region, RegionKeyName, RegionSeats, SafetyLevel, UUID, VotingGroup } from "../types/country";
 import { DEFAULT_VISIBLE_COUNTRY_NAME, TEXT_REGIONS, VOTING_GROUP_NAME_TEXT } from "../ui/messages";
-import { calculateStageFilled, ComponentIdFactory, generateUniqueColor } from "../utils/countryTypesFunctions";
+import { calculateStageFilled, ComponentIdFactory, distributeSeats, generateUniqueColor } from "../utils/countryTypesFunctions";
 
 interface CountryStore {
     countries: Country[];
@@ -42,9 +42,10 @@ interface CountryStore {
     updatePresidentCandidate: (candidateId: UUID,
         data: Partial<PresidentPersonCandidate>) => void;
 
+    countSeats: (countryId: UUID) => void;
 }
 
-export const useCountryStore = create<CountryStore>((set) => ({
+export const useCountryStore = create<CountryStore>((set, get) => ({
     countries: [],
     countryCounter: 0,
     regions: [],
@@ -74,6 +75,7 @@ export const useCountryStore = create<CountryStore>((set) => ({
                     component_id:
                         ComponentIdFactory.region(countryId, regionId),
                     safety_level: 5,
+                    seats: 1
                 });
             }
         );
@@ -90,6 +92,7 @@ export const useCountryStore = create<CountryStore>((set) => ({
                         label: `${DEFAULT_VISIBLE_COUNTRY_NAME} ${countryNumForName}`,
                         electionMode: ELECTION_MODE_SETTINGS.presidential.key as ElectionMode,
                         descr: "",
+                        totalSeats: 5
                     },
                 ],
                 regions:
@@ -213,8 +216,11 @@ export const useCountryStore = create<CountryStore>((set) => ({
                     : group
             ),
         }));
+        const group = get().voting_groups.find(group => group.id === id);
+        if (group)
+            get().countSeats(group.countryId);
     },
-    updateGroup: (id, data) =>
+    updateGroup: (id, data) => {
         set((state) => {
             const voting_groups = state.voting_groups.map((g) => {
                 if (g.id !== id) return g;
@@ -235,12 +241,19 @@ export const useCountryStore = create<CountryStore>((set) => ({
             });
 
             return { voting_groups };
-        }),
-
-    deleteGroup: (id) =>
+        });
+        const group = get().voting_groups.find(group => group.id === id);
+        if (group)
+            get().countSeats(group.countryId);
+    },
+    deleteGroup: (id) => {
+        const group = get().voting_groups.find(group => group.id === id);
         set((state) => ({
             voting_groups: state.voting_groups.filter((g) => g.id !== id)
-        })),
+        }));
+        if (group)
+            get().countSeats(group.countryId);
+    },
 
     changeElectionMode: (
         countryId: string,
@@ -321,5 +334,54 @@ export const useCountryStore = create<CountryStore>((set) => ({
                 ),
         }));
     },
+    countSeats: (countryId: UUID) => {
+        const regions = get().regions.filter(r => r.countryId === countryId);
 
+        const regionSeats: RegionSeats[] = [];
+
+        regions.forEach(region => {
+            const voters = get().voting_groups.filter(v => v.regionId === region.id);
+
+            const peopleCount = voters.reduce((sum, voter) => {
+                return sum + voter.details_descr.peopleCount;
+            }, 0);
+
+            regionSeats.push({
+                regionId: region.id,
+                population: peopleCount
+            });
+        });
+
+        const seats = distributeSeats(regionSeats);
+
+        set((state) => {
+            let totalSeats = 0;
+
+            const updatedRegions = state.regions.map(region => {
+                if (region.countryId === countryId) {
+                    const newSeats = seats[region.id] ?? REGION_SEATS.min;
+                    totalSeats += newSeats;
+
+                    return {
+                        ...region,
+                        seats: newSeats
+                    };
+                }
+
+                return region;
+            });
+
+            return {
+                regions: updatedRegions,
+                countries: state.countries.map(country =>
+                    country.id === countryId
+                        ? {
+                            ...country,
+                            totalSeats
+                        }
+                        : country
+                )
+            };
+        });
+    }
 }));

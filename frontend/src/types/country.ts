@@ -14,6 +14,10 @@ export type CandidateMedia = {
     positive: number;
     negative: number;
 };
+export type RegionSeats = {
+    regionId: UUID,
+    population: number;
+};
 
 export interface Country {
     id: UUID;
@@ -21,6 +25,7 @@ export interface Country {
     label: string;
     electionMode: ElectionMode;
     descr: string;
+    totalSeats: number;
 }
 
 export type SafetyLevel = 1 | 2 | 3 | 4 | 5;
@@ -32,6 +37,7 @@ export interface Region {
     displayInTable: string,
     component_id: RegionComponentId;
     safety_level: SafetyLevel;
+    seats: number;
 }
 
 export type VotingGroup = {

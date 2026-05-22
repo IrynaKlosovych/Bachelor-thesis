@@ -1,4 +1,5 @@
-import type { CountryComponentId, PartyCandidateComponentId, PersonCandidateComponentId, RegionComponentId, StageFilled, UUID, VotingGroup, VotingGroupComponentId } from "../types/country";
+import { REGION_SEATS } from "../constants/constants";
+import type { CountryComponentId, PartyCandidateComponentId, PersonCandidateComponentId, RegionComponentId, RegionSeats, StageFilled, UUID, VotingGroup, VotingGroupComponentId } from "../types/country";
 import { VOTERS_SETTINGS_TABLE } from "../ui/voters-settings-table";
 export const ComponentIdFactory = {
     country: (id: UUID): CountryComponentId =>
@@ -50,3 +51,32 @@ export const calculateStageFilled = (
     if (filledCount >= total / 2) return "almost";
     return "not filled";
 };
+
+export function distributeSeats(regions: RegionSeats[]) {
+    const MIN = REGION_SEATS.min;
+    const MAX = REGION_SEATS.max;
+
+    const totalPopulation =
+        regions.reduce((sum, r) => sum + r.population, 0);
+
+    const averagePopulation =
+        totalPopulation / regions.length;
+
+    return Object.fromEntries(
+        regions.map(r => {
+            let seats;
+            if (totalPopulation === 0) {
+                seats = MIN;
+            }
+            else {
+                const ratio =
+                    r.population / averagePopulation;
+                seats = Math.round(ratio);
+            }
+            seats = Math.max(MIN, seats);
+            seats = Math.min(MAX, seats);
+
+            return [r.regionId, seats];
+        })
+    );
+}
