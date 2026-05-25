@@ -3,15 +3,14 @@ import { useState } from "react";
 import { useCountryStore } from "../../../store/countryStore";
 
 import styles from "../../../styles/country/settings-panel/CountryNameInput.module.css";
+
 interface CountryNameProps {
     id: string;
     label: string;
 }
 
 export default function CountryNameInput({ id, label }: CountryNameProps) {
-    const updateCountryLabel = useCountryStore(
-        (state) => state.updateCountryLabel
-    );
+    const { updateCountryLabel } = useCountryStore();
     const [value, setValue] = useState(label);
     return (
         <>

@@ -2,8 +2,8 @@ import { useEffect } from "react";
 
 import DefaultLayout from './components/windowSize/DefaultLayout';
 import ScreenSizeWarning from './components/windowSize/ScreenSizeWarning';
-import { SCREEN } from "./constants/constants";
-import useWindowWidth from "./hooks/useWindowWidth";
+import { SCREEN } from "./constants/screen";
+import useWindowWidth from "./hooks/screen/useWindowWidth";
 
 import styles from '../src/styles/App.module.css';
 

@@ -1,4 +1,4 @@
-import { useCountryStore } from "../../../store/countryStore";
+import { deleteCountryService } from "../../../services/dataConsistencyCountryService";
 
 import styles from "../../../styles/country/settings-panel/DeleteCountryButton.module.css";
 
@@ -7,12 +7,10 @@ type DeleteCountryButtonProps = {
 };
 
 export default function DeleteCountryButton({ countryId }: DeleteCountryButtonProps) {
-    const deleteCountry = useCountryStore(
-        (state) => state.deleteCountry
-    );
     return (
         <button className={styles["delete-button"]}
-            onClick={() => deleteCountry(countryId)}>
+            onClick={() => deleteCountryService(countryId)}
+        >
             <svg
                 className={styles["delete-icon"]}
                 viewBox="0 0 87 100"

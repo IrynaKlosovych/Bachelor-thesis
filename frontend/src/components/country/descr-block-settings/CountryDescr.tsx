@@ -1,5 +1,6 @@
+import { useGetCountryById } from "../../../hooks/country/useGetCountryById";
 import { useCountryStore } from "../../../store/countryStore";
-import { TEXT_COUNTRY_DESCR } from "../../../ui/messages";
+import { TEXT_COUNTRY_DESCR } from "../../../ui/country_messages";
 
 import styles from "../../../styles/country/descr-block-settings/CountryDescr.module.css";
 
@@ -7,16 +8,10 @@ interface CountryDescrProps {
     countryId: string;
 }
 export default function CountryDescr({ countryId }: CountryDescrProps) {
-    const countryDescr = useCountryStore(
-        state =>
-            state.countries.find(
-                country => country.id === countryId
-            )?.descr || ""
-    );
+    const country = useGetCountryById(countryId);
+    const countryDescr = country?.descr || "";
 
-    const updateCountryDescr = useCountryStore(
-        state => state.updateCountryDescr
-    );
+    const { updateCountryDescr } = useCountryStore();
 
     return (
         <textarea
@@ -30,7 +25,8 @@ export default function CountryDescr({ countryId }: CountryDescrProps) {
                     countryId,
                     e.target.value
                 )
-            }>
+            }
+        >
         </ textarea>
     );
 };

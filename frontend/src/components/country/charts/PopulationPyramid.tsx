@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useRef } from "react";
 import * as echarts from "echarts";
 
-import type { Country, Region, VotingGroup } from "../../../types/country";
-import { CHART_TEXT } from "../../../ui/messages";
+import type { Country } from "../../../types/country";
+import type { Region } from "../../../types/region";
+import type { VotingGroup } from "../../../types/voter";
+import { CHART_TEXT } from "../../../ui/chart_messages";
 import { VOTERS_SETTINGS_TABLE } from "../../../ui/voters-settings-table";
 
 import styles from "../../../styles/country/charts/PopulationPyramid.module.css";

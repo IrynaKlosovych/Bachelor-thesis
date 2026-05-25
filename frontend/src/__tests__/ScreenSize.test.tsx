@@ -2,8 +2,8 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import App from "../App";
-import { TEST_SCREEN_WIDTHS } from "../constants/constants";
-import useWindowWidth from "../hooks/useWindowWidth";
+import { TEST_SCREEN_WIDTHS } from "../constants/screen";
+import useWindowWidth from "../hooks/screen/useWindowWidth";
 
 vi.mock("../hooks/useWindowWidth", () => ({
   default: vi.fn(),
@@ -18,7 +18,7 @@ describe("Screen size behavior", () => {
     expect(screen.getByTestId("warning")).toHaveAttribute("aria-hidden", "false");
     expect(screen.getByTestId("layout")).toHaveAttribute("aria-hidden", "true");
   });
-  
+
   //test 2
   it("shows layout on large screen", () => {
     vi.mocked(useWindowWidth).mockReturnValue(TEST_SCREEN_WIDTHS.LARGE);

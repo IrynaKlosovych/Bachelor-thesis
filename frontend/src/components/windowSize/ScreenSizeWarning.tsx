@@ -1,5 +1,5 @@
-import { SCREEN, UNITS } from "../../constants/constants";
-import { SCREEN_SIZE_WARNING } from "../../ui/messages";
+import { SCREEN, UNITS } from "../../constants/screen";
+import { SCREEN_SIZE_WARNING } from "../../ui/screen_messages";
 
 import styles from "./../../styles/windowSize/ScreenSizeWarning.module.css";
 

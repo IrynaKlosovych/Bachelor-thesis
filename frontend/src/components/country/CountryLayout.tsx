@@ -1,7 +1,8 @@
-import { useShallow } from "zustand/react/shallow";
-
-import { ELECTION_MODE_SETTINGS } from "../../constants/constants";
-import { useCountryStore } from "../../store/countryStore";
+import { ELECTION_MODE_SETTINGS } from "../../constants/country";
+import { useGetPresidentCandidateByCountryId } from "../../hooks/candidate/useGetPresidentCandidateByCountryId";
+import { useGetCountryById } from "../../hooks/country/useGetCountryById";
+import { useGetRegionsByCountryId } from "../../hooks/region/useGetRegionsByCountryId";
+import { useGetVotersByCountryId } from "../../hooks/voter/useGetVotersByCountryId";
 
 import PersonCandidate from "./candidates/PersonCandidate";
 import PopulationPyramid from "./charts/PopulationPyramid";
@@ -22,27 +23,10 @@ interface CountryLayoutProps {
 }
 
 export default function CountryLayout({ id, label }: CountryLayoutProps) {
-    const {
-        countries,
-        president_person_candidates,
-    } = useCountryStore(
-        useShallow((state) => ({
-            countries: state.countries,
-            president_person_candidates:
-                state.president_person_candidates,
-        }))
-    );
-    const country = countries.find((c) => c.id === id);
-    const allRegions = useCountryStore((s) => s.regions);
-    const allGroups = useCountryStore((s) => s.voting_groups);
-
-    if (!country) return;
-    const regions = allRegions.filter(r => r.countryId === id);
-    const voting_groups = allGroups.filter(g => g.countryId === id);
-    const presidentCandidates =
-        president_person_candidates.filter(
-            (c) => c.countryId === id
-        );
+    const country = useGetCountryById(id)!;
+    const regions = useGetRegionsByCountryId(id);
+    const voting_groups = useGetVotersByCountryId(id);
+    const presidentCandidates = useGetPresidentCandidateByCountryId(id);
 
     return (
         <div

@@ -60,7 +60,6 @@
     flex-direction: row;
     align-items: center;
     padding: 8px 16px;
-    flex: 1;
 }
 
 .map-voters-container+div {
@@ -130,7 +129,6 @@
     gap: 12px;
     min-width: 462px;
     height: 172px;
-    flex: 1;
 }
 
 .descr-block-settings>div:last-child {

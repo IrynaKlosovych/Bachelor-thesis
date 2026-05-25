@@ -1,8 +1,10 @@
 import { useRef, useState } from "react";
 
-import { MAP_HEIGHT, MAP_WIDTH, STAGE_FILLED_COLORS } from "../../../constants/constants";
-import { useCountryStore } from "../../../store/countryStore";
-import type { OpenPopupData, Region, VotingGroup } from "../../../types/country";
+import { MAP_HEIGHT, MAP_WIDTH } from "../../../constants/map";
+import { STAGE_FILLED_COLORS } from "../../../constants/voter";
+import { updateVotingGroupPositionService } from "../../../services/dataConsistencyVoterService";
+import type { Region } from "../../../types/region";
+import type { OpenPopupData, VotingGroup } from "../../../types/voter";
 
 import styles from "../../../styles/country/map-container-settings/VotingGroupCircle.module.css";
 
@@ -14,9 +16,6 @@ type VotingGroupCircleProps = {
 };
 
 export default function VotingGroupCircle({ size = 44, voter, regions, onOpenPopup }: VotingGroupCircleProps) {
-    const updateVotingGroupPosition = useCountryStore(
-        (state) => state.updateVotingGroupPosition
-    );
     const [isDraggingStyles, setIsDraggingStyles] = useState(false);
     const isDragging = useRef(false);
     const moved = useRef(false);
@@ -91,7 +90,7 @@ export default function VotingGroupCircle({ size = 44, voter, regions, onOpenPop
 
         if (!region) return;
 
-        updateVotingGroupPosition(
+        updateVotingGroupPositionService(
             voter.id,
             x,
             y,

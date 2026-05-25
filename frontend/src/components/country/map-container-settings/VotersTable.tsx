@@ -1,26 +1,18 @@
-import { useCountryStore } from "../../../store/countryStore";
-import type { VotingGroup } from "../../../types/country";
+import { useGetRegionsByCountryId } from "../../../hooks/region/useGetRegionsByCountryId";
+import { useGetVotersByCountryId } from "../../../hooks/voter/useGetVotersByCountryId";
+import type { UUID } from "../../../types/general";
+import type { VotingGroup } from "../../../types/voter";
 
 import RegionTable from "./RegionTable";
 interface VotersTableProps {
     countryId: string;
 }
 
-export default function VotersTable({
-    countryId
-}: VotersTableProps) {
+export default function VotersTable({ countryId }: VotersTableProps) {
 
-    const allVoters = useCountryStore(
-        state => state.voting_groups
-    );
-    const allRegions = useCountryStore(state => state.regions);
+    const votersChoosenCountry = useGetVotersByCountryId(countryId);
 
-    const votersChoosenCountry =
-        allVoters.filter(
-            voter => voter.countryId === countryId
-        );
-
-    const regions = allRegions.filter(r => r.countryId === countryId);
+    const regions = useGetRegionsByCountryId(countryId);
 
     const groupedByRegion =
         votersChoosenCountry.reduce((acc, group) => {
@@ -33,7 +25,7 @@ export default function VotersTable({
 
             return acc;
 
-        }, {} as Record<string, VotingGroup[]>);
+        }, {} as Record<UUID, VotingGroup[]>);
 
     return (
         <>
@@ -60,7 +52,7 @@ export default function VotersTable({
                     <RegionTable
                         key={`table_country_${countryId}_region_${regionId}`}
                         regionId={regionId}
-                        regionGroups={regionGroups}/>
+                        regionGroups={regionGroups} />
                 ))}
         </>
     );

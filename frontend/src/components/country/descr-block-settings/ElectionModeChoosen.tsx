@@ -1,9 +1,10 @@
 import { useState } from "react";
 
-import { ELECTION_MODE_SETTINGS } from "../../../constants/constants";
+import { ELECTION_MODE_SETTINGS } from "../../../constants/country";
+import { useGetCountryById } from "../../../hooks/country/useGetCountryById";
 import { useCountryStore } from "../../../store/countryStore";
 import type { ElectionMode } from "../../../types/country";
-import { TEXT_MODE_TO_CHOOSE } from "../../../ui/messages";
+import { TEXT_MODE_TO_CHOOSE } from "../../../ui/country_messages";
 
 import styles from "../../../styles/country/descr-block-settings/ElectionModeChoosen.module.css";
 interface ElectionModeChoosenProps {
@@ -11,13 +12,9 @@ interface ElectionModeChoosenProps {
 }
 export default function ElectionModeChoosen({ countryId }: ElectionModeChoosenProps) {
     const [isOpen, setIsOpen] = useState(false);
-    const country = useCountryStore(
-        state => state.countries.find(c => c.id === countryId)
-    );
+    const country = useGetCountryById(countryId);
 
-    const changeElectionMode = useCountryStore(
-        state => state.changeElectionMode
-    );
+    const { changeElectionMode } = useCountryStore();
 
     const handleChange = (
         e: React.ChangeEvent<HTMLSelectElement>

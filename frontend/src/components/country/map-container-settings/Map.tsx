@@ -1,11 +1,16 @@
 import { useState } from "react";
 
-import { REGIONS_SETTINGS } from "../../../constants/constants";
 import { COUNTRY_BORDERS } from "../../../constants/country_borders";
-import { useCountryStore } from "../../../store/countryStore";
-import type { OpenPopupData, Region, VotingGroup } from "../../../types/country";
-import { SAFETY_LEVELS } from "../../../types/country";
-import { CLOSE_CHOOSE_SAFETY_BUTTON_POPUP, TEXT_DELETE, TEXT_REGIONS } from "../../../ui/messages";
+import { REGIONS_SETTINGS } from "../../../constants/region";
+import { useGetRegionsByCountryId } from "../../../hooks/region/useGetRegionsByCountryId";
+import { useGetVotersByCountryId } from "../../../hooks/voter/useGetVotersByCountryId";
+import { deleteGroupService } from "../../../services/dataConsistencyVoterService";
+import { useRegionStore } from "../../../store/regionStore";
+import type { Region } from "../../../types/region";
+import { SAFETY_LEVELS } from "../../../types/region";
+import type { OpenPopupData, VotingGroup } from "../../../types/voter";
+import { CLOSE_CHOOSE_SAFETY_BUTTON_POPUP, TEXT_REGIONS } from "../../../ui/region_messages";
+import { TEXT_DELETE_VOTER } from "../../../ui/voter_messages";
 
 import VotingGroupCircle from "./VotingGroupCircle";
 
@@ -16,18 +21,10 @@ interface MapProps {
 }
 export default function Map({ countryId }: MapProps) {
     const [openedPopup, setOpenedPopup] = useState<OpenPopupData | null>(null);
-    const removeVotingGroup = useCountryStore(
-        (state) => state.deleteGroup
-    );
-    const allRegions = useCountryStore((state) => state.regions);
-    const regions = allRegions.filter(
-        (region) => region.countryId === countryId
-    );
-    const allVoters = useCountryStore(state => state.voting_groups);
-    const voters = allVoters.filter(voter => voter.countryId === countryId);
-    const changeRegionSafetyLevel = useCountryStore(
-        (state) => state.changeRegionSafetyLevel
-    );
+    const regions = useGetRegionsByCountryId(countryId);
+    const voters = useGetVotersByCountryId(countryId);
+
+    const { changeRegionSafetyLevel } = useRegionStore();
 
     const [selectedRegionId, setSelectedRegionId] =
         useState<string | null>(null);
@@ -49,25 +46,27 @@ export default function Map({ countryId }: MapProps) {
                     })}
                     <path d={COUNTRY_BORDERS.path6.d} stroke="black" />
 
-                    {TEXT_REGIONS.map((path) => {
-                        const region = regions.find((r) => {
+                    {
+                        TEXT_REGIONS.map((path) => {
+                            const region = regions.find((r) => {
 
-                            return r.regionKeyName === path.key;
-                        });
-                        if (!region) return;
-                        return (
-                            <path
-                                key={`text_regions_${path.key}_${region.id}`}
-                                d={path.d}
-                                fill="black"
-                                className={
-                                    selectedRegionId === region.id
-                                        ? styles["active-region"]
-                                        : ""
-                                }
-                            />
-                        );
-                    })}
+                                return r.regionKeyName === path.key;
+                            });
+                            if (!region) return;
+                            return (
+                                <path
+                                    key={`text_regions_${path.key}_${region.id}`}
+                                    d={path.d}
+                                    fill="black"
+                                    className={
+                                        selectedRegionId === region.id
+                                            ? styles["active-region"]
+                                            : ""
+                                    }
+                                />
+                            );
+                        })
+                    }
                 </g>
                 {voters.map((voter: VotingGroup) => (
                     <VotingGroupCircle key={voter.componentId}
@@ -127,11 +126,11 @@ export default function Map({ countryId }: MapProps) {
 
                     <button
                         onClick={() => {
-                            removeVotingGroup(openedPopup.voter.id);
+                            deleteGroupService(openedPopup.voter.id);
                             setOpenedPopup(null);
                         }}
                     >
-                        {TEXT_DELETE}
+                        {TEXT_DELETE_VOTER}
                     </button>
                 </div>
             )}

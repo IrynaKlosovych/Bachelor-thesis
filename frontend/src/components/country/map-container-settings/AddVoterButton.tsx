@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useCountryStore } from "../../../store/countryStore";
+import { addGroupService } from "../../../services/dataConsistencyVoterService";
 
 import styles from "../../../styles/country/map-container-settings/AddVoterButton.module.css";
 interface addGroup {
@@ -8,15 +8,13 @@ interface addGroup {
 }
 export default function AddVoterButton({ countryId }: addGroup) {
     const [isHovered, setIsHovered] = useState(false);
-    const addGroup = useCountryStore(
-        (state) => state.addGroup
-    );
+
     return (
         <button
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             className={styles["button-add-voter"]}
-            onClick={() => addGroup(countryId)}
+            onClick={() => addGroupService(countryId)}
         >
 
             <svg

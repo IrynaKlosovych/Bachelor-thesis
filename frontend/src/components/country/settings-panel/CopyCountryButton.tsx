@@ -1,17 +1,15 @@
-import { useCountryStore } from "../../../store/countryStore";
+import { copyCountryService } from "../../../services/dataConsistencyCountryService";
 
 import styles from "../../../styles/country/settings-panel/CopyCountryButton.module.css";
 interface CopyCountryButtonProps {
     countryId: string;
 }
-export default function CopyCountryButton({
-    countryId,
-}: CopyCountryButtonProps) {
-    const copyCountry = useCountryStore((state) => state.copyCountry);
+export default function CopyCountryButton({ countryId }: CopyCountryButtonProps) {
 
     return (
         <button className={styles["copy-button"]}
-        onClick={() => copyCountry(countryId)}>
+            onClick={() => copyCountryService(countryId)}
+        >
             <svg
                 className={styles["copy-icon"]}
                 viewBox="0 0 88 100"

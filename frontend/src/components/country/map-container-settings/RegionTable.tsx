@@ -1,6 +1,7 @@
-import { useCountryStore } from "../../../store/countryStore";
-import type { VotingGroup } from "../../../types/country";
-import { TEXT_TABLE_SAFETY_LEVEL } from "../../../ui/messages";
+import { useGetRegionById } from "../../../hooks/region/useGetRegionById";
+import { updateGroupService } from "../../../services/dataConsistencyVoterService";
+import type { VotingGroup } from "../../../types/voter";
+import { TEXT_TABLE_SAFETY_LEVEL } from "../../../ui/region_messages";
 import { VOTERS_SETTINGS_TABLE } from "../../../ui/voters-settings-table";
 
 import NumericInput from "./NumericInput";
@@ -14,19 +15,8 @@ interface RegionTableProps {
     regionGroups: VotingGroup[];
 }
 
-export default function RegionTable({
-    regionId,
-    regionGroups,
-}: RegionTableProps) {
-    const updateGroup = useCountryStore(
-        (state) => state.updateGroup
-    );
-    const allRegions = useCountryStore(
-        state => state.regions
-    );
-
-    const region = allRegions.find(r => r.id === regionId);
-    console.log(regionGroups);
+export default function RegionTable({ regionId, regionGroups, }: RegionTableProps) {
+    const region = useGetRegionById(regionId);
     return (
         <div className={styles["region-container"]}>
 
@@ -71,7 +61,7 @@ export default function RegionTable({
                                                 defaultMessage={field.default_message ?? ""}
                                                 variants={field.possible_variants}
                                                 onChange={(value) => {
-                                                    updateGroup(group.id, {
+                                                    updateGroupService(group.id, {
                                                         details_descr: {
                                                             ...group.details_descr,
                                                             [field.name]: value,
@@ -83,7 +73,7 @@ export default function RegionTable({
                                             <NumericInput
                                                 value={group.details_descr.peopleCount}
                                                 onChange={(num) =>
-                                                    updateGroup(group.id, {
+                                                    updateGroupService(group.id, {
                                                         details_descr: {
                                                             ...group.details_descr,
                                                             peopleCount: num,

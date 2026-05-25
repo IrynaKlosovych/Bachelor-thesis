@@ -8,7 +8,6 @@ interface SelectComponentRegionTableProps {
     defaultMessage: string;
     variants: Record<string, string>;
     onChange: (value: string) => void;
-
 }
 
 export default function SelectComponentRegionTable({ id, value, defaultMessage, variants, onChange, }: SelectComponentRegionTableProps) {

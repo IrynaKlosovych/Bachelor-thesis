@@ -1,9 +1,7 @@
-import { useState } from "react";
-
-import { CANDIDATE_SETTINGS } from "../../../constants/constants";
-import { useCountryStore } from "../../../store/countryStore";
-import type { PersonCandidate } from "../../../types/country";
-import { TEXT_CANDIDATES } from "../../../ui/messages";
+import { CANDIDATE_SETTINGS } from "../../../constants/candidate";
+import { useCandidateStore } from "../../../store/candidateStore";
+import type { PersonCandidate } from "../../../types/candidate";
+import { TEXT_CANDIDATES } from "../../../ui/candidate_messages";
 
 import CandidateDeleteButton from "./CandidateDeleteButtton";
 
@@ -12,15 +10,8 @@ import styles from "../../../styles/country/candidates/PersonCandidate.module.cs
 interface PersonCandidateProps {
     candidate: PersonCandidate;
 }
-export default function PersonCandidate({ candidate, }: PersonCandidateProps) {
-    const [negativeMedia, setNegativeMedia] = useState(candidate.media.negative);
-    const [positiveMedia, setPositiveMedia] = useState(candidate.media.positive);
-
-    const [rating, setRating] = useState(candidate.election_rating);
-    const updatePresidentCandidate =
-        useCountryStore(
-            (state) => state.updatePresidentCandidate
-        );
+export default function PersonCandidate({ candidate }: PersonCandidateProps) {
+    const { updatePresidentCandidate } = useCandidateStore();
 
     return (
         <>
@@ -45,7 +36,8 @@ export default function PersonCandidate({ candidate, }: PersonCandidateProps) {
                             updatePresidentCandidate(candidate.id, {
                                 name: e.target.value,
                             })
-                        } />
+                        }
+                    />
                 </div>
                 <div><textarea
                     name={`country_${candidate.countryId}_candidate_${candidate.id}_experience`}
@@ -57,7 +49,8 @@ export default function PersonCandidate({ candidate, }: PersonCandidateProps) {
                         updatePresidentCandidate(candidate.id, {
                             experience: e.target.value,
                         })
-                    }>
+                    }
+                >
                 </textarea>
                 </div>
                 <div>
@@ -71,7 +64,8 @@ export default function PersonCandidate({ candidate, }: PersonCandidateProps) {
                             updatePresidentCandidate(candidate.id, {
                                 promise: e.target.value,
                             })
-                        }>
+                        }
+                    >
                     </textarea>
                 </div>
                 <div className={styles["candidate-media"]}>
@@ -92,7 +86,7 @@ export default function PersonCandidate({ candidate, }: PersonCandidateProps) {
                                     type="text"
                                     min={CANDIDATE_SETTINGS.min_media}
                                     max={CANDIDATE_SETTINGS.max_madia}
-                                    value={negativeMedia}
+                                    value={candidate.media.negative}
                                     disabled
                                     readOnly
                                 />
@@ -106,7 +100,7 @@ export default function PersonCandidate({ candidate, }: PersonCandidateProps) {
                                     type="text"
                                     min={CANDIDATE_SETTINGS.min_media}
                                     max={CANDIDATE_SETTINGS.max_madia}
-                                    value={positiveMedia}
+                                    value={candidate.media.positive}
                                     disabled
                                     readOnly
                                 />
@@ -128,13 +122,9 @@ export default function PersonCandidate({ candidate, }: PersonCandidateProps) {
                             type="range"
                             min={CANDIDATE_SETTINGS.min_media}
                             max={CANDIDATE_SETTINGS.max_madia}
-                            value={positiveMedia}
+                            value={candidate.media.positive}
                             onChange={(e) => {
                                 const value = Number(e.target.value);
-
-                                setPositiveMedia(value);
-                                setNegativeMedia(CANDIDATE_SETTINGS.max_madia - value);
-
                                 updatePresidentCandidate(candidate.id, {
                                     media: {
                                         positive: value,
@@ -157,7 +147,7 @@ export default function PersonCandidate({ candidate, }: PersonCandidateProps) {
                                 type="text"
                                 min={CANDIDATE_SETTINGS.min_rating}
                                 max={CANDIDATE_SETTINGS.max_rating}
-                                value={rating}
+                                value={candidate.election_rating}
                                 disabled
                                 readOnly
                             />
@@ -171,12 +161,9 @@ export default function PersonCandidate({ candidate, }: PersonCandidateProps) {
                             type="range"
                             min={CANDIDATE_SETTINGS.min_rating}
                             max={CANDIDATE_SETTINGS.max_rating}
-                            value={rating}
+                            value={candidate.election_rating}
                             onChange={(e) => {
                                 const value = Number(e.target.value);
-
-                                setRating(value);
-
                                 updatePresidentCandidate(candidate.id, {
                                     election_rating: value,
                                 });

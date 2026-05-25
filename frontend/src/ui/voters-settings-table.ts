@@ -1,14 +1,4 @@
-import type { VotingGroup } from "../types/country";
-
-type VotingGroupField = keyof VotingGroup["details_descr"];
-
-type VoterSettingField = {
-    name: VotingGroupField;
-    display_name: string;
-    default_message?: string;
-    possible_variants?: Record<string, string>;
-    type?: string;
-};
+import type { VoterSettingField } from "../types/voter";
 
 export const VOTERS_SETTINGS_TABLE: VoterSettingField[] = [
     {
