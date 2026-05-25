@@ -5,8 +5,11 @@ import CreateCountryButtonContainer from "../country/create-country-container/Cr
 import DefaultMessage from "./DefaultMessage";
 
 export default function DefaultLayout() {
-    const countries = useCountryStore(
-        (state) => state.countries
+    const activeCountry = useCountryStore((state) =>
+        state.countries.find(
+            (country) =>
+                country.id === state.activeCountryId
+        )
     );
 
     return (
@@ -14,14 +17,12 @@ export default function DefaultLayout() {
             <DefaultMessage></DefaultMessage>
             <CreateCountryButtonContainer></CreateCountryButtonContainer>
             <div className="country_stack">
-                {[...countries]
-                    .map((country) => (
-                        <CountryLayout
-                            key={country.componentId}
-                            id={country.id}
-                            label={country.label}
-                        />
-                    ))}
+                {activeCountry &&
+                    <CountryLayout
+                        key={activeCountry.componentId}
+                        id={activeCountry.id}
+                        label={activeCountry.label}
+                    />}
             </div>
         </>
     );

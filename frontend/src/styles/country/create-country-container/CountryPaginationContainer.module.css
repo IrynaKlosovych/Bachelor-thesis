@@ -1,0 +1,77 @@
+.prev-country,
+.next-country {
+    box-sizing: border-box;
+    width: 20%;
+    height: 100%;
+    border: 4px solid var(--dragonfly);
+    outline: none;
+    background: var(--dragonfly);
+    cursor: pointer;
+    box-shadow: 8px 8px 8px var(--shadow1);
+}
+
+.prev-country::before,
+.next-country::before {
+    content: "";
+    display: block;
+    width: 24px;
+    height: 24px;
+    background: url(./../../../assets/chevron-light-pagination.svg) no-repeat center;
+    background-size: contain;
+    margin: auto;
+}
+
+.prev-country:hover,
+.next-country:hover {
+    background: var(--lemon-icing);
+}
+
+.prev-country:hover::before,
+.next-country:hover::before {
+    background-image: url(./../../../assets/chevron-dark-pagination.svg);
+}
+
+.prev-country::before {
+    transform: rotate(90deg);
+}
+
+.next-country::before {
+    transform: rotate(-90deg);
+}
+
+.prev-country {
+    border-radius: 28px 0 0 28px;
+}
+
+.next-country {
+    border-radius: 0 28px 28px 0;
+}
+
+.number-block {
+    display: flex;
+    width: 30%;
+    height: 100%;
+    background-color: var(--dragonfly);
+    box-shadow: 8px 8px 8px var(--shadow1);
+    color: var(--lemon-icing);
+    flex-direction: row;
+}
+
+.number-block>span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+
+    font-family: 'Roboto Serif';
+    font-style: normal;
+    font-weight: 700;
+    font-size: clamp(18px, 2vw, 32px);
+    line-height: 175%;
+}
+
+.number-block>span:nth-child(2) {
+    width: fit-content;
+}

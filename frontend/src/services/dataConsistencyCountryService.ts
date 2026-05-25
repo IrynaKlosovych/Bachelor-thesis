@@ -15,7 +15,8 @@ export function addCountryService() {
     useRegionStore.getState().addRegionsToCountry(regions);
 
     useVoterStore.getState().setVotingGroupCounter(country.id, 0);
-    // active visible country
+
+    useCountryStore.getState().setActiveCountry(country.id);
 }
 
 export function copyCountryService(countryIdToCopy: UUID) {
@@ -34,11 +35,14 @@ export function copyCountryService(countryIdToCopy: UUID) {
     // president candidate
     // party candidate
     // party person candidate
-    // active visible country
+
+    useCountryStore.getState().setActiveCountry(res_country.id);
 }
 
 export function deleteCountryService(countryId: UUID) {
+    const index = useCountryStore.getState().getCountryIndexById(countryId);
     useCountryStore.getState().deleteCountry(countryId);
+    useCountryStore.getState().changeActiveCountryAfterDelete(index);
 
     useRegionStore.getState().deleteCountryRegions(countryId);
 
@@ -48,5 +52,11 @@ export function deleteCountryService(countryId: UUID) {
     // president candidate
     // party candidate
     // party person candidate
-    // active visible country
+}
+
+export function prevCountryService() {
+    useCountryStore.getState().prevCountry();
+}
+export function nextCountryService() {
+    useCountryStore.getState().nextCountry();
 }
