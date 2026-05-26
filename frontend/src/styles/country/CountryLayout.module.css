@@ -167,3 +167,14 @@
     overflow-x: scroll;
     scrollbar-width: none;
 }
+
+.send-button-container {
+    width: 100%;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 0px;
+}

@@ -1,4 +1,4 @@
-.add-candidate-block {
+.button-block {
     display: block;
     position: relative;
     cursor: pointer;
@@ -6,7 +6,7 @@
     overflow: hidden;
 }
 
-.add-candidate {
+.button {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -34,7 +34,7 @@
 
 }
 
-.add-candidate-blur-1 {
+.button-blur-1 {
     position: absolute;
     width: 42px;
     height: 20px;
@@ -45,7 +45,7 @@
     filter: blur(12.5px);
 }
 
-.add-candidate-blur-2 {
+.button-blur-2 {
     position: absolute;
     width: 42px;
     height: 12px;
@@ -56,6 +56,6 @@
     filter: blur(9px);
 }
 
-.add-candidate:hover {
+.button:hover {
     background-color: var(--lemon-icing);
 }
