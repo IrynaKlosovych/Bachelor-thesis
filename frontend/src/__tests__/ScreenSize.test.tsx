@@ -5,7 +5,7 @@ import App from "../App";
 import { TEST_SCREEN_WIDTHS } from "../constants/screen";
 import useWindowWidth from "../hooks/screen/useWindowWidth";
 
-vi.mock("../hooks/useWindowWidth", () => ({
+vi.mock("../hooks/screen/useWindowWidth", () => ({
   default: vi.fn(),
 }));
 
