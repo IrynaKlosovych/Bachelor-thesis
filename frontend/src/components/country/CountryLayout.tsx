@@ -4,6 +4,7 @@ import { useGetCountryById } from "../../hooks/country/useGetCountryById";
 import { useGetRegionsByCountryId } from "../../hooks/region/useGetRegionsByCountryId";
 import { useGetVotersByCountryId } from "../../hooks/voter/useGetVotersByCountryId";
 
+import EmptyCandidates from "./candidates/EmptyCandidates";
 import PersonCandidate from "./candidates/PersonCandidate";
 import PopulationPyramid from "./charts/PopulationPyramid";
 import AddCandidateButton from "./descr-block-settings/AddCandidateButton";
@@ -56,18 +57,20 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
                     </div>
                 </div>
                 <div className={styles["charts-container"]}>
-                    <PopulationPyramid
-                        region={null}
-                        voting_group={voting_groups}
-                        country={country} />
-                    {regions.map((region) => (
+                    <div>
                         <PopulationPyramid
-                            country={country}
-                            key={`country_${id}_region_${region.id}_chart`}
-                            region={region}
-                            voting_group={voting_groups.filter(g => g.regionId === region.id)}
-                        />
-                    ))}
+                            region={null}
+                            voting_group={voting_groups}
+                            country={country} />
+                        {regions.map((region) => (
+                            <PopulationPyramid
+                                country={country}
+                                key={`country_${id}_region_${region.id}_chart`}
+                                region={region}
+                                voting_group={voting_groups.filter(g => g.regionId === region.id)}
+                            />
+                        ))}
+                    </div>
                 </div>
                 <div className={styles["descr-block-settings"]}>
                     <div>
@@ -79,13 +82,16 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
                     </div>
                 </div>
                 <div className={styles["candidate-block"]}>
-                    {country.electionMode === ELECTION_MODE_SETTINGS.presidential.key &&
-                        presidentCandidates.map((candidate) => (
-                            <PersonCandidate
-                                key={`country_${id}_candidate_${candidate.id}`}
-                                candidate={candidate}
-                            />
-                        ))}
+                    <div>
+                        {country.electionMode === ELECTION_MODE_SETTINGS.presidential.key && presidentCandidates.length > 0 ? (
+                            presidentCandidates.map((candidate) => (
+                                <PersonCandidate
+                                    key={`country_${id}_candidate_${candidate.id}`}
+                                    candidate={candidate}
+                                />
+                            ))) : <EmptyCandidates></EmptyCandidates>
+                        }
+                    </div>
                 </div>
                 <div className={styles["send-button-container"]}>
                     <SendButton></SendButton>

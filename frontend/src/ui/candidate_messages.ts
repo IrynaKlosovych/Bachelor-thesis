@@ -11,3 +11,5 @@ export const TEXT_CANDIDATES = {
   election_rating_text: "Електоральний рейтинг",
 
 };
+
+export const NO_CANDIDATES = "Додайте кандидатів";
