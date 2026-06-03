@@ -11,14 +11,14 @@ stages:
 # ----------------------------
 backend_build:
   stage: build
-  image: python:3.11
+  image: python:3.12
   allow_failure: true
   script:
     - echo "Setting up Python backend..."
     - python --version
     - cd backend
-    # тимчасово поки нічого не робиться
-    # - pip install -r requirements.txt 
+    - pip install -r requirements.txt
+    - python manage.py check
 
 backend_test:
   stage: test
