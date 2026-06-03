@@ -12,7 +12,6 @@ stages:
 backend_build:
   stage: build
   image: python:3.12
-  allow_failure: true
   script:
     - echo "Setting up Python backend..."
     - python --version
@@ -23,7 +22,6 @@ backend_build:
 backend_test:
   stage: test
   image: python:3.11
-  allow_failure: true
   script:
     - echo "Running backend tests..."
     - cd backend
