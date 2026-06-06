@@ -11,8 +11,11 @@ def calculations(request):
     data = json.loads(request.body)
     print(data)
 
-    result = {
-        "test": "test-result"
-    }
+    # probability for voters to go to election
+    # voters and candidates corellation
+    # probability for voters to go to election with bad candidates corellation
+    # by election mode count all election systems results
+    # send result to frontend
+    result = {}
 
     return JsonResponse(result)

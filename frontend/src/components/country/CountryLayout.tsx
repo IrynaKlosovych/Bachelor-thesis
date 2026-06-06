@@ -94,7 +94,7 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
                     </div>
                 </div>
                 <div className={styles["send-button-container"]}>
-                    <SendButton></SendButton>
+                    <SendButton countryId={id}></SendButton>
                 </div>
                 <div>
                     /*results */

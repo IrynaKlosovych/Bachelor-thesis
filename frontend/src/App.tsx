@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
 
 import DefaultLayout from './components/windowSize/DefaultLayout';
 import ScreenSizeWarning from './components/windowSize/ScreenSizeWarning';
@@ -18,6 +19,9 @@ function App() {
 
   return (
     <>
+      <ToastContainer
+        autoClose={false}
+        closeOnClick={false} />
       <div data-testid="warning"
         aria-hidden={!isBlocked}
         className={isBlocked ? styles.block : styles.hidden}>
