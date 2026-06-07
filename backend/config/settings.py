@@ -44,3 +44,4 @@ CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "")
 CORS_ALLOWED_ORIGINS = [
     origin.strip() for origin in CORS_ALLOWED_ORIGINS.split(",") if origin
 ]
+GEMINI_API_KEY_BACHELOR_THESIS=os.getenv("GEMINI_API_KEY_BACHELOR_THESIS", "")

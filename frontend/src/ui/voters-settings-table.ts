@@ -95,7 +95,7 @@ export const VOTERS_SETTINGS_TABLE: VoterSettingField[] = [
             full_depends: "Повністю залежний", mostly_depends: "Переважно залежний",
             partly: "Частково і так, і так",
             mostly_independs: "Переважно самостійний",
-            full_independs: "Повністю самостійні"
+            full_independs: "Повністю самостійний"
         }
     },
     {

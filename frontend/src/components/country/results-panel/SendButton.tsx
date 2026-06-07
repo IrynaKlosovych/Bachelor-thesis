@@ -39,13 +39,13 @@ export default function SendButton({ countryId }: SendDataProps) {
 
 
     const handleSend = async () => {
-        if (messages.length !== 0) {
-            toast(<SimulationCheckError messages={messages}></SimulationCheckError>, {
-                position: "bottom-right",
-                className: styles.toast,
-            });
-            return;
-        }
+        // if (messages.length !== 0) {
+        //     toast(<SimulationCheckError messages={messages}></SimulationCheckError>, {
+        //         position: "bottom-right",
+        //         className: styles.toast,
+        //     });
+        //     return;
+        // }
         // send data to server
         // receive data from server
         // save data in store
