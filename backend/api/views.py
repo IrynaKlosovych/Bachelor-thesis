@@ -13,13 +13,10 @@ def calculations(request):
     data = json.loads(request.body)
     print(data)
 
-    # 0. get country.descr and transform for data for models
     result_decr = llm_parse_country_descr.parse_country_descr(data["country"]["descr"])
     print(result_decr)
     candidates = llm_parse_candidates.parse_all_candidates(data["candidates"])
-    print("-"*60)
     print(candidates)
-    print("-"*60)
     # 1. for every region get voters and
     # voters =[]
     # for(region in data["regions"])

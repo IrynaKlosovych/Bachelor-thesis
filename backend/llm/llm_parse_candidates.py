@@ -1,39 +1,7 @@
-import json
 import numpy as np
 
-CANDIDATE_FIELDS = [
-    "media_positive",
-    "transparency",
-    "program_simplicity",
-    "leadership_strength",
-    "institutional_competence",
-    "anti_populism",
-    "social_focus",
-    "rule_of_law",
-]
-
-CANDIDATE_DEFAULTS = {
-    "media_positive": 5.0,
-    "transparency": 5.0,
-    "program_simplicity": 5.0,
-    "leadership_strength": 3.0,
-    "institutional_competence": 5.0,
-    "anti_populism": 5.0,
-    "social_focus": 5.0,
-    "rule_of_law": 5.0,
-}
-
-FIELD_RANGES = {
-    "media_positive": (0, 10),
-    "transparency": (0, 10),
-    "program_simplicity": (0, 10),
-    "leadership_strength": (1, 5),
-    "institutional_competence": (0, 10),
-    "anti_populism": (0, 10),
-    "social_focus": (0, 10),
-    "rule_of_law": (0, 10),
-}
-
+from llm.helpers import call_llm, get_client, clamp
+from llm.ml_config import CAND_DEFAULTS, CAND_FIELD_RANGES, CAND_AXES
 
 PROMPT_TEMPLATE = """You are a political analyst. Rate each candidate based on their profile.
 
@@ -55,6 +23,7 @@ No explanation, no markdown, no code fences.
 
 [{{"id": "<candidate_id>", "media_positive": <n>, "transparency": <n>, "program_simplicity": <n>, "leadership_strength": <n>, "institutional_competence": <n>, "anti_populism": <n>, "social_focus": <n>, "rule_of_law": <n>}}]"""
 
+
 def _build_candidates_text(candidates: list) -> str:
     lines = []
     for c in candidates:
@@ -72,19 +41,15 @@ def _build_candidates_text(candidates: list) -> str:
     return "\n".join(lines)
 
 
-def _clamp_scores(raw_scores: dict) -> dict:
-    result = {}
-    for field in CANDIDATE_FIELDS:
-        lo, hi = FIELD_RANGES[field]
-        default = CANDIDATE_DEFAULTS[field]
-        if field not in raw_scores:
-            result[field] = default
-        else:
-            try:
-                result[field] = float(np.clip(float(raw_scores[field]), lo, hi))
-            except (TypeError, ValueError):
-                result[field] = default
-    return result
+def _clamp_scores(raw: dict) -> dict:
+    return {
+        field: clamp(
+            raw.get(field, CAND_DEFAULTS[field]),
+            *CAND_FIELD_RANGES[field],
+            CAND_DEFAULTS[field],
+        )
+        for field in CAND_AXES
+    }
 
 
 def _default_scores_from_media(candidate: dict) -> dict:
@@ -92,84 +57,41 @@ def _default_scores_from_media(candidate: dict) -> dict:
     pos = float(media.get("positive", 5))
     neg = float(media.get("negative", 5))
     return {
+        **CAND_DEFAULTS,
         "media_positive": float(np.clip(pos, 0, 10)),
         "transparency": float(np.clip(pos - neg * 0.5 + 5, 0, 10)),
-        "program_simplicity": 5.0,
-        "leadership_strength": 3.0,
-        "institutional_competence": 5.0,
-        "anti_populism": 5.0,
-        "social_focus": 5.0,
-        "rule_of_law": 5.0,
     }
+
 
 def parse_all_candidates(candidates: list) -> dict:
     if not candidates:
         return {}
 
     fallback = {c["id"]: _default_scores_from_media(c) for c in candidates}
-
-    try:
-        from django.conf import settings
-
-        api_key = getattr(settings, "GEMINI_API_KEY_BACHELOR_THESIS", "")
-    except Exception:
-        api_key = ""
-
-    if not api_key:
-        print(
-            "[LLM] GEMINI_API_KEY_BACHELOR_THESIS not set — using media-derived defaults"
-        )
+    client, err = get_client()
+    if client is None:
+        print(f"[LLM] {err} — using media-derived candidate scores")
         return fallback
 
-    try:
-        from google import genai
-        from google.genai import types
+    candidates_text = _build_candidates_text(candidates)
+    prompt = PROMPT_TEMPLATE.format(candidates_text=candidates_text)
 
-        client = genai.Client(api_key=api_key)
+    max_tokens = 200 + len(candidates) * 120
 
-        candidates_text = _build_candidates_text(candidates)
-        prompt = PROMPT_TEMPLATE.format(candidates_text=candidates_text)
+    parsed_list = call_llm(client, prompt, max_tokens=max_tokens)
 
-        response = client.models.generate_content(
-            model="gemini-2.5-flash-lite",
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                temperature=0.1,
-                max_output_tokens=500,
-                response_mime_type="application/json",
-            ),
-        )
+    if not isinstance(parsed_list, list):
+        print("[LLM] Expected array from candidates parse — using fallback")
+        return fallback
 
-        raw = response.text.strip()
-
-        if raw.startswith("```"):
-            lines = [line for line in raw.split("\n") if not line.strip().startswith("```")]
-            raw = "\n".join(lines).strip()
-
-        parsed_list = json.loads(raw)
-
-        if not isinstance(parsed_list, list):
-            print("[LLM] Expected array, got something else — using fallback")
-            return fallback
-
-        result = dict(fallback) 
-        for item in parsed_list:
-            cid = str(item.get("id", ""))
-            if not cid:
-                continue
+    result = dict(fallback)
+    for item in parsed_list:
+        cid = str(item.get("id", ""))
+        if cid:
             result[cid] = _clamp_scores(item)
 
-        print(f"[LLM] Parsed {len(parsed_list)} candidates")
-        for cid, scores in result.items():
-            name = next((c.get("name", cid) for c in candidates if c["id"] == cid), cid)
-            print(f"  {name}: {scores}")
+    for cid, scores in result.items():
+        name = next((c.get("name", cid) for c in candidates if c["id"] == cid), cid)
+        print(f"[LLM] {name}: {scores}")
 
-        return result
-
-    except json.JSONDecodeError as e:
-        print(f"[LLM] JSON parse failed: {e} — using fallback")
-        return fallback
-
-    except Exception as e:
-        print(f"[LLM] Gemini error: {e} — using fallback")
-        return fallback
+    return result
