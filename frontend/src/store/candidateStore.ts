@@ -10,11 +10,15 @@ interface CandidateStore {
     used_president_candidate_hues: Record<UUID, number[]>;
     used_party_candidate_hues: Record<UUID, number[]>;
 
-    getPresidentCandidateHues: (countryId: UUID) => number[];
+    getPresidentCandidateHues: (countryId: UUID) => number[]; getPartyCandidateHues: (countryId: UUID) => number[];
     addPresidentCandidate: (presidentCandidate: PersonCandidate) => void;
+    addPartyCandidate: (party: PartyCandidate) => void;
     updatePresidentCandidateHues: (countryId: UUID, used: number[], hue: number) => void;
+    updatePartyCandidateHues: (countryId: UUID, usedColors: number[], hue: number) => void;
     updatePresidentCandidate: (candidateId: UUID,
         data: Partial<PresidentPersonCandidate>) => void;
+    updatePartyCandidate: (candidateId: UUID,
+        data: Partial<PartyCandidate>) => void;
 }
 
 export const useCandidateStore = create<CandidateStore>((set, get) => ({
@@ -29,6 +33,11 @@ export const useCandidateStore = create<CandidateStore>((set, get) => ({
             get().used_president_candidate_hues[countryId] ?? [];
         return used;
     },
+    getPartyCandidateHues: (countryId: UUID) => {
+        const used =
+            get().used_party_candidate_hues[countryId] ?? [];
+        return used;
+    },
 
     addPresidentCandidate: (presidentCandidate) => {
         set((state) => {
@@ -37,6 +46,16 @@ export const useCandidateStore = create<CandidateStore>((set, get) => ({
                     ...state.president_person_candidates,
                     presidentCandidate
                 ],
+            };
+        });
+    },
+
+    addPartyCandidate: (party: PartyCandidate) => {
+        set((state) => {
+            return {
+                party_candidates: [
+                    ...state.party_candidates, party
+                ]
             };
         });
     },
@@ -52,10 +71,35 @@ export const useCandidateStore = create<CandidateStore>((set, get) => ({
         });
     },
 
+    updatePartyCandidateHues: (countryId, usedColors, hue) => {
+        set((state) => {
+            return {
+                used_party_candidate_hues: {
+                    ...state.used_party_candidate_hues,
+                    [countryId]: [...usedColors, hue]
+                }
+            };
+        });
+    },
+
     updatePresidentCandidate: (candidateId, data) => {
         set((state) => ({
             president_person_candidates:
                 state.president_person_candidates.map((candidate) =>
+                    candidate.id === candidateId
+                        ? {
+                            ...candidate,
+                            ...data,
+                        }
+                        : candidate
+                ),
+        }));
+    },
+
+    updatePartyCandidate: (candidateId, data) => {
+        set((state) => ({
+            party_candidates:
+                state.party_candidates.map((candidate) =>
                     candidate.id === candidateId
                         ? {
                             ...candidate,

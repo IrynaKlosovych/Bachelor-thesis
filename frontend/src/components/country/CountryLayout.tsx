@@ -1,10 +1,12 @@
 import { ELECTION_MODE_SETTINGS } from "../../constants/country";
+import useGetPartyCandidatesByCountryId from "../../hooks/candidate/useGetPartyCandidatesByCountryId";
 import { useGetPresidentCandidateByCountryId } from "../../hooks/candidate/useGetPresidentCandidateByCountryId";
 import { useGetCountryById } from "../../hooks/country/useGetCountryById";
 import { useGetRegionsByCountryId } from "../../hooks/region/useGetRegionsByCountryId";
 import { useGetVotersByCountryId } from "../../hooks/voter/useGetVotersByCountryId";
 
 import EmptyCandidates from "./candidates/EmptyCandidates";
+import PartyCandidate from "./candidates/PartyCandidate";
 import PersonCandidate from "./candidates/PersonCandidate";
 import PopulationPyramid from "./charts/PopulationPyramid";
 import AddCandidateButton from "./descr-block-settings/AddCandidateButton";
@@ -29,6 +31,7 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
     const regions = useGetRegionsByCountryId(id);
     const voting_groups = useGetVotersByCountryId(id);
     const presidentCandidates = useGetPresidentCandidateByCountryId(id);
+    const partyCandidates = useGetPartyCandidatesByCountryId(id);
 
     return (
         <div
@@ -86,10 +89,18 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
                         {country.electionMode === ELECTION_MODE_SETTINGS.presidential.key && presidentCandidates.length > 0 ? (
                             presidentCandidates.map((candidate) => (
                                 <PersonCandidate
-                                    key={`country_${id}_candidate_${candidate.id}`}
+                                    electionMode={country.electionMode}
+                                    key={candidate.componentId}
                                     candidate={candidate}
                                 />
-                            ))) : <EmptyCandidates></EmptyCandidates>
+                            ))) : country.electionMode === ELECTION_MODE_SETTINGS.parliamentary.key && partyCandidates.length > 0 ? (
+                                partyCandidates.map(
+                                    (candidate) => (<PartyCandidate
+                                        key={candidate.componentId}
+                                        candidate={candidate}
+                                    ></PartyCandidate>)
+                                )
+                            ) : <EmptyCandidates></EmptyCandidates>
                         }
                     </div>
                 </div>
@@ -100,6 +111,6 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
                     /*results */
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

@@ -1,0 +1,23 @@
+.candidate-input-range input[type="range"] {
+    appearance: none;
+
+    width: 218px;
+    height: 16px;
+
+    background: var(--mango-mojito);
+    border-radius: 50px;
+}
+
+.candidate-input-range input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    box-sizing: border-box;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    width: 32px;
+    height: 32px;
+
+    background: var(--regatta);
+}

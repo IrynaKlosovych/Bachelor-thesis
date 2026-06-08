@@ -1,0 +1,54 @@
+.party-candidate-block {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+
+    min-width: 844px;
+    height: 1020px;
+
+    background: var(--cloud-dancer);
+    border: 4px solid var(--cloud-cover);
+    box-shadow: 4px 4px 4px var(--shadow1);
+    border-radius: 8px;
+}
+
+.party-setting-block {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.party-candidate-block textarea {
+    resize: none;
+    outline: none;
+    background-color: transparent;
+}
+
+.party-candidate-block input {
+    outline: none;
+    background-color: transparent;
+}
+
+.party-candidate-block>div {
+    width: 100%;
+}
+
+.party-candidate-block>div>div {
+    width: 50%;
+    box-sizing: border-box;
+}
+
+.party-candidate-block-second-part {
+    display: flex;
+    flex-direction: row;
+    height: 230px;
+}
+
+.party-candidate-block-third-part {
+    display: flex;
+    flex-direction: row;
+    height: 150px;
+}
