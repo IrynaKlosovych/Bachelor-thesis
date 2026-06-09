@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
 
 import { CANDIDATE_SETTINGS } from "../../constants/candidate";
-import type { PartyCandidate, PersonCandidate } from "../../types/candidate";
+import type { BasePersonCandidate, PartyCandidate, PartyPersonCandidate} from "../../types/candidate";
 import type { UUID } from "../../types/general";
 import { ComponentIdFactory } from "../../utils/general/countryTypesFunctions";
 
-export function createPresidentCandidate(countryId: UUID, color: string): PersonCandidate {
+export function createPresidentCandidate(countryId: UUID, color: string): BasePersonCandidate {
     const candidateId = uuidv4();
     const person = {
         id: candidateId,
@@ -49,4 +49,29 @@ export function createPartyCandidate(countryId: UUID, color: string): PartyCandi
         election_rating: CANDIDATE_SETTINGS.min_rating,
     };
     return party;
+}
+
+export function createPartyPersonCandidate(party: PartyCandidate, regionId: UUID): PartyPersonCandidate {
+    const candidateId = uuidv4();
+    const person = {
+        id: candidateId,
+        countryId: party.countryId,
+        componentId:
+            ComponentIdFactory.personCandidate(party.countryId, candidateId),
+        color: party.color,
+
+        name: "",
+        experience: "",
+        promise: "",
+
+        media: {
+            positive: CANDIDATE_SETTINGS.min_media,
+            negative: CANDIDATE_SETTINGS.max_madia,
+        },
+
+        election_rating: CANDIDATE_SETTINGS.min_rating,
+        regionId,
+        partyID: party.id
+    };
+    return person;
 }

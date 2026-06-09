@@ -6,13 +6,14 @@
     align-items: flex-start;
     padding: 0px;
 
-    min-width: 422px;
+    min-width: 420px;
     height: 500px;
 
     background: var(--cloud-dancer);
     border: 4px solid var(--cloud-cover);
     box-shadow: 4px 4px 4px var(--shadow1);
     border-radius: 8px;
+    overflow: hidden;
 }
 
 .person-candidate-block>div {
@@ -30,4 +31,41 @@
     background-color: transparent;
 }
 
+.person-party-candidate-block {
+    height: 540px;
+}
 
+.person-party-candidate-block-region-select {
+    box-sizing: border-box;
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px solid var(--hematite);
+}
+
+.person-party-candidate-block-region-select select {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    outline: none;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding-left: 32px;
+    text-align: center;
+    align-items: center;
+    font-family: 'Roboto Slab';
+    font-style: normal;
+    font-weight: 400;
+    color: var(--stretch-limo);
+}
+
+.person-party-candidate-block-region-select ::picker(select) {
+    border: 2px solid var(--coral-haze);
+    border-radius: 8px;
+    position: relative;
+    top: -2px;
+    left: 0px;
+    overflow: scroll;
+    scrollbar-width: none;
+    max-height: 70px;
+}

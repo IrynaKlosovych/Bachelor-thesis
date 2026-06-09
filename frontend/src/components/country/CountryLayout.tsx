@@ -4,6 +4,7 @@ import { useGetPresidentCandidateByCountryId } from "../../hooks/candidate/useGe
 import { useGetCountryById } from "../../hooks/country/useGetCountryById";
 import { useGetRegionsByCountryId } from "../../hooks/region/useGetRegionsByCountryId";
 import { useGetVotersByCountryId } from "../../hooks/voter/useGetVotersByCountryId";
+import { NO_CANDIDATES } from "../../ui/candidate_messages";
 
 import EmptyCandidates from "./candidates/EmptyCandidates";
 import PartyCandidate from "./candidates/PartyCandidate";
@@ -86,22 +87,30 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
                 </div>
                 <div className={styles["candidate-block"]}>
                     <div>
-                        {country.electionMode === ELECTION_MODE_SETTINGS.presidential.key && presidentCandidates.length > 0 ? (
-                            presidentCandidates.map((candidate) => (
-                                <PersonCandidate
-                                    electionMode={country.electionMode}
-                                    key={candidate.componentId}
-                                    candidate={candidate}
-                                />
-                            ))) : country.electionMode === ELECTION_MODE_SETTINGS.parliamentary.key && partyCandidates.length > 0 ? (
-                                partyCandidates.map(
-                                    (candidate) => (<PartyCandidate
+                        {country.electionMode === ELECTION_MODE_SETTINGS.presidential.key ? (
+                            presidentCandidates.length > 0 ? (
+                                presidentCandidates.map((candidate) => (
+                                    <PersonCandidate
+                                        key={candidate.componentId}
+                                        electionMode={country.electionMode}
+                                        candidate={candidate}
+                                    />
+                                ))
+                            ) : (
+                                <EmptyCandidates text={NO_CANDIDATES.person} />
+                            )
+                        ) : (
+                            partyCandidates.length > 0 ? (
+                                partyCandidates.map((candidate) => (
+                                    <PartyCandidate
                                         key={candidate.componentId}
                                         candidate={candidate}
-                                    ></PartyCandidate>)
-                                )
-                            ) : <EmptyCandidates></EmptyCandidates>
-                        }
+                                    />
+                                ))
+                            ) : (
+                                <EmptyCandidates text={NO_CANDIDATES.party} />
+                            )
+                        )}
                     </div>
                 </div>
                 <div className={styles["send-button-container"]}>

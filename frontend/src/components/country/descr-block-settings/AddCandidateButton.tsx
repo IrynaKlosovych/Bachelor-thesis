@@ -1,7 +1,8 @@
 import { ELECTION_MODE_SETTINGS } from "../../../constants/country";
 import { useGetCountryById } from "../../../hooks/country/useGetCountryById";
+import { useGetRegionsByCountryId } from "../../../hooks/region/useGetRegionsByCountryId";
 import { addPartyCandidateService, addPresidentCandidateService } from "../../../services/dataConsistencyCandidateService";
-import { TEXT_ADD_CANDIDATE } from "../../../ui/country_messages";
+import { TEXT_ADD_CANDIDATE } from "../../../ui/candidate_messages";
 import Button from "../../Button";
 
 interface AddCandidateButtonProps {
@@ -9,6 +10,7 @@ interface AddCandidateButtonProps {
 }
 export default function AddCandidateButton({ countryId }: AddCandidateButtonProps) {
     const country = useGetCountryById(countryId);
+    const regions = useGetRegionsByCountryId(countryId);
 
     const text_add_candidate =
         country?.electionMode === ELECTION_MODE_SETTINGS.presidential.key
@@ -22,7 +24,8 @@ export default function AddCandidateButton({ countryId }: AddCandidateButtonProp
             addPresidentCandidateService(countryId);
         }
         else {
-            addPartyCandidateService(countryId);
+            const regionsId = regions.map(r => r.id);
+            addPartyCandidateService(countryId, regionsId);
         }
     };
     return (

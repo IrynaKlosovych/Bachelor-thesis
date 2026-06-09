@@ -1,8 +1,9 @@
-import { NO_CANDIDATES } from "../../../ui/candidate_messages";
-
 import styles from "../../../styles/country/candidates/EmptyCandidates.module.css";
-export default function EmptyCandidates() {
+interface EmptyCandidatesProps {
+    text: string;
+}
+export default function EmptyCandidates({ text }: EmptyCandidatesProps) {
     return (
-        <div className={styles["no-candidate-block"]}>{NO_CANDIDATES}</div>
+        <div className={styles["no-candidate-block"]}>{text}</div>
     );
 }

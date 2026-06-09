@@ -11,6 +11,17 @@ export const TEXT_CANDIDATES = {
   },
   election_rating_text: "Електоральний рейтинг",
   party_candidate_name_text: "Назва партії",
+  add_party_person_candidate: {
+    region: "Регіон",
+    available: "Вільно мандатів",
+    total: "Всього мандатів"
+  }
 };
-
-export const NO_CANDIDATES = "Додайте кандидатів";
+export const TEXT_ADD_CANDIDATE = {
+  person: "Додати кандидата",
+  party: "Додати партію"
+};
+export const NO_CANDIDATES = {
+  person: "Додайте кандидатів",
+  party: "Додайте партії"
+};

@@ -1,5 +1,7 @@
 import { CANDIDATE_SETTINGS } from "../../../constants/candidate";
 import { ELECTION_MODE_SETTINGS } from "../../../constants/country";
+import { useGetRegionsByCountryId } from "../../../hooks/region/useGetRegionsByCountryId";
+import { updateRegionCandidateService } from "../../../services/dataConsistencyCandidateService";
 import { useCandidateStore } from "../../../store/candidateStore";
 import type { PersonCandidate } from "../../../types/candidate";
 import type { ElectionMode } from "../../../types/country";
@@ -18,20 +20,55 @@ interface PersonCandidateProps {
     candidate: PersonCandidate;
 }
 export default function PersonCandidate({ candidate, electionMode }: PersonCandidateProps) {
-    const { updatePresidentCandidate } = useCandidateStore();
+    const { updatePresidentCandidate, updatePartyPersonCandidate } = useCandidateStore();
+    const regions = useGetRegionsByCountryId(candidate.countryId);
+    const getUsedPartyPersonRegionsSeats = useCandidateStore(
+        state => state.getUsedPartyPersonRegionsSeats
+    );
+    const used_regions_seats =
+        "partyID" in candidate
+            ? getUsedPartyPersonRegionsSeats(candidate.partyID)
+            : {};
 
     const handleUpdateCandidate = (data: Partial<PersonCandidate>) => {
         if (electionMode === ELECTION_MODE_SETTINGS.presidential.key) {
             updatePresidentCandidate(candidate.id, data);
         }
-
+        else {
+            updatePartyPersonCandidate(candidate.id, data);
+        }
     };
 
     return (
         <>
-            <div className={styles["person-candidate-block"]}>
+            <div className={`${styles["person-candidate-block"]} ${electionMode === ELECTION_MODE_SETTINGS.parliamentary.key
+                ? styles["person-party-candidate-block"]
+                : ""
+                }`}>
                 <CandidateSettingsBlock candidate_color={candidate.color}
                 ></CandidateSettingsBlock>
+                {electionMode === ELECTION_MODE_SETTINGS.parliamentary.key && "regionId" in candidate && (
+                    <div className={styles["person-party-candidate-block-region-select"]}>
+                        <select
+                            name={`${candidate.componentId}_select`}
+                            id={`${candidate.componentId}_select`}
+                            value={candidate.regionId}
+                            onChange={(e) => {
+                                const newRegionId = e.target.value;
+                                updateRegionCandidateService(candidate.id, candidate.partyID, candidate.regionId, newRegionId);
+                            }}
+                        >
+                            {regions.map((region) => (
+                                <option
+                                    key={`${region.component_id}_choose_region`}
+                                    value={region.id}
+                                >
+                                    {"\u00A0\u00A0\u00A0"}{region.displayInTable}  {"\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"}{region.seats - used_regions_seats[region.id]} {"\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"}/ {"\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"}{region.seats}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                )}
                 <CandidateNameInput
                     name={candidate.componentId + `_name`}
                     id={candidate.componentId + `_name`}

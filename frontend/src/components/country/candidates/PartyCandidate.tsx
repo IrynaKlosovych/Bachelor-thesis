@@ -1,13 +1,20 @@
+import { useState } from "react";
+
 import { CANDIDATE_SETTINGS } from "../../../constants/candidate";
+import useGetPartyPersonsByPartyId from "../../../hooks/candidate/useGetPartyPersonsByPartyId";
+import { useGetRegionsByCountryId } from "../../../hooks/region/useGetRegionsByCountryId";
+import { addPartyPersonCandidateService } from "../../../services/dataConsistencyCandidateService";
 import { useCandidateStore } from "../../../store/candidateStore";
 import type { PartyCandidate } from "../../../types/candidate";
-import { TEXT_CANDIDATES } from "../../../ui/candidate_messages";
+import type { UUID } from "../../../types/general";
+import { TEXT_ADD_CANDIDATE, TEXT_CANDIDATES } from "../../../ui/candidate_messages";
 
 import CandidateNameInput from "./elements-profile/CandidateNameInput";
 import CandidateSettingsBlock from "./elements-profile/CandidateSettingsBlock";
 import CandidateElectionRating from "./elements-profile/media-rating-blocks/CandidateElectionRating";
 import CandidateMediaBlock from "./elements-profile/media-rating-blocks/CandidateMediaBlock";
 import TextAreaField from "./elements-profile/TextAreaField";
+import PersonCandidate from "./PersonCandidate";
 
 import styles from "../../../styles/country/candidates/PartyCandidate.module.css";
 
@@ -16,6 +23,13 @@ interface PartyCandidateProps {
 }
 export default function PartyCandidate({ candidate }: PartyCandidateProps) {
     const { updatePartyCandidate } = useCandidateStore();
+    const used_regions_seats = useCandidateStore().getUsedPartyPersonRegionsSeats(candidate.id);
+
+    const regions = useGetRegionsByCountryId(candidate.countryId);
+    const [regionToAddCandidate, updateRegionToAddCandidate] =
+        useState<UUID>(regions[0]?.id);
+
+    const party_persons = useGetPartyPersonsByPartyId(candidate.id);
 
     return (
         <>
@@ -102,14 +116,67 @@ export default function PartyCandidate({ candidate }: PartyCandidateProps) {
                             }>
                         </TextAreaField>
                     </div>
-                    <div>
-                        <div>/* list of regions where to add candidate*/</div>
-                        <div> /* add party button*/</div>
+                    <div className={styles["add-party-person-candidate-container"]}>
+                        <div>
+                            <div>{TEXT_CANDIDATES.add_party_person_candidate.region}</div>
+                            <div>
+                                <span>{TEXT_CANDIDATES.add_party_person_candidate.available}</span>
+                                <span>/</span>
+                                <span>{TEXT_CANDIDATES.add_party_person_candidate.total}</span>
+                            </div>
+                        </div>
+                        <div>
+                            <select
+                                name={`${candidate.componentId}_select`}
+                                id={`${candidate.componentId}_select`}
+                                value={regionToAddCandidate}
+                                onChange={(e) => {
+                                    const regionId = e.target.value;
+                                    updateRegionToAddCandidate(regionId);
+                                }}
+                            >
+                                {regions.map((region) => (
+                                    <option
+                                        key={`${region.component_id}_choose_region`}
+                                        value={region.id}
+                                    >
+                                        {"\u00A0\u00A0\u00A0"}{region.displayInTable}  {"\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"}{region.seats - used_regions_seats[region.id]} {"\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"}/ {"\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"}{region.seats}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div>
+                            <button
+                                onClick={() => addPartyPersonCandidateService(regionToAddCandidate, candidate)}>
+                                {TEXT_ADD_CANDIDATE.person}
+                            </button>
+                        </div>
                     </div>
                 </div>
 
                 <div className={styles["party-persons-candidates"]}>
-
+                    {regions.map((region) => {
+                        const regionPersons = party_persons.filter(
+                            person => person.regionId === region.id
+                        );
+                        return (
+                            <div
+                                key={`${region.component_id}_candidates_row`}
+                                className={
+                                    regionPersons.length === 0
+                                        ? styles["party-persons-candidate-none"]
+                                        : styles["region-candidates-row"]
+                                }>
+                                {regionPersons.map((person) => (
+                                    <PersonCandidate
+                                        key={`${person.componentId}_party_person_candidates`}
+                                        electionMode="parliamentary"
+                                        candidate={person}
+                                    />
+                                ))}
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
         </>
