@@ -3,8 +3,9 @@ import CandidateDeleteButton from "./CandidateDeleteButtton";
 import styles from "../../../../styles/country/candidates/elements-profile/CandidateSettingsBlock.module.css";
 interface CandidateSettingsBlockProps {
     candidate_color: string;
+    onClick: () => void;
 }
-export default function CandidateSettingsBlock({ candidate_color }: CandidateSettingsBlockProps) {
+export default function CandidateSettingsBlock({ candidate_color, onClick }: CandidateSettingsBlockProps) {
     return (
         <>
             <div className={styles["person-candidate-block-settings"]}>
@@ -12,7 +13,7 @@ export default function CandidateSettingsBlock({ candidate_color }: CandidateSet
                     className={styles["person-candidate-block-color"]}
                 ></div>
                 <div>
-                    <CandidateDeleteButton />
+                    <CandidateDeleteButton onClick={onClick} />
                 </div>
             </div>
         </>

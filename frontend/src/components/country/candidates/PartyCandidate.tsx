@@ -3,7 +3,7 @@ import { useState } from "react";
 import { CANDIDATE_SETTINGS } from "../../../constants/candidate";
 import useGetPartyPersonsByPartyId from "../../../hooks/candidate/useGetPartyPersonsByPartyId";
 import { useGetRegionsByCountryId } from "../../../hooks/region/useGetRegionsByCountryId";
-import { addPartyPersonCandidateService } from "../../../services/dataConsistencyCandidateService";
+import { addPartyPersonCandidateService, deletePartyCandidate } from "../../../services/dataConsistencyCandidateService";
 import { useCandidateStore } from "../../../store/candidateStore";
 import type { PartyCandidate } from "../../../types/candidate";
 import type { UUID } from "../../../types/general";
@@ -30,6 +30,9 @@ export default function PartyCandidate({ candidate }: PartyCandidateProps) {
         useState<UUID>(regions[0]?.id);
 
     const party_persons = useGetPartyPersonsByPartyId(candidate.id);
+    const handleDeleteParty = () => {
+        deletePartyCandidate(candidate.id);
+    };
 
     return (
         <>
@@ -49,7 +52,8 @@ export default function PartyCandidate({ candidate }: PartyCandidateProps) {
                                 name: value,
                             })}
                     ></CandidateNameInput>
-                    <CandidateSettingsBlock candidate_color={candidate.color}
+                    <CandidateSettingsBlock onClick={handleDeleteParty}
+                        candidate_color={candidate.color}
                     ></CandidateSettingsBlock>
                 </div>
 

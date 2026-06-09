@@ -2,6 +2,7 @@ import { CANDIDATE_SETTINGS } from "../../../constants/candidate";
 import { ELECTION_MODE_SETTINGS } from "../../../constants/country";
 import { useGetRegionsByCountryId } from "../../../hooks/region/useGetRegionsByCountryId";
 import { updateRegionCandidateService } from "../../../services/dataConsistencyCandidateService";
+import { deletePartyPersonCandidateService, deletePresidentCandidateService } from "../../../services/dataConsistencyCandidateService";
 import { useCandidateStore } from "../../../store/candidateStore";
 import type { PersonCandidate } from "../../../types/candidate";
 import type { ElectionMode } from "../../../types/country";
@@ -14,7 +15,6 @@ import CandidateMediaBlock from "./elements-profile/media-rating-blocks/Candidat
 import TextAreaField from "./elements-profile/TextAreaField";
 
 import styles from "../../../styles/country/candidates/PersonCandidate.module.css";
-
 interface PersonCandidateProps {
     electionMode: ElectionMode;
     candidate: PersonCandidate;
@@ -39,13 +39,24 @@ export default function PersonCandidate({ candidate, electionMode }: PersonCandi
         }
     };
 
+    const handleDeleteCandidate = () => {
+        if (electionMode === ELECTION_MODE_SETTINGS.parliamentary.key && ("regionId" in candidate)) {
+            console.log(candidate);
+            deletePartyPersonCandidateService(candidate.id, candidate.partyID, candidate.regionId);
+        }
+        else {
+            deletePresidentCandidateService(candidate.id);
+        }
+    };
+
     return (
         <>
             <div className={`${styles["person-candidate-block"]} ${electionMode === ELECTION_MODE_SETTINGS.parliamentary.key
                 ? styles["person-party-candidate-block"]
                 : ""
                 }`}>
-                <CandidateSettingsBlock candidate_color={candidate.color}
+                <CandidateSettingsBlock onClick={handleDeleteCandidate}
+                    candidate_color={candidate.color}
                 ></CandidateSettingsBlock>
                 {electionMode === ELECTION_MODE_SETTINGS.parliamentary.key && "regionId" in candidate && (
                     <div className={styles["person-party-candidate-block-region-select"]}>

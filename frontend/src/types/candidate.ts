@@ -37,3 +37,5 @@ export type PartyCandidate = {
     media: CandidateMedia;
     election_rating: number;
 };
+
+export type TypeActionsRegionsSeats = "add" | "delete";

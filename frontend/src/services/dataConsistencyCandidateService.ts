@@ -1,4 +1,4 @@
-import { createPartyCandidate, createPartyPersonCandidate,createPresidentCandidate } from "../factories/candidate/candidatesFactory";
+import { createPartyCandidate, createPartyPersonCandidate, createPresidentCandidate } from "../factories/candidate/candidatesFactory";
 import { useCandidateStore } from "../store/candidateStore";
 import type { PartyCandidate } from "../types/candidate";
 import type { UUID } from "../types/general";
@@ -24,10 +24,27 @@ export function addPartyCandidateService(countryId: UUID, regionsId: UUID[]) {
 export function addPartyPersonCandidateService(regionId: UUID, party: PartyCandidate) {
     const party_person = createPartyPersonCandidate(party, regionId);
     useCandidateStore.getState().addPartyPersonCandidate(party_person);
-    useCandidateStore.getState().updateRegionSeatsAfterAddingPerson(party.id, regionId);
+    useCandidateStore.getState().updateRegionSeatsAfterChanges(party.id, regionId, "add");
 }
 
 export function updateRegionCandidateService(candidateId: UUID, partyId: UUID, oldRegionId: UUID, newRegionId: UUID) {
     useCandidateStore.getState().updatePartyPersonCandidate(candidateId, { regionId: newRegionId });
     useCandidateStore.getState().updateRegionSeatsCandidate(partyId, oldRegionId, newRegionId);
+}
+
+export function deletePresidentCandidateService(candidate_id: UUID) {
+    useCandidateStore.getState().deletePresidentCandidate(candidate_id);
+    useCandidateStore.getState().deletePresidentCandidateHues(candidate_id);
+}
+
+export function deletePartyPersonCandidateService(candidate_id: UUID, party_id: UUID, regionId: UUID) {
+    useCandidateStore.getState().deletePartyPersonCandidate(candidate_id);
+    useCandidateStore.getState().updateRegionSeatsAfterChanges(party_id, regionId, "delete");
+}
+
+export function deletePartyCandidate(party_id: UUID) {
+    useCandidateStore.getState().deletePartyCandidate(party_id);
+    useCandidateStore.getState().deleteAllPartyPersons(party_id);
+    useCandidateStore.getState().deletePartyCandidateHues(party_id);
+    useCandidateStore.getState().deleteRegionSeatsCandidate(party_id);
 }

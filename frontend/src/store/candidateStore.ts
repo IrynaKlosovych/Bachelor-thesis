@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import type { PartyCandidate, PartyPersonCandidate, PersonCandidate, PresidentPersonCandidate } from "../types/candidate";
+import type { PartyCandidate, PartyPersonCandidate, PersonCandidate, PresidentPersonCandidate, TypeActionsRegionsSeats } from "../types/candidate";
 import type { UUID } from "../types/general";
 
 interface CandidateStore {
@@ -24,8 +24,15 @@ interface CandidateStore {
     updatePartyPersonCandidate: (candidateId: UUID, data: Partial<PartyPersonCandidate>) => void;
     setUsedPartyPersonRegionsSeats: (regionsId: UUID[], partyId: UUID) => void;
     getUsedPartyPersonRegionsSeats: (partyId: UUID) => Record<UUID, number>;
-    updateRegionSeatsAfterAddingPerson: (partyId: UUID, regionId: UUID) => void;
+    updateRegionSeatsAfterChanges: (partyId: UUID, regionId: UUID, type: TypeActionsRegionsSeats) => void;
     updateRegionSeatsCandidate: (partyId: UUID, oldRegionId: UUID, newRegionId: UUID) => void;
+    deletePresidentCandidate: (candidateId: UUID) => void;
+    deletePartyCandidate: (partyId: UUID) => void;
+    deletePartyPersonCandidate: (candidateId: UUID) => void;
+    deleteAllPartyPersons: (party_id: UUID) => void;
+    deletePresidentCandidateHues: (candidate_id: UUID) => void;
+    deletePartyCandidateHues: (candidate_id: UUID) => void;
+    deleteRegionSeatsCandidate: (candidate_id: UUID) => void;
 }
 
 export const useCandidateStore = create<CandidateStore>((set, get) => ({
@@ -158,17 +165,20 @@ export const useCandidateStore = create<CandidateStore>((set, get) => ({
         return get().used_party_person_regions_seats[partyId];
     },
 
-    updateRegionSeatsAfterAddingPerson: (partyId, regionId) => {
+    updateRegionSeatsAfterChanges: (partyId, regionId, type) => {
         set((state) => {
             const party = state.used_party_person_regions_seats[partyId] || {};
             const current = party[regionId] || 0;
+            const result = type === "add" ? current + 1 : current - 1;
 
+            console.log(type);
+            console.log(result);
             return {
                 used_party_person_regions_seats: {
                     ...state.used_party_person_regions_seats,
                     [partyId]: {
                         ...party,
-                        [regionId]: current + 1,
+                        [regionId]: result,
                     },
                 },
             };
@@ -196,6 +206,71 @@ export const useCandidateStore = create<CandidateStore>((set, get) => ({
                     ...state.used_party_person_regions_seats,
                     [partyId]: result,
                 },
+            };
+        });
+    },
+
+    deletePresidentCandidate: (candidateId) => {
+        set((state) => ({
+            president_person_candidates: state.president_person_candidates.filter(
+                c => c.id !== candidateId
+            ),
+        }));
+    },
+
+    deletePartyCandidate: (partyId) => {
+        set((state) => ({
+            party_candidates: state.party_candidates.filter(
+                p => p.id !== partyId
+            ),
+        }));
+    },
+
+    deletePartyPersonCandidate: (candidateId) => {
+        set((state) => ({
+            party_person_candidates: state.party_person_candidates.filter(
+                c => c.id !== candidateId
+            ),
+        }));
+    },
+
+    deleteAllPartyPersons: (party_id) => {
+        set((state) => ({
+            party_person_candidates: state.party_person_candidates.filter(
+                c => c.partyID !== party_id
+            ),
+        }));
+    },
+
+    deletePresidentCandidateHues: (candidate_id) => {
+        set((state) => {
+            const { [candidate_id]: removed, ...rest } =
+                state.used_president_candidate_hues;
+            void removed;
+            return {
+                used_president_candidate_hues: rest,
+            };
+        });
+    },
+
+    deletePartyCandidateHues: (candidate_id) => {
+        set((state) => {
+            const { [candidate_id]: removed, ...rest } =
+                state.used_party_candidate_hues;
+            void removed;
+            return {
+                used_party_candidate_hues: rest,
+            };
+        });
+    },
+
+    deleteRegionSeatsCandidate: (candidate_id) => {
+        set((state) => {
+            const { [candidate_id]: removed, ...rest } =
+                state.used_party_person_regions_seats;
+            void removed;
+            return {
+                used_party_person_regions_seats: rest,
             };
         });
     }
