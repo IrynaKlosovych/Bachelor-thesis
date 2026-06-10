@@ -5,19 +5,22 @@ import type { UUID } from "../types/general";
 import { generateUniqueColor } from "../utils/candidate/generateUniqueColor";
 
 export function addPresidentCandidateService(countryId: UUID) {
-    const usedColors = useCandidateStore.getState().getPresidentCandidateHues(countryId);
+    const usedColorsRecord = useCandidateStore.getState().getPresidentCandidateHues(countryId);
+    const usedColors = Object.values(usedColorsRecord);
     const { color, hue } = generateUniqueColor(usedColors);
     const person = createPresidentCandidate(countryId, color);
     useCandidateStore.getState().addPresidentCandidate(person);
-    useCandidateStore.getState().updatePresidentCandidateHues(countryId, usedColors, hue);
+
+    useCandidateStore.getState().updatePresidentCandidateHues(countryId, person.id, hue);
 }
 
 export function addPartyCandidateService(countryId: UUID, regionsId: UUID[]) {
-    const usedColors = useCandidateStore.getState().getPartyCandidateHues(countryId);
+    const usedColorsRecord = useCandidateStore.getState().getPartyCandidateHues(countryId);
+    const usedColors = Object.values(usedColorsRecord);
     const { color, hue } = generateUniqueColor(usedColors);
     const party = createPartyCandidate(countryId, color);
     useCandidateStore.getState().addPartyCandidate(party);
-    useCandidateStore.getState().updatePartyCandidateHues(countryId, usedColors, hue);
+    useCandidateStore.getState().updatePartyCandidateHues(countryId, party.id, hue);
     useCandidateStore.getState().setUsedPartyPersonRegionsSeats(regionsId, party.id);
 }
 

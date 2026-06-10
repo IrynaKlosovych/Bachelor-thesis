@@ -41,7 +41,6 @@ export default function PersonCandidate({ candidate, electionMode }: PersonCandi
 
     const handleDeleteCandidate = () => {
         if (electionMode === ELECTION_MODE_SETTINGS.parliamentary.key && ("regionId" in candidate)) {
-            console.log(candidate);
             deletePartyPersonCandidateService(candidate.id, candidate.partyID, candidate.regionId);
         }
         else {

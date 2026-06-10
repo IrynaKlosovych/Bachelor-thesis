@@ -7,16 +7,17 @@ interface CandidateStore {
     party_candidates: PartyCandidate[],
     president_person_candidates: PresidentPersonCandidate[];
     party_person_candidates: PartyPersonCandidate[];
-    used_president_candidate_hues: Record<UUID, number[]>;
-    used_party_candidate_hues: Record<UUID, number[]>;
+    used_president_candidate_hues: Record<UUID, Record<UUID, number>>;
+    used_party_candidate_hues: Record<UUID, Record<UUID, number>>;
     used_party_person_regions_seats: Record<UUID, Record<UUID, number>>;
 
-    getPresidentCandidateHues: (countryId: UUID) => number[]; getPartyCandidateHues: (countryId: UUID) => number[];
+    getPresidentCandidateHues: (countryId: UUID) => Record<UUID, number>;
+    getPartyCandidateHues: (countryId: UUID) => Record<UUID, number>;
     addPresidentCandidate: (presidentCandidate: PersonCandidate) => void;
     addPartyCandidate: (party: PartyCandidate) => void;
     addPartyPersonCandidate: (party_person: PartyPersonCandidate) => void;
-    updatePresidentCandidateHues: (countryId: UUID, used: number[], hue: number) => void;
-    updatePartyCandidateHues: (countryId: UUID, usedColors: number[], hue: number) => void;
+    updatePresidentCandidateHues: (countryId: UUID, candidate_id: UUID, hue: number) => void;
+    updatePartyCandidateHues: (countryId: UUID, candidate_id: UUID, hue: number) => void;
     updatePresidentCandidate: (candidateId: UUID,
         data: Partial<PresidentPersonCandidate>) => void;
     updatePartyCandidate: (candidateId: UUID,
@@ -35,14 +36,20 @@ interface CandidateStore {
     deleteRegionSeatsCandidate: (candidate_id: UUID) => void;
     getPresidentsByCountryId: (countryIdToCopy: UUID) => PresidentPersonCandidate[];
     addCopiedPresidentCandidates: (resultPresidents: PresidentPersonCandidate[]) => void;
-    addCopiedPresidentHues: (countryId: UUID, presidentHuesToCopy: number[]) => void;
+    addCopiedPresidentHues: (countryId: UUID, presidentHuesToCopy: Record<UUID, number>) => void;
     getPartiesByCountryId: (countryIdToCopy: UUID) => PartyCandidate[];
     addCopiedPartiesCandidates: (resultParties: PartyCandidate[]) => void;
-    addCopiedPartiesHues: (country_id: UUID, partyHuesToCopy: number[]) => void;
+    addCopiedPartiesHues: (country_id: UUID, partyHuesToCopy: Record<UUID, number>) => void;
     getPartyPersonsByCountryId: (countryIdToCopy: UUID) => PartyPersonCandidate[];
     addCopiedPartyPersonCandidates: (resultPartyPersons: PartyPersonCandidate[]) => void;
     getUsedOldPartyPersonRegionsSeats: (arrayOldPartiesId: UUID[]) => Record<UUID, Record<UUID, number>>;
     addCopiedUsedRegionseats: (newUsedPartyPersonRegionsSeats: Record<UUID, Record<UUID, number>>) => void;
+    deletePresidentPersonCandidateByCountryId: (countryId: UUID) => void;
+    deletePresidentPersonCandidateHuesByCountryId: (countryId: UUID) => void;
+    deletePartyCandidateByCountryId: (countryId: UUID) => void;
+    deletePartyCandidateHuesByCountryId: (countryId: UUID) => void;
+    deletePartyPersonCandidateByCountryId: (countryId: UUID) => void;
+    deleteAllPartyRegionSeats: (PartyRegionsSeatsIdsToDelete: UUID[]) => void;
 }
 
 export const useCandidateStore = create<CandidateStore>((set, get) => ({
@@ -56,12 +63,12 @@ export const useCandidateStore = create<CandidateStore>((set, get) => ({
 
     getPresidentCandidateHues: (countryId) => {
         const used =
-            get().used_president_candidate_hues[countryId] ?? [];
+            get().used_president_candidate_hues[countryId] ?? {};
         return used;
     },
     getPartyCandidateHues: (countryId: UUID) => {
         const used =
-            get().used_party_candidate_hues[countryId] ?? [];
+            get().used_party_candidate_hues[countryId] ?? {};
         return used;
     },
 
@@ -96,24 +103,36 @@ export const useCandidateStore = create<CandidateStore>((set, get) => ({
         });
     },
 
-    updatePresidentCandidateHues: (countryId, used, hue) => {
+    updatePresidentCandidateHues: (countryId, candidate_id, hue) => {
         set((state) => {
+            const countryHues =
+                state.used_president_candidate_hues[countryId] ?? {};
+
             return {
                 used_president_candidate_hues: {
                     ...state.used_president_candidate_hues,
-                    [countryId]: [...used, hue],
+                    [countryId]: {
+                        ...countryHues,
+                        [candidate_id]: hue,
+                    },
                 },
             };
         });
     },
 
-    updatePartyCandidateHues: (countryId, usedColors, hue) => {
+    updatePartyCandidateHues: (countryId, party_id, hue) => {
         set((state) => {
+            const countryHues =
+                state.used_president_candidate_hues[countryId] ?? {};
+
             return {
-                used_party_candidate_hues: {
-                    ...state.used_party_candidate_hues,
-                    [countryId]: [...usedColors, hue]
-                }
+                used_president_candidate_hues: {
+                    ...state.used_president_candidate_hues,
+                    [countryId]: {
+                        ...countryHues,
+                        [party_id]: hue,
+                    },
+                },
             };
         });
     },
@@ -252,22 +271,39 @@ export const useCandidateStore = create<CandidateStore>((set, get) => ({
 
     deletePresidentCandidateHues: (candidate_id) => {
         set((state) => {
-            const { [candidate_id]: removed, ...rest } =
-                state.used_president_candidate_hues;
-            void removed;
+            const updated = { ...state.used_president_candidate_hues };
+
+            for (const countryId in updated) {
+                if (updated[countryId]?.[candidate_id] !== undefined) {
+                    const { [candidate_id]: removed, ...rest } =
+                        updated[countryId];
+
+                    updated[countryId] = rest;
+                    void removed;
+                }
+            }
+
             return {
-                used_president_candidate_hues: rest,
+                used_president_candidate_hues: updated,
             };
         });
     },
 
     deletePartyCandidateHues: (candidate_id) => {
         set((state) => {
-            const { [candidate_id]: removed, ...rest } =
-                state.used_party_candidate_hues;
-            void removed;
+            const updated = { ...state.used_party_candidate_hues };
+
+            for (const countryId in updated) {
+                if (updated[countryId]?.[candidate_id] !== undefined) {
+                    const { [candidate_id]: removed, ...rest } =
+                        updated[countryId];
+                    void removed;
+                    updated[countryId] = rest;
+                }
+            }
+
             return {
-                used_party_candidate_hues: rest,
+                used_party_candidate_hues: updated,
             };
         });
     },
@@ -299,7 +335,7 @@ export const useCandidateStore = create<CandidateStore>((set, get) => ({
         });
     },
 
-    addCopiedPresidentHues: (countryId, presidentHuesToCopy: number[]) => {
+    addCopiedPresidentHues: (countryId, presidentHuesToCopy) => {
         set((state) => {
             return {
                 used_president_candidate_hues: {
@@ -370,5 +406,65 @@ export const useCandidateStore = create<CandidateStore>((set, get) => ({
                 ...newUsedPartyPersonRegionsSeats,
             },
         }));
+    },
+
+    deletePresidentPersonCandidateByCountryId: (countryId) => {
+        set((state) => ({
+            president_person_candidates: state.president_person_candidates.filter(
+                c => c.countryId !== countryId
+            ),
+        }));
+    },
+
+    deletePresidentPersonCandidateHuesByCountryId: (countryId) => {
+        set((state) => {
+            const { [countryId]: removed, ...rest } =
+                state.used_president_candidate_hues;
+            void removed;
+            return {
+                used_president_candidate_hues: rest,
+            };
+        });
+    },
+
+    deletePartyCandidateByCountryId: (countryId) => {
+        set((state) => ({
+            party_candidates: state.party_candidates.filter(
+                c => c.countryId !== countryId
+            ),
+        }));
+    },
+
+    deletePartyCandidateHuesByCountryId: (countryId) => {
+        set((state) => {
+            const { [countryId]: removed, ...rest } =
+                state.used_party_candidate_hues;
+            void removed;
+            return {
+                used_party_candidate_hues: rest,
+            };
+        });
+    },
+
+    deletePartyPersonCandidateByCountryId: (countryId) => {
+        set((state) => ({
+            party_person_candidates: state.party_person_candidates.filter(
+                c => c.countryId !== countryId
+            ),
+        }));
+    },
+
+    deleteAllPartyRegionSeats: (PartyRegionsSeatsIdsToDelete) => {
+        set((state) => {
+            const updated = { ...state.used_party_person_regions_seats };
+
+            for (const partyId of PartyRegionsSeatsIdsToDelete) {
+                delete updated[partyId];
+            }
+
+            return {
+                used_party_person_regions_seats: updated,
+            };
+        });
     }
 }));

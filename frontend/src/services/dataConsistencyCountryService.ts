@@ -1,4 +1,4 @@
-import { copyPartyCandidate, copyPartyPersonCandidate,copyPresidentCandidate } from "../factories/candidate/candidatesFactory";
+import { copyPartyCandidate, copyPartyPersonCandidate, copyPresidentCandidate } from "../factories/candidate/candidatesFactory";
 import { copyCountry, createCountry } from "../factories/country/countryFactory";
 import { copyRegions, createRegions } from "../factories/region/regionsFactory";
 import { copyVoter } from "../factories/voter/voterFactory";
@@ -59,14 +59,20 @@ export function copyCountryService(countryIdToCopy: UUID) {
     // president_person_candidates: PresidentPersonCandidate[];
     const presidentsToCopy = useCandidateStore.getState().getPresidentsByCountryId(countryIdToCopy);
     const resultPresidents: PresidentPersonCandidate[] = [];
+    const resultPresidentsWithOldIds: Record<UUID, PresidentPersonCandidate> = {};
     presidentsToCopy.map((presidentToCopy) => {
         const president = copyPresidentCandidate(res_country.id, presidentToCopy);
         resultPresidents.push(president);
+        resultPresidentsWithOldIds[presidentToCopy.id] = president;
     });
     useCandidateStore.getState().addCopiedPresidentCandidates(resultPresidents);
-    // used_president_candidate_hues: Record<UUID, number[]>;
+    // used_president_candidate_hues: Record<UUID, Record<UUID, number>>;
     const presidentHuesToCopy = useCandidateStore.getState().getPresidentCandidateHues(countryIdToCopy);
-    useCandidateStore.getState().addCopiedPresidentHues(res_country.id, presidentHuesToCopy);
+    const newPresidentHues: Record<UUID, number> = {};
+    presidentsToCopy.map((oldPresident) => {
+        newPresidentHues[resultPresidentsWithOldIds[oldPresident.id].id] = presidentHuesToCopy[oldPresident.id];
+    });
+    useCandidateStore.getState().addCopiedPresidentHues(res_country.id, newPresidentHues);
 
     // party candidate
     // party_candidates: PartyCandidate[],
@@ -81,9 +87,13 @@ export function copyCountryService(countryIdToCopy: UUID) {
         arrayOfOldPartiesId.push(partyToCopy.id);
     });
     useCandidateStore.getState().addCopiedPartiesCandidates(resultParties);
-    // used_party_candidate_hues: Record<UUID, number[]>;
+    // used_party_candidate_hues: Record<UUID, Record<UUID, number>>;
     const partyHuesToCopy = useCandidateStore.getState().getPartyCandidateHues(countryIdToCopy);
-    useCandidateStore.getState().addCopiedPartiesHues(res_country.id, partyHuesToCopy);
+    const newPartyHues: Record<UUID, number> = {};
+    partiesToCopy.map((oldParty) => {
+        newPartyHues[resultPartiesWithOldIds[oldParty.id].id] = partyHuesToCopy[oldParty.id];
+    });
+    useCandidateStore.getState().addCopiedPartiesHues(res_country.id, newPartyHues);
 
     // party person candidate
     // party_person_candidates: PartyPersonCandidate[];
@@ -153,20 +163,24 @@ export function deleteCountryService(countryId: UUID) {
 
     // president candidate
     // president_person_candidates: PresidentPersonCandidate[];
-
-    // used_president_candidate_hues: Record<UUID, number[]>;
-
+    useCandidateStore.getState().deletePresidentPersonCandidateByCountryId(countryId);
+    // used_president_candidate_hues: Record<UUID, Record<UUID, number>>;
+    useCandidateStore.getState().deletePresidentPersonCandidateHuesByCountryId(countryId);
 
     // party candidate
     // party_candidates: PartyCandidate[],
+    const deleteParties = useCandidateStore.getState().getPartiesByCountryId(countryId);
 
-    // used_party_candidate_hues: Record<UUID, number[]>;
-
+    useCandidateStore.getState().deletePartyCandidateByCountryId(countryId);
+    // used_party_candidate_hues: Record<UUID, Record<UUID, number>>;
+    useCandidateStore.getState().deletePartyCandidateHuesByCountryId(countryId);
 
     // party person candidate
     // party_person_candidates: PartyPersonCandidate[];
-
+    useCandidateStore.getState().deletePartyPersonCandidateByCountryId(countryId);
     // used_party_person_regions_seats: Record<UUID, Record<UUID, number>>;
+    const PartyRegionsSeatsIdsToDelete = deleteParties.map(party => party.id);
+    useCandidateStore.getState().deleteAllPartyRegionSeats(PartyRegionsSeatsIdsToDelete);
 }
 
 export function prevCountryService() {
