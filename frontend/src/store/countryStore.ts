@@ -17,7 +17,6 @@ interface CountryStore {
     incrementCountryNumForName: () => void;
     getCountryById: (id: UUID) => Country | undefined;
     updateCountryLabel: (id: UUID, label: string) => void;
-    copyCountry: (country: Country) => void;
     deleteCountry: (id: UUID) => void;
     changeActiveCountryAfterDelete: (index: number) => void;
     changeElectionMode: (
@@ -138,17 +137,6 @@ export const useCountryStore = create<CountryStore>((set, get) => ({
             };
             return updated;
         }),
-
-    copyCountry: (country) => {
-        set((state) => {
-            return {
-                countries: [
-                    ...state.countries,
-                    country
-                ],
-            };
-        });
-    },
 
     deleteCountry: (id) =>
         set((state) => ({

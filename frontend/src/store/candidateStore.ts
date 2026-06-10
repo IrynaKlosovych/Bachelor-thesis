@@ -33,6 +33,16 @@ interface CandidateStore {
     deletePresidentCandidateHues: (candidate_id: UUID) => void;
     deletePartyCandidateHues: (candidate_id: UUID) => void;
     deleteRegionSeatsCandidate: (candidate_id: UUID) => void;
+    getPresidentsByCountryId: (countryIdToCopy: UUID) => PresidentPersonCandidate[];
+    addCopiedPresidentCandidates: (resultPresidents: PresidentPersonCandidate[]) => void;
+    addCopiedPresidentHues: (countryId: UUID, presidentHuesToCopy: number[]) => void;
+    getPartiesByCountryId: (countryIdToCopy: UUID) => PartyCandidate[];
+    addCopiedPartiesCandidates: (resultParties: PartyCandidate[]) => void;
+    addCopiedPartiesHues: (country_id: UUID, partyHuesToCopy: number[]) => void;
+    getPartyPersonsByCountryId: (countryIdToCopy: UUID) => PartyPersonCandidate[];
+    addCopiedPartyPersonCandidates: (resultPartyPersons: PartyPersonCandidate[]) => void;
+    getUsedOldPartyPersonRegionsSeats: (arrayOldPartiesId: UUID[]) => Record<UUID, Record<UUID, number>>;
+    addCopiedUsedRegionseats: (newUsedPartyPersonRegionsSeats: Record<UUID, Record<UUID, number>>) => void;
 }
 
 export const useCandidateStore = create<CandidateStore>((set, get) => ({
@@ -171,8 +181,6 @@ export const useCandidateStore = create<CandidateStore>((set, get) => ({
             const current = party[regionId] || 0;
             const result = type === "add" ? current + 1 : current - 1;
 
-            console.log(type);
-            console.log(result);
             return {
                 used_party_person_regions_seats: {
                     ...state.used_party_person_regions_seats,
@@ -273,5 +281,94 @@ export const useCandidateStore = create<CandidateStore>((set, get) => ({
                 used_party_person_regions_seats: rest,
             };
         });
+    },
+
+    getPresidentsByCountryId: (countryIdToCopy: UUID) => {
+        const presidents = get().president_person_candidates.filter(p => p.countryId === countryIdToCopy);
+        return presidents;
+    },
+
+    addCopiedPresidentCandidates: (resultPresidents) => {
+        set((state) => {
+            return {
+                president_person_candidates: [
+                    ...state.president_person_candidates,
+                    ...resultPresidents
+                ],
+            };
+        });
+    },
+
+    addCopiedPresidentHues: (countryId, presidentHuesToCopy: number[]) => {
+        set((state) => {
+            return {
+                used_president_candidate_hues: {
+                    ...state.used_president_candidate_hues,
+                    [countryId]: presidentHuesToCopy
+                }
+            };
+        });
+    },
+
+    getPartiesByCountryId: (countryIdToCopy: UUID) => {
+        const parties = get().party_candidates.filter(p => p.countryId === countryIdToCopy);
+        return parties;
+    },
+
+    addCopiedPartiesCandidates: (resultParties) => {
+        set((state) => {
+            return {
+                party_candidates: [
+                    ...state.party_candidates,
+                    ...resultParties
+                ],
+            };
+        });
+    },
+
+    addCopiedPartiesHues: (country_id, partyHuesToCopy) => {
+        set((state) => {
+            return {
+                used_party_candidate_hues: {
+                    ...state.used_party_candidate_hues,
+                    [country_id]: partyHuesToCopy
+                }
+            };
+        });
+    },
+
+    getPartyPersonsByCountryId: (countryIdToCopy: UUID) => {
+        const party_persons = get().party_person_candidates.filter(p => p.countryId === countryIdToCopy);
+        return party_persons;
+    },
+
+    addCopiedPartyPersonCandidates: (resultPartyPersons: PartyPersonCandidate[]) => {
+        set((state) => {
+            return {
+                party_person_candidates: [
+                    ...state.party_person_candidates,
+                    ...resultPartyPersons
+                ],
+            };
+        });
+    },
+
+    getUsedOldPartyPersonRegionsSeats: (arrayOldPartiesId) => {
+        const result = Object.fromEntries(
+            arrayOldPartiesId.map(id => [
+                id,
+                get().used_party_person_regions_seats[id]
+            ])
+        );
+        return result;
+    },
+
+    addCopiedUsedRegionseats: (newUsedPartyPersonRegionsSeats: Record<UUID, Record<UUID, number>>) => {
+        set((state) => ({
+            used_party_person_regions_seats: {
+                ...state.used_party_person_regions_seats,
+                ...newUsedPartyPersonRegionsSeats,
+            },
+        }));
     }
 }));

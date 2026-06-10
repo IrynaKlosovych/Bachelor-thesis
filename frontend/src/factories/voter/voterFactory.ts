@@ -40,3 +40,14 @@ export function updateVoter(votingGroupToUpdate: VotingGroup, data: Partial<Voti
     };
     return updated;
 }
+
+export function copyVoter(voterToCopy: VotingGroup, countryId: UUID, regionId: UUID): VotingGroup {
+    const voterId = uuidv4();
+    return {
+        ...voterToCopy,
+        id: voterId,
+        countryId,
+        regionId: regionId,
+        componentId: ComponentIdFactory.group(countryId, voterId),
+    };
+}
