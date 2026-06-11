@@ -8,3 +8,12 @@ export const STAGE_FILLED_COLORS = {
     "almost": "var(--papaya)",
     "ready": "var(--tea)",
 };
+export const VOTING_GROUP_SIZE = {
+    size_44: {
+        max_people: 1000,
+        size: 44
+    },
+    size_60: {
+        size: 60
+    }
+};

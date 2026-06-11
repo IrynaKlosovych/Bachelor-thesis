@@ -1,10 +1,14 @@
 import { ELECTION_MODE_SETTINGS } from "../../constants/country";
+import useGetPartyCandidatesByCountryId from "../../hooks/candidate/useGetPartyCandidatesByCountryId";
 import { useGetPresidentCandidateByCountryId } from "../../hooks/candidate/useGetPresidentCandidateByCountryId";
 import { useGetCountryById } from "../../hooks/country/useGetCountryById";
 import { useGetRegionsByCountryId } from "../../hooks/region/useGetRegionsByCountryId";
+import useResultsExists from "../../hooks/results/useResultsExists";
 import { useGetVotersByCountryId } from "../../hooks/voter/useGetVotersByCountryId";
+import { NO_CANDIDATES } from "../../ui/candidate_messages";
 
 import EmptyCandidates from "./candidates/EmptyCandidates";
+import PartyCandidate from "./candidates/PartyCandidate";
 import PersonCandidate from "./candidates/PersonCandidate";
 import PopulationPyramid from "./charts/PopulationPyramid";
 import AddCandidateButton from "./descr-block-settings/AddCandidateButton";
@@ -13,6 +17,8 @@ import ElectionModeChoosen from "./descr-block-settings/ElectionModeChoosen";
 import AddVoterButton from "./map-container-settings/AddVoterButton";
 import Map from "./map-container-settings/Map";
 import VotersTable from "./map-container-settings/VotersTable";
+import NoResultYet from "./results-panel/NoResultYet";
+import ResultPanel from "./results-panel/ResultPanel";
 import SendButton from "./results-panel/SendButton";
 import CopyCountryButton from "./settings-panel/CopyCountryButton";
 import CountryNameInput from "./settings-panel/CountryNameInput";
@@ -29,6 +35,8 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
     const regions = useGetRegionsByCountryId(id);
     const voting_groups = useGetVotersByCountryId(id);
     const presidentCandidates = useGetPresidentCandidateByCountryId(id);
+    const partyCandidates = useGetPartyCandidatesByCountryId(id);
+    const resultExists = useResultsExists(country.electionMode, country.id);
 
     return (
         <div
@@ -83,23 +91,46 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
                 </div>
                 <div className={styles["candidate-block"]}>
                     <div>
-                        {country.electionMode === ELECTION_MODE_SETTINGS.presidential.key && presidentCandidates.length > 0 ? (
-                            presidentCandidates.map((candidate) => (
-                                <PersonCandidate
-                                    key={`country_${id}_candidate_${candidate.id}`}
-                                    candidate={candidate}
-                                />
-                            ))) : <EmptyCandidates></EmptyCandidates>
-                        }
+                        {country.electionMode === ELECTION_MODE_SETTINGS.presidential.key ? (
+                            presidentCandidates.length > 0 ? (
+                                presidentCandidates.map((candidate) => (
+                                    <PersonCandidate
+                                        key={candidate.componentId}
+                                        electionMode={country.electionMode}
+                                        candidate={candidate}
+                                    />
+                                ))
+                            ) : (
+                                <EmptyCandidates text={NO_CANDIDATES.person} />
+                            )
+                        ) : (
+                            partyCandidates.length > 0 ? (
+                                partyCandidates.map((candidate) => (
+                                    <PartyCandidate
+                                        key={candidate.componentId}
+                                        candidate={candidate}
+                                    />
+                                ))
+                            ) : (
+                                <EmptyCandidates text={NO_CANDIDATES.party} />
+                            )
+                        )}
                     </div>
                 </div>
                 <div className={styles["send-button-container"]}>
-                    <SendButton></SendButton>
+                    <SendButton country={country}
+                    ></SendButton>
                 </div>
-                <div>
-                    /*results */
+                <div className={styles["results-container"]}>
+                    {country.electionMode === ELECTION_MODE_SETTINGS.presidential.key && resultExists ?
+                        <ResultPanel countryId={country.id}
+                            electionMode={country.electionMode}></ResultPanel> :
+                        country.electionMode === ELECTION_MODE_SETTINGS.parliamentary.key && resultExists ?
+                            <ResultPanel countryId={country.id}
+                                electionMode={country.electionMode}></ResultPanel> :
+                            <NoResultYet></NoResultYet>}
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

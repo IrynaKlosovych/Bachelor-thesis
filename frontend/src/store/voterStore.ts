@@ -15,10 +15,10 @@ interface VoterStore {
         y: number, regionId: UUID) => void;
     updateGroup: (updated: VotingGroup, stageFilled: StageFilled) => void;
     deleteGroup: (id: string) => void;
-    // copyCountryGroups: () => void;
     deleteCountryGroups: (countryId: UUID) => void;
     deleteGroupsCounterbyCountryId: (countryId: UUID) => void;
     getCountryIdByVoterId: (voterId: UUID) => UUID | undefined;
+    addCopiedVotingGroups: (newVoters: VotingGroup[]) => void;
 }
 
 export const useVoterStore = create<VoterStore>((set, get) => ({
@@ -92,10 +92,6 @@ export const useVoterStore = create<VoterStore>((set, get) => ({
         }));
     },
 
-    // copyCountryGroups: () => {
-
-    // },
-
     deleteCountryGroups: (countryId: UUID) => {
         set((state) => {
             return {
@@ -120,5 +116,16 @@ export const useVoterStore = create<VoterStore>((set, get) => ({
 
     getCountryIdByVoterId: (voterId) => {
         return get().voting_groups.find(v => v.id === voterId)?.countryId;
-    }
+    },
+
+    addCopiedVotingGroups: (newVoters: VotingGroup[]) => {
+        set((state) => {
+            return {
+                voting_groups: [
+                    ...state.voting_groups,
+                    ...newVoters
+                ],
+            };
+        });
+    },
 }));

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 
 import { MAP_HEIGHT, MAP_WIDTH } from "../../../constants/map";
-import { STAGE_FILLED_COLORS } from "../../../constants/voter";
+import { STAGE_FILLED_COLORS, VOTING_GROUP_SIZE } from "../../../constants/voter";
 import { updateVotingGroupPositionService } from "../../../services/dataConsistencyVoterService";
 import type { Region } from "../../../types/region";
 import type { OpenPopupData, VotingGroup } from "../../../types/voter";
@@ -9,16 +9,17 @@ import type { OpenPopupData, VotingGroup } from "../../../types/voter";
 import styles from "../../../styles/country/map-container-settings/VotingGroupCircle.module.css";
 
 type VotingGroupCircleProps = {
-    size?: number;
     voter: VotingGroup;
     regions: Region[];
     onOpenPopup: (data: OpenPopupData) => void;
 };
 
-export default function VotingGroupCircle({ size = 44, voter, regions, onOpenPopup }: VotingGroupCircleProps) {
+export default function VotingGroupCircle({ voter, regions, onOpenPopup }: VotingGroupCircleProps) {
     const [isDraggingStyles, setIsDraggingStyles] = useState(false);
     const isDragging = useRef(false);
     const moved = useRef(false);
+
+    const size = voter.details_descr.peopleCount <= VOTING_GROUP_SIZE.size_44.max_people ? VOTING_GROUP_SIZE.size_44.size : VOTING_GROUP_SIZE.size_60.size;
 
     const handlePointerDown = () => {
         isDragging.current = true;

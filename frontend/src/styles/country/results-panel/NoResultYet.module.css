@@ -1,0 +1,19 @@
+.no-result-yet {
+    display: block;
+    text-align: center;
+    height: 70px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Roboto Slab';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 130%;
+    align-content: center;
+    color: var(--paradise-pink);
+    border: 4px solid var(--paradise-pink);
+    border-radius: 32px;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 8px;
+}
