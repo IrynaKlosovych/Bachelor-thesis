@@ -3,6 +3,7 @@ import useGetPartyCandidatesByCountryId from "../../hooks/candidate/useGetPartyC
 import { useGetPresidentCandidateByCountryId } from "../../hooks/candidate/useGetPresidentCandidateByCountryId";
 import { useGetCountryById } from "../../hooks/country/useGetCountryById";
 import { useGetRegionsByCountryId } from "../../hooks/region/useGetRegionsByCountryId";
+import useResultsExists from "../../hooks/results/useResultsExists";
 import { useGetVotersByCountryId } from "../../hooks/voter/useGetVotersByCountryId";
 import { NO_CANDIDATES } from "../../ui/candidate_messages";
 
@@ -16,6 +17,8 @@ import ElectionModeChoosen from "./descr-block-settings/ElectionModeChoosen";
 import AddVoterButton from "./map-container-settings/AddVoterButton";
 import Map from "./map-container-settings/Map";
 import VotersTable from "./map-container-settings/VotersTable";
+import NoResultYet from "./results-panel/NoResultYet";
+import ResultPanel from "./results-panel/ResultPanel";
 import SendButton from "./results-panel/SendButton";
 import CopyCountryButton from "./settings-panel/CopyCountryButton";
 import CountryNameInput from "./settings-panel/CountryNameInput";
@@ -33,6 +36,7 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
     const voting_groups = useGetVotersByCountryId(id);
     const presidentCandidates = useGetPresidentCandidateByCountryId(id);
     const partyCandidates = useGetPartyCandidatesByCountryId(id);
+    const resultExists = useResultsExists(country.electionMode, country.id);
 
     return (
         <div
@@ -114,10 +118,17 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
                     </div>
                 </div>
                 <div className={styles["send-button-container"]}>
-                    <SendButton></SendButton>
+                    <SendButton country={country}
+                    ></SendButton>
                 </div>
-                <div>
-                    /*results */
+                <div className={styles["results-container"]}>
+                    {country.electionMode === ELECTION_MODE_SETTINGS.presidential.key && resultExists ?
+                        <ResultPanel countryId={country.id}
+                            electionMode={country.electionMode}></ResultPanel> :
+                        country.electionMode === ELECTION_MODE_SETTINGS.parliamentary.key && resultExists ?
+                            <ResultPanel countryId={country.id}
+                                electionMode={country.electionMode}></ResultPanel> :
+                            <NoResultYet></NoResultYet>}
                 </div>
             </div>
         </div >

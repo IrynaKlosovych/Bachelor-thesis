@@ -1,0 +1,27 @@
+.result-panel {
+    display: flex;
+    gap: 12px;
+    flex-direction: column;
+}
+
+.result-tables-container,
+.result-tab-menu-container,
+.result-other-container {
+    width: 100%;
+}
+
+.result-tab-menu-container,
+.result-other-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.result-tab-menu-container>div:first-child {
+    width: 462px;
+}
+
+.result-tab-menu-container>div:last-child {
+    box-sizing: border-box;
+    flex: 2;
+    display: flex
+}
