@@ -1,4 +1,5 @@
 import json
+
 import numpy as np
 
 
@@ -40,7 +41,7 @@ def call_llm(client, prompt: str, max_tokens: int = 300) -> dict | list | None:
             model="gemini-2.5-flash-lite",
             contents=prompt,
             config=types.GenerateContentConfig(
-                temperature=0.1,
+                temperature=0.1,  # strict analytics
                 max_output_tokens=max_tokens,
                 response_mime_type="application/json",
             ),
@@ -56,8 +57,8 @@ def call_llm(client, prompt: str, max_tokens: int = 300) -> dict | list | None:
         return None
 
 
-def clamp(value, lo: float, hi: float, default: float) -> float:
+def clamp(value, low: float, high: float, default: float) -> float:
     try:
-        return float(np.clip(float(value), lo, hi))
+        return float(np.clip(float(value), low, high))
     except (TypeError, ValueError):
         return default

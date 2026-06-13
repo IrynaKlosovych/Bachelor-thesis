@@ -1,5 +1,8 @@
-from llm.ml_config import COUNTRY_DEFAULTS, COUNTRY_RANGES, COUNTRY_COLS
-from llm.helpers import call_llm, get_client, clamp
+from domain.calculation_schemas.voters.calculation_voting_group import (
+    CountryMetrics,
+)
+from llm.helpers import call_llm, clamp, get_client
+from llm.ml_config import COUNTRY_COLS, COUNTRY_DEFAULTS, COUNTRY_RANGES
 
 PROMPT_TEMPLATE = """You are a political analyst. Read this country description and rate each dimension from 0 to 10.
  
@@ -18,7 +21,7 @@ Return ONLY a valid JSON object with these 6 keys and numeric values. No explana
 {{"war_status": <number>, "economic_crisis": <number>, "corruption_level": <number>, "media_freedom": <number>, "political_stability": <number>}}"""
 
 
-def parse_country_descr(descr: str) -> dict:
+def parse_country_descr(descr: str) -> CountryMetrics:
     if not descr or not descr.strip():
         return dict(COUNTRY_DEFAULTS)
 
@@ -31,9 +34,11 @@ def parse_country_descr(descr: str) -> dict:
     if not isinstance(parsed, dict):
         return dict(COUNTRY_DEFAULTS)
 
-    result = {
-        col: clamp(parsed.get(col, 5.0), *COUNTRY_RANGES[col], 5.0)
-        for col in COUNTRY_COLS
-    }
+    result = CountryMetrics(
+        **{
+            col: clamp(parsed.get(col, 5.0), *COUNTRY_RANGES[col], 5.0)
+            for col in COUNTRY_COLS
+        }
+    )
     print(f"[LLM] Country state parsed: {result}")
     return result
