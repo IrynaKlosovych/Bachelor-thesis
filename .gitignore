@@ -197,3 +197,8 @@ $RECYCLE.BIN/
 dist/
 dist-ssr/
 .vite/
+
+
+backend/predictions/models/*
+!backend/predictions/models/best_model.pkl
+!backend/predictions/models/best_model.txt
