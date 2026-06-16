@@ -6,19 +6,19 @@ class VotingGroupDetails(BaseModel):
     sex: str
     nationality: str
     identity: str
-    religion: str
+    religion: float
     peopleCount: int
     education: str
     economic_status: str
     finance_independent: str
-    interest_econ: str
-    interest_safety: str
-    interest_social: str
+    interest_econ: float
+    interest_safety: float
+    interest_social: float
     understanding_econ: str
     understanding_safety: str
     understanding_social: str
-    political_interest: str
-    media_positive_reaction: str
-    media_negative_reaction: str
-    rating_perception: str
-    experience_importance: str
+    political_interest: float
+    media_positive_reaction: float
+    media_negative_reaction: float
+    rating_perception: float
+    experience_importance: float

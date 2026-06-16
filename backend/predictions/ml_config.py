@@ -39,7 +39,3 @@ TARGET_COLS = [
     "believe_government_institutions",
 ]
 VOTER_AXES = TARGET_COLS[1:]
-
-SCALE_1_5 = ["like_strong_leader_over_law", "every_person_is_expert"]
-
-INVERTED_AXES = ["like_easy_decision", "every_person_is_expert"]

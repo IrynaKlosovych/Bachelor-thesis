@@ -1,7 +1,7 @@
 from pathlib import Path
 
-import numpy as np
 import generation_data as gn
+import numpy as np
 
 Path("data").mkdir(exist_ok=True)
 rng = np.random.default_rng(42)

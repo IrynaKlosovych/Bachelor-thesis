@@ -21,9 +21,9 @@ For each candidate rate these dimensions:
   program_simplicity:       0=complex nuanced policy,     10=simple slogans only
   leadership_strength:      1=consensus/democratic,       5=strong authoritarian leader
   institutional_competence: 0=no government experience,  10=deep institutional expertise
-  anti_populism:            0=full populist,              10=expert-driven, zero populism
+  anti_populism:            1=full populist,              5=expert-driven, zero populism
   social_focus:             0=free market/individual,     10=social programs/government role
-  rule_of_law:              0=undermines courts/law,      10=fully respects institutions
+  rule_of_law:              0=opposes or distrusts institutions,      10=strongly supports institutions
 
 Return ONLY a valid JSON array. Each object must have the candidate id and all 8 scores.
 No explanation, no markdown, no code fences.

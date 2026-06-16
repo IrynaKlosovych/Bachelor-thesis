@@ -26,7 +26,7 @@ CAND_DEFAULTS = {
     "program_simplicity": 5.0,
     "leadership_strength": 3.0,
     "institutional_competence": 5.0,
-    "anti_populism": 5.0,
+    "anti_populism": 3.0,
     "social_focus": 5.0,
     "rule_of_law": 5.0,
 }
@@ -37,7 +37,7 @@ CAND_FIELD_RANGES = {
     "program_simplicity": (0, 10),
     "leadership_strength": (1, 5),
     "institutional_competence": (0, 10),
-    "anti_populism": (0, 10),
+    "anti_populism": (1, 5),
     "social_focus": (0, 10),
     "rule_of_law": (0, 10),
 }

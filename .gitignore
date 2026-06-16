@@ -202,3 +202,5 @@ dist-ssr/
 backend/predictions/models/*
 !backend/predictions/models/best_model.pkl
 !backend/predictions/models/best_model.txt
+!backend/predictions/models/update_best_model.pkl
+!backend/predictions/models/updated_best_model.txt

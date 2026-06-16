@@ -28,3 +28,12 @@ def create_voters_vectors(
             voters_by_region_ml[region.id].append(new_voter)
     
     return dict(voters_by_region_ml)
+
+
+def add_priorities(scored):
+    scored = sorted(scored, key=lambda x: x[1], reverse=True)
+
+    return [
+        (cand, score, rank + 1)
+        for rank, (cand, score) in enumerate(scored)
+    ]
