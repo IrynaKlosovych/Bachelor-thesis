@@ -8,7 +8,7 @@ from domain.calculation_schemas.voters.calculation_voting_group import (
 from domain.region_schemas.region import Region
 from domain.voter_schemas.voting_group import VotingGroup
 from helpers.sort_voters_by_regions import sort_voters_by_regions
-
+from domain.calculation_schemas.candidates.candidates_rank import CandidatesRank
 
 def create_voters_vectors(
     voters: list[VotingGroup], regions: list[Region], country_decr: CountryMetrics
@@ -30,10 +30,15 @@ def create_voters_vectors(
     return dict(voters_by_region_ml)
 
 
-def add_priorities(scored):
-    scored = sorted(scored, key=lambda x: x[1], reverse=True)
+def add_priorities(scored:dict[UUID, dict])->dict[UUID, CandidatesRank]:
+    items = [(cand_id, data["score"]) for cand_id, data in scored.items()]
 
-    return [
-        (cand, score, rank + 1)
-        for rank, (cand, score) in enumerate(scored)
-    ]
+    items = sorted(items, key=lambda x: x[1], reverse=True)
+
+    return {
+        cand_id: CandidatesRank.model_validate({
+            "score": score,
+            "priority": rank + 1
+        })
+        for rank, (cand_id, score) in enumerate(items)
+    }

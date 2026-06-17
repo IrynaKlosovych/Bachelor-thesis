@@ -14,7 +14,7 @@ from llm import llm_parse_candidates, llm_parse_country_descr
 from predictions.helpers import create_voters_vectors
 from predictions.service import (
     predict_ideal_voter_vectors_by_regions,
-    predict_similarities,
+    predict_president_similarities,
 )
 
 
@@ -33,9 +33,7 @@ def presidential_calculations(request):
     # for every candidate generate vector from data
     candidates = llm_parse_candidates.parse_all_candidates(data.candidates)
     pprint(data.candidates)
-    print("="*40)
-    pprint(candidates)
-    print("="*40)
+
     # get voters by every region
     voters_by_regions_full_data_for_model = create_voters_vectors(
         data.voters, data.regions, result_decr
@@ -46,16 +44,16 @@ def presidential_calculations(request):
     voters_by_regions_ideal_vectors = predict_ideal_voter_vectors_by_regions(
         voters_by_regions_full_data_for_model
     )
-
     # voters and candidates corellation
-    similarities = predict_similarities(voters_by_regions_ideal_vectors, candidates)
+    similarities = predict_president_similarities(
+        voters_by_regions_ideal_vectors, candidates
+    )
     print(similarities)
-    # 4. probability for voters to go to election with bad candidates corellation
 
     # by election mode count all election systems results
     # send result to frontend
     result = {
-        # country:{id, election_mode}
+        # countryId
         # regions: {id, voters:[{id, voting_probability, candidates:[{id, persentage_correllation}]}]}
         # voting_systems:{}
     }
@@ -86,4 +84,24 @@ def parliamentary_calculations(request):
             ),
         }
     )
+    # list of party person candidates by regions
+    
     pprint(candidates)
+    # get voters by every region
+    voters_by_regions_full_data_for_model = create_voters_vectors(
+        data.voters, data.regions, result_decr
+    )
+    # get probability for voters to go to election
+    # and generate their vector of good candidate
+    voters_by_regions_ideal_vectors = predict_ideal_voter_vectors_by_regions(
+        voters_by_regions_full_data_for_model
+    )
+    # voters and candidates corellation
+    # by election mode count all election systems results
+    # send result to frontend
+    result = {
+        # countryId
+        # regions: {id, voters:[{id, voting_probability, party_candidates:[{id, persentage_correllation}], party_person_candidates:[{id, persentage_correllation}]}]}
+        # voting_systems:{}
+    }
+    return JsonResponse(result)

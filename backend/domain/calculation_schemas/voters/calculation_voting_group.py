@@ -4,12 +4,17 @@ from domain.calculation_schemas.country.country_metrics import CountryMetrics
 from domain.calculation_schemas.voters.voter_preferences import VoterPreferences
 from domain.region_schemas.types import SafetyLevel
 from domain.voter_schemas.voting_group import VotingGroup
-
+from uuid import UUID
+from domain.calculation_schemas.candidates.candidates_rank import CandidatesRank
 
 class CalculationVotingGroup(VotingGroup):
     safety_region: SafetyLevel
     country_state: CountryMetrics
     preferences: Optional[VoterPreferences] = None
+    president_candidate_similarity: Optional[dict[UUID, CandidatesRank]]= None
+    party_candidate_similarity: Optional[dict[UUID, CandidatesRank]] = None
+    party_person_candidate_similarity: Optional[dict[UUID, CandidatesRank]] = None
+
 
     def voter_to_ml_row(self):
         details = self.details_descr.model_dump()
@@ -47,3 +52,12 @@ class CalculationVotingGroup(VotingGroup):
             self.preferences.person_or_government_importance,
             self.preferences.believe_government_institutions,
         ]
+    
+    def set_president_candidates_rank(self, voter_result):
+        self.president_candidate_similarity = voter_result
+
+    def set_party_candidates_rank(self, voter_result):
+        self.party_candidate_similarity = voter_result
+    
+    def set_party_person_candidates_rank(self, voter_result):
+        self.party_person_candidate_similarity = voter_result
