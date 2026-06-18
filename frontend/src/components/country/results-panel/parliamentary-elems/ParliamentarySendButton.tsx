@@ -62,7 +62,7 @@ export default function ParliamentarySendButton({ countryId }: ParliamentarySend
             );
 
             const data = await response.json();
-            console.log(data)
+            console.log(data);
 
         } catch {
             toast(<ServerError></ServerError>, {
@@ -74,6 +74,7 @@ export default function ParliamentarySendButton({ countryId }: ParliamentarySend
     return (
         <>
             <SendButton
+                country={country}
                 handleSend={handleSend}
             ></SendButton>
         </>

@@ -100,7 +100,7 @@ export default function PresidentialSendButton({ countryId }: PresidentialSendBu
             );
 
             const data = await response.json();
-            console.log(data)
+            console.log(data);
         } catch {
             toast(<ServerError></ServerError>, {
                 position: "bottom-right",
@@ -111,6 +111,7 @@ export default function PresidentialSendButton({ countryId }: PresidentialSendBu
     return (
         <>
             <SendButton
+                country={country}
                 handleSend={handleSend}
             ></SendButton>
         </>
