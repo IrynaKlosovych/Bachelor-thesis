@@ -70,7 +70,7 @@ export default function Map({ countryId }: MapProps) {
                 </g>
                 {voters.map((voter: VotingGroup) => (
                     <VotingGroupCircle key={voter.componentId}
-                        size={44} voter={voter} regions={regions} onOpenPopup={setOpenedPopup}
+                        voter={voter} regions={regions} onOpenPopup={setOpenedPopup}
                     />
                 ))
                 }

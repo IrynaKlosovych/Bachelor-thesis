@@ -157,6 +157,7 @@
     width: 100%;
     overflow: scroll;
     scrollbar-width: none;
+    padding: 10px 0
 }
 
 .charts-container {
@@ -187,4 +188,15 @@
     justify-content: center;
     align-items: center;
     padding: 8px 0px;
+}
+
+.results-container {
+    box-sizing: border-box;
+    padding: 16px;
+    width: 100%;
+    display: flex;
+}
+
+.results-container>div {
+    width: 100%;
 }

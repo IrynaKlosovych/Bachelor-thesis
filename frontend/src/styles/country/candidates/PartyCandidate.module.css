@@ -1,0 +1,191 @@
+.party-candidate-block {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+
+    min-width: 844px;
+    max-width: 844px;
+    height: 1020px;
+
+    background: var(--cloud-dancer);
+    border: 4px solid var(--cloud-cover);
+    box-shadow: 4px 4px 4px var(--shadow1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.party-setting-block {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.party-candidate-block textarea {
+    resize: none;
+    outline: none;
+    background-color: transparent;
+}
+
+.party-candidate-block input {
+    outline: none;
+    background-color: transparent;
+}
+
+.party-candidate-block>div {
+    width: 100%;
+}
+
+.party-candidate-block>div>div {
+    width: 50%;
+    box-sizing: border-box;
+}
+
+.party-candidate-block-second-part {
+    display: flex;
+    flex-direction: row;
+    height: 230px;
+}
+
+.party-candidate-block-third-part {
+    display: flex;
+    flex-direction: row;
+    height: 150px;
+}
+
+.add-party-person-candidate-container {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--hematite);
+}
+
+.add-party-person-candidate-container>div {
+    flex: 1
+}
+
+.add-party-person-candidate-container>div:first-child {
+    display: flex;
+    flex-direction: row;
+}
+
+.add-party-person-candidate-container>div:first-child>div {
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: 'Roboto Serif';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    color: var(--text);
+}
+
+.add-party-person-candidate-container>div:first-child>div:first-child {
+    flex: 3;
+}
+
+.add-party-person-candidate-container>div:first-child>div:last-child {
+    flex: 5;
+    display: flex;
+    flex-direction: row;
+}
+
+.add-party-person-candidate-container>div:first-child>div>span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    font-family: 'Roboto Serif';
+    font-style: normal;
+    font-weight: 700;
+}
+
+.add-party-person-candidate-container>div:first-child>div>span:nth-child(2) {
+    width: fit-content;
+}
+
+.add-party-person-candidate-container>div:nth-child(2) {
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.add-party-person-candidate-container select {
+    border: 1px solid var(--amberlight);
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    outline: none;
+    cursor: pointer;
+    background: transparent;
+    padding-left: 32px;
+    text-align: center;
+    align-items: center;
+    border-radius: 0;
+    font-family: 'Roboto Slab';
+    font-style: normal;
+    font-weight: 400;
+    color: var(--stretch-limo);
+}
+
+.add-party-person-candidate-container ::picker(select) {
+    border: 2px solid var(--coral-haze);
+    border-radius: 8px;
+    position: relative;
+    top: -2px;
+    left: 0px;
+    overflow: scroll;
+    scrollbar-width: none;
+    max-height: 70px;
+}
+
+.add-party-person-candidate-container>div:last-child {
+    padding: 10px;
+}
+
+.add-party-person-candidate-container>div:last-child>button {
+    width: 100%;
+    height: 100%;
+    border: none;
+    cursor: pointer;
+    background-color: var(--amberlight);
+    font-family: 'Roboto Slab';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 130%;
+    text-align: center;
+    color: var(--stretch-limo);
+}
+
+.add-party-person-candidate-container>div:last-child>button:hover {
+    background-color: var(--lemon-icing);
+}
+
+.party-persons-candidate-none {
+    display: none;
+}
+
+.party-persons-candidates {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: none;
+    overflow: scroll;
+    gap: 10px;
+    padding: 10px;
+}
+
+.region-candidates-row {
+    box-sizing: border-box;
+    min-width: 842px;
+    min-height: 540px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    overflow: scroll;
+    scrollbar-width: none;
+}

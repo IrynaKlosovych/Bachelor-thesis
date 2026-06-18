@@ -34,4 +34,8 @@ export type PartyCandidate = {
     name: string;
     experience: string;
     promise: string;
+    media: CandidateMedia;
+    election_rating: number;
 };
+
+export type TypeActionsRegionsSeats = "add" | "delete";
