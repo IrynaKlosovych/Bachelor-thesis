@@ -1,5 +1,7 @@
 from uuid import UUID
 
+from backend.voting_systems.majoritarian.us_like import USLike
+
 from domain.region_schemas.region import Region
 from domain.voter_schemas.calculation_voting_group import CalculationVotingGroup
 from voting_systems.majoritarian.fptp import FPTP
@@ -27,7 +29,11 @@ def presidential_result(
     )
     voting_result["trs"] = trs_result_by_tours
     # US_like
-
+    us_like = USLike()
+    us_result, voters_by_regions = us_like.calculate(
+        voters_by_regions, candidateIds, regions
+    )
+    voting_result["us_like"] = {"tour_1": us_result}
     # RCV
 
     # Condorcet
