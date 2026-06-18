@@ -17,6 +17,20 @@ export type VotingGroup = {
         identity: string,
         religion: string,
         peopleCount: number,
+        education: string,
+        economic_status: string,
+        finance_independent: string,
+        interest_econ: string,
+        interest_safety: string,
+        interest_social: string,
+        understanding_econ: string,
+        understanding_safety: string,
+        understanding_social: string,
+        political_interest: string,
+        media_positive_reaction: string,
+        media_negative_reaction: string,
+        rating_perception: string,
+        experience_importance: string;
     },
     stageFilled: StageFilled;
     // SVG coords

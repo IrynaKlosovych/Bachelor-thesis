@@ -8,3 +8,9 @@ export const ELECTION_MODE_SETTINGS = {
         label: "Парламент"
     }
 };
+export const BALANCE_RULES = {
+    ageThreshold: 0.03,
+    sexThreshold: 0.08,
+    candidateTotal: 100,
+    minCandidates: 2,
+};

@@ -5,6 +5,7 @@ import { TEXT_SEND_DATA_TO_SERVER } from "../../../ui/country_messages";
 import Button from "../../Button";
 interface SendButtonProps {
     country: Country;
+    handleSend:()=>void
 }
 export default function SendButton({ country }: SendButtonProps) {
     const setResults = useResultStore(state => state.setResults);

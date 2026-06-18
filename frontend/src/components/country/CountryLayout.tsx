@@ -18,8 +18,9 @@ import AddVoterButton from "./map-container-settings/AddVoterButton";
 import Map from "./map-container-settings/Map";
 import VotersTable from "./map-container-settings/VotersTable";
 import NoResultYet from "./results-panel/NoResultYet";
+import ParliamentarySendButton from "./results-panel/parliamentary-elems/ParliamentarySendButton";
+import PresidentialSendButton from "./results-panel/presidential-elems/PresidentialSendButton";
 import ResultPanel from "./results-panel/ResultPanel";
-import SendButton from "./results-panel/SendButton";
 import CopyCountryButton from "./settings-panel/CopyCountryButton";
 import CountryNameInput from "./settings-panel/CountryNameInput";
 import DeleteCountryButton from "./settings-panel/DeleteCountryButton";
@@ -118,8 +119,11 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
                     </div>
                 </div>
                 <div className={styles["send-button-container"]}>
-                    <SendButton country={country}
-                    ></SendButton>
+                    {country.electionMode === ELECTION_MODE_SETTINGS.presidential.key ? (
+                        <PresidentialSendButton countryId={country.id}></PresidentialSendButton>
+                    ) : (
+                        <ParliamentarySendButton countryId={country.id} />
+                    )}
                 </div>
                 <div className={styles["results-container"]}>
                     {country.electionMode === ELECTION_MODE_SETTINGS.presidential.key && resultExists ?
