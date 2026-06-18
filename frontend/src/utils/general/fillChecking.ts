@@ -176,6 +176,7 @@ export function fillCheckingParliamentMode(country: Country, regions: Region[], 
     checkPartyElectionSum();
     checkPartyPersonsByRegionsElectionSum();
     checkCandidatesAndSeatsInRegions();
-
+    console.log(candidatesParty)
+    console.log(partyPersons)
     return messages;
 }

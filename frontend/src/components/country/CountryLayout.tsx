@@ -13,13 +13,13 @@ import ElectionModeChoosen from "./descr-block-settings/ElectionModeChoosen";
 import AddVoterButton from "./map-container-settings/AddVoterButton";
 import Map from "./map-container-settings/Map";
 import VotersTable from "./map-container-settings/VotersTable";
+import ParliamentarySendButton from "./results-panel/parliamentary-elems/ParliamentarySendButton";
+import PresidentialSendButton from "./results-panel/presidential-elems/PresidentialSendButton";
 import CopyCountryButton from "./settings-panel/CopyCountryButton";
 import CountryNameInput from "./settings-panel/CountryNameInput";
 import DeleteCountryButton from "./settings-panel/DeleteCountryButton";
 
 import styles from "../../styles/country/CountryLayout.module.css";
-import PresidentialSendButton from "./results-panel/presidential-elems/PresidentialSendButton";
-import ParliamentarySendButton from "./results-panel/parliamentary-elems/ParliamentarySendButton";
 interface CountryLayoutProps {
     id: string;
     label: string;

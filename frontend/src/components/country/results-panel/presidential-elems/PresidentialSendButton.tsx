@@ -4,15 +4,14 @@ import { useGetPresidentCandidateByCountryId } from "../../../../hooks/candidate
 import { useGetCountryById } from "../../../../hooks/country/useGetCountryById";
 import { useGetRegionsByCountryId } from "../../../../hooks/region/useGetRegionsByCountryId";
 import { useGetVotersByCountryId } from "../../../../hooks/voter/useGetVotersByCountryId";
+import type { PresidentPersonCandidate } from "../../../../types/candidate";
 import type { UUID } from "../../../../types/general";
-
-import SendButton from "../SendButton";
 import { fillCheckingPresidentMode } from "../../../../utils/general/fillChecking";
 import ServerError from "../../../errors/ServerError";
 import SimulationCheckError from "../../../errors/SimulationCheckError";
+import SendButton from "../SendButton";
 
 import styles from "../../../../styles/error/Errors.module.css";
-import type { PresidentPersonCandidate } from "../../../../types/candidate";
 interface PresidentialSendButtonProps {
     countryId: UUID;
 }
@@ -38,7 +37,7 @@ export default function PresidentialSendButton({ countryId }: PresidentialSendBu
         // receive data from server
         // save data in store
         // use data in result block with diagrams
-        let data = [
+        const data = [
             {
                 name: "Олексій Коваленко",
                 experience: "15 років у державному управлінні. Колишній міністр економіки (2015–2019), до цього — директор великої приватної IT-компанії (2008–2015). Під час каденції провів податкову реформу, залучив 3 млрд доларів іноземних інвестицій. Має юридичну та економічну освіту. Активний волонтер з 2022 року — організував постачання дронів для ЗСУ. Жодних корупційних скандалів, декларації публічні та прозорі.",
@@ -70,10 +69,10 @@ export default function PresidentialSendButton({ countryId }: PresidentialSendBu
                 election_rating: 15,
             }
         ];
-        let candidates: PresidentPersonCandidate[] = [];
+        const candidates: PresidentPersonCandidate[] = [];
         let dataId = 0;
         candidatesPresident.map((p) => {
-            let candidate = {
+            const candidate = {
                 ...p,
                 ...data[dataId]
             };

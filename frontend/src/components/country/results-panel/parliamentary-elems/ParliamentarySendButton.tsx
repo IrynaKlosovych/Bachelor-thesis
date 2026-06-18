@@ -6,10 +6,11 @@ import { useGetCountryById } from "../../../../hooks/country/useGetCountryById";
 import { useGetRegionsByCountryId } from "../../../../hooks/region/useGetRegionsByCountryId";
 import { useGetVotersByCountryId } from "../../../../hooks/voter/useGetVotersByCountryId";
 import type { UUID } from "../../../../types/general";
-import SendButton from "../SendButton";
 import { fillCheckingParliamentMode } from "../../../../utils/general/fillChecking";
 import ServerError from "../../../errors/ServerError";
 import SimulationCheckError from "../../../errors/SimulationCheckError";
+import SendButton from "../SendButton";
+
 import styles from "../../../../styles/error/Errors.module.css";
 
 
