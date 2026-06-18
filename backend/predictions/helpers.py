@@ -1,6 +1,7 @@
 from collections import defaultdict
 from uuid import UUID
 
+from domain.calculation_schemas.candidates.candidates_rank import CandidatesRank
 from domain.calculation_schemas.country.country_metrics import CountryMetrics
 from domain.calculation_schemas.voters.calculation_voting_group import (
     CalculationVotingGroup,
@@ -8,7 +9,7 @@ from domain.calculation_schemas.voters.calculation_voting_group import (
 from domain.region_schemas.region import Region
 from domain.voter_schemas.voting_group import VotingGroup
 from helpers.sort_voters_by_regions import sort_voters_by_regions
-from domain.calculation_schemas.candidates.candidates_rank import CandidatesRank
+
 
 def create_voters_vectors(
     voters: list[VotingGroup], regions: list[Region], country_decr: CountryMetrics

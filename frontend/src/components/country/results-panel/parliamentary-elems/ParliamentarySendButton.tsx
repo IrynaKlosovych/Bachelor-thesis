@@ -28,13 +28,13 @@ export default function ParliamentarySendButton({ countryId }: ParliamentarySend
 
     const messages = fillCheckingParliamentMode(country, regions, voters, candidatesParty, candidatesPartyPersons);
     const handleSend = async () => {
-        // if (messages.length !== 0) {
-        //     toast(<SimulationCheckError messages={messages}></SimulationCheckError>, {
-        //         position: "bottom-right",
-        //         className: styles.toast,
-        //     });
-        //     return;
-        // }
+        if (messages.length !== 0) {
+            toast(<SimulationCheckError messages={messages}></SimulationCheckError>, {
+                position: "bottom-right",
+                className: styles.toast,
+            });
+            return;
+        }
         // delete prev data
         // send data to server
         // receive data from server
@@ -61,6 +61,7 @@ export default function ParliamentarySendButton({ countryId }: ParliamentarySend
             );
 
             const data = await response.json();
+            console.log(data)
 
         } catch {
             toast(<ServerError></ServerError>, {

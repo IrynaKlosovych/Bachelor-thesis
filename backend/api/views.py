@@ -96,6 +96,7 @@ def parliamentary_calculations(request):
     voters_by_regions_ideal_vectors = predict_ideal_voter_vectors_by_regions(
         voters_by_regions_full_data_for_model
     )
+    pprint(voters_by_regions_ideal_vectors)
     # voters and candidates corellation
     # by election mode count all election systems results
     # send result to frontend

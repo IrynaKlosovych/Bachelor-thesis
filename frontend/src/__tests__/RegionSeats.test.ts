@@ -6,7 +6,18 @@ import type { VotingGroup } from "../types/voter";
 import { calculateRegionSeats, distributeSeats }
     from "../utils/region/distributeSeatsFunctions";
 
-type TestVotingGroup = Pick<VotingGroup, "regionId" | "details_descr">;
+type TestVotingGroup = {
+    regionId: VotingGroup["regionId"];
+    details_descr: Pick<
+        VotingGroup["details_descr"],
+        "age" |
+        "sex" |
+        "nationality" |
+        "identity" |
+        "religion" |
+        "peopleCount"
+    >;
+};
 const createRegion = (id: string): Pick<Region, "id"> => ({
     id
 });

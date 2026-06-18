@@ -26,13 +26,13 @@ export default function PresidentialSendButton({ countryId }: PresidentialSendBu
 
     const messages = fillCheckingPresidentMode(country, regions, voters, candidatesPresident);
     const handleSend = async () => {
-        // if (messages.length !== 0) {
-        //     toast(<SimulationCheckError messages={messages}></SimulationCheckError>, {
-        //         position: "bottom-right",
-        //         className: styles.toast,
-        //     });
-        //     return;
-        // }
+        if (messages.length !== 0) {
+            toast(<SimulationCheckError messages={messages}></SimulationCheckError>, {
+                position: "bottom-right",
+                className: styles.toast,
+            });
+            return;
+        }
         // delete prev data
         // send data to server
         // receive data from server
@@ -101,7 +101,7 @@ export default function PresidentialSendButton({ countryId }: PresidentialSendBu
             );
 
             const data = await response.json();
-
+            console.log(data)
         } catch {
             toast(<ServerError></ServerError>, {
                 position: "bottom-right",
