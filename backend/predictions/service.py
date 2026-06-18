@@ -4,9 +4,9 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 
-from domain.calculation_schemas.candidates.candidate_scores import CandidateScores
-from domain.calculation_schemas.types import CandidateScoresMap
-from domain.calculation_schemas.voters.calculation_voting_group import (
+from domain.candidate_schemas.candidate_scores import CandidateScores
+from domain.candidate_schemas.types import CandidateScoresMap
+from domain.voter_schemas.calculation_voting_group import (
     CalculationVotingGroup,
 )
 from predictions.helpers import add_priorities
@@ -51,7 +51,7 @@ def _predict_candidate_voter_similarity(
 
 
 def _predict_candidates_for_voter(voter, candidates):
-    voter_result={}
+    voter_result = {}
     for candidateId, candidate in candidates.items():
         score = _predict_candidate_voter_similarity(voter, candidate)
         voter_result[candidateId] = {"score": score}
@@ -69,6 +69,7 @@ def predict_president_similarities(
             voter.set_president_candidates_rank(voter_result)
     return voters_by_regions
 
+
 def predict_party_similarities(
     voters_by_regions: dict[UUID, list[CalculationVotingGroup]],
     candidates: CandidateScoresMap,
@@ -78,6 +79,7 @@ def predict_party_similarities(
             voter_result = _predict_candidates_for_voter(voter, candidates)
             voter.set_party_candidates_rank(voter_result)
     return voters_by_regions
+
 
 def predict_party_person_similarities(
     voters_by_regions: dict[UUID, list[CalculationVotingGroup]],

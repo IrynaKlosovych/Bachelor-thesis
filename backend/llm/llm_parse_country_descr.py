@@ -1,4 +1,4 @@
-from domain.calculation_schemas.voters.calculation_voting_group import (
+from domain.voter_schemas.calculation_voting_group import (
     CountryMetrics,
 )
 from llm.helpers import call_llm, clamp, get_client
@@ -23,16 +23,16 @@ Return ONLY a valid JSON object with these 6 keys and numeric values. No explana
 
 def parse_country_descr(descr: str) -> CountryMetrics:
     if not descr or not descr.strip():
-        return dict(COUNTRY_DEFAULTS)
+        return CountryMetrics(**COUNTRY_DEFAULTS)
 
     client, err = get_client()
     if client is None:
         print(f"[LLM] {err} — using country defaults")
-        return dict(COUNTRY_DEFAULTS)
+        return CountryMetrics(**COUNTRY_DEFAULTS)
 
     parsed = call_llm(client, PROMPT_TEMPLATE.format(descr=descr.strip()))
     if not isinstance(parsed, dict):
-        return dict(COUNTRY_DEFAULTS)
+        return CountryMetrics(**COUNTRY_DEFAULTS)
 
     result = CountryMetrics(
         **{

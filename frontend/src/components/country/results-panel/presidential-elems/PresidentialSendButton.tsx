@@ -4,11 +4,13 @@ import { useGetPresidentCandidateByCountryId } from "../../../../hooks/candidate
 import { useGetCountryById } from "../../../../hooks/country/useGetCountryById";
 import { useGetRegionsByCountryId } from "../../../../hooks/region/useGetRegionsByCountryId";
 import { useGetVotersByCountryId } from "../../../../hooks/voter/useGetVotersByCountryId";
+import { useResultStore } from "../../../../store/resultStore";
 import type { PresidentPersonCandidate } from "../../../../types/candidate";
 import type { UUID } from "../../../../types/general";
-import { fillCheckingPresidentMode } from "../../../../utils/general/fillChecking";
+import type { VotingSystemId } from "../../../../types/results";
+// import { fillCheckingPresidentMode } from "../../../../utils/general/fillChecking";
 import ServerError from "../../../errors/ServerError";
-import SimulationCheckError from "../../../errors/SimulationCheckError";
+// import SimulationCheckError from "../../../errors/SimulationCheckError";
 import SendButton from "../SendButton";
 
 import styles from "../../../../styles/error/Errors.module.css";
@@ -17,21 +19,23 @@ interface PresidentialSendButtonProps {
 }
 const API_URL = import.meta.env.VITE_API_URL;
 export default function PresidentialSendButton({ countryId }: PresidentialSendButtonProps) {
+    const setResults = useResultStore(state => state.setResults);
     const country = useGetCountryById(countryId);
     const regions = useGetRegionsByCountryId(countryId);
     const voters = useGetVotersByCountryId(countryId);
     const candidatesPresident = useGetPresidentCandidateByCountryId(countryId);
     if (!country) return;
 
-    const messages = fillCheckingPresidentMode(country, regions, voters, candidatesPresident);
+
+    // const messages = fillCheckingPresidentMode(country, regions, voters, candidatesPresident);
     const handleSend = async () => {
-        if (messages.length !== 0) {
-            toast(<SimulationCheckError messages={messages}></SimulationCheckError>, {
-                position: "bottom-right",
-                className: styles.toast,
-            });
-            return;
-        }
+        // if (messages.length !== 0) {
+        //     toast(<SimulationCheckError messages={messages}></SimulationCheckError>, {
+        //         position: "bottom-right",
+        //         className: styles.toast,
+        //     });
+        //     return;
+        // }
         // delete prev data
         // send data to server
         // receive data from server
@@ -100,6 +104,23 @@ export default function PresidentialSendButton({ countryId }: PresidentialSendBu
             );
 
             const data = await response.json();
+            /* test data */
+            const results = {
+                country: {
+                    id: country.id,
+                    componentId: country.componentId,
+                    label: country.label,
+                    electionMode: country.electionMode
+                },
+                voting_systems: [
+                    { id: "fptp" as VotingSystemId },
+                    { id: "trs" as VotingSystemId },
+                    { id: "us_like" as VotingSystemId },
+                    { id: "rcv" as VotingSystemId },
+                    { id: "condorcet" as VotingSystemId },
+                ]
+            };
+            setResults(country.id, country.electionMode, results);
             console.log(data);
         } catch {
             toast(<ServerError></ServerError>, {
@@ -111,7 +132,6 @@ export default function PresidentialSendButton({ countryId }: PresidentialSendBu
     return (
         <>
             <SendButton
-                country={country}
                 handleSend={handleSend}
             ></SendButton>
         </>

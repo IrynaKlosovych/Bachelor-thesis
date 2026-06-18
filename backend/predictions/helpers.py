@@ -1,12 +1,12 @@
 from collections import defaultdict
 from uuid import UUID
 
-from domain.calculation_schemas.candidates.candidates_rank import CandidatesRank
-from domain.calculation_schemas.country.country_metrics import CountryMetrics
-from domain.calculation_schemas.voters.calculation_voting_group import (
+from domain.candidate_schemas.candidates_rank import CandidatesRank
+from domain.country_schemas.country_metrics import CountryMetrics
+from domain.region_schemas.region import Region
+from domain.voter_schemas.calculation_voting_group import (
     CalculationVotingGroup,
 )
-from domain.region_schemas.region import Region
 from domain.voter_schemas.voting_group import VotingGroup
 from helpers.sort_voters_by_regions import sort_voters_by_regions
 

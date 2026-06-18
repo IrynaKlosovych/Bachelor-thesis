@@ -40,9 +40,9 @@ ROOT_URLCONF = "config.urls"
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "")
+cors_allowed_origins_raw = os.getenv("CORS_ALLOWED_ORIGINS", "")
 
 CORS_ALLOWED_ORIGINS = [
-    origin.strip() for origin in CORS_ALLOWED_ORIGINS.split(",") if origin
+    origin.strip() for origin in cors_allowed_origins_raw.split(",") if origin
 ]
-GEMINI_API_KEY_BACHELOR_THESIS=os.getenv("GEMINI_API_KEY_BACHELOR_THESIS", "")
+GEMINI_API_KEY_BACHELOR_THESIS = os.getenv("GEMINI_API_KEY_BACHELOR_THESIS", "")
