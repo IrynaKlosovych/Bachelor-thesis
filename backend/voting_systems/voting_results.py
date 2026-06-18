@@ -3,6 +3,7 @@ from uuid import UUID
 from domain.region_schemas.region import Region
 from domain.voter_schemas.calculation_voting_group import CalculationVotingGroup
 from voting_systems.majoritarian.fptp import FPTP
+from voting_systems.majoritarian.trs import TRS
 
 
 def presidential_result(
@@ -20,7 +21,11 @@ def presidential_result(
     voting_result["fptp"] = {"tour_1": fptp_result}
 
     # TRS
-
+    trs = TRS()
+    trs_result_by_tours, voters_by_regions = trs.calculate(
+        voters_by_regions, candidateIds
+    )
+    voting_result["trs"] = trs_result_by_tours
     # US_like
 
     # RCV
