@@ -95,8 +95,6 @@ def parse_all_candidates(candidates: Sequence[GeneralCandidate]) -> CandidateSco
 
     result: CandidateScoresMap = {}
 
-    print("\nRAW LLM RESPONSE:")
-    pprint(parsed_list)
     for item in parsed_list:
         cid = UUID(item["id"])
         if cid:

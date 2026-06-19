@@ -12,7 +12,9 @@ class USLike(ElectionSystem):
         voters_by_regions: dict[UUID, list[CalculationVotingGroup]],
         candidateIds: list[UUID],
         regions: list[Region],
-    ) -> tuple[dict[UUID, float], dict[UUID, list[CalculationVotingGroup]]]:
+    ) -> tuple[
+        dict[UUID, float], dict[UUID, list[CalculationVotingGroup]], dict[UUID, UUID]
+    ]:
         candidate_results_num_people_by_regions: dict[UUID, dict[UUID, float]] = {}
         for region in regions:
             candidate_results_num_people_by_regions[region.id] = {
@@ -49,4 +51,4 @@ class USLike(ElectionSystem):
             results_sum[candidateId] = results_sum.get(candidateId, 0.0) + float(
                 region.seats
             )
-        return results_sum, voters_by_regions
+        return results_sum, voters_by_regions, winners_by_region

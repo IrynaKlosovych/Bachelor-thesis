@@ -9,7 +9,6 @@ export interface VotingSystem {
 }
 export interface PresidentialResult {
     country: CountryResult;
-    // regions: RegionResult[];
     // voters: [];
     // president_candidates: [],
     voting_systems: VotingSystem[];
@@ -17,7 +16,6 @@ export interface PresidentialResult {
 
 export interface ParliamentaryResult {
     country: CountryResult;
-    // regions: RegionResult[];
     // voters: [];
     // party_candidates: [];
     // party_person_candidates: [],

@@ -1,11 +1,11 @@
 export const SERVER_ERROR = "Проблеми з підключенням до сервера";
 export const COUNTRY_HAS_NO_DESCRIPTION_ERROR = "Не заповнено опис країни";
 export const NOT_ALL_VOTERS_ARE_FILLED_ERROR = "Не всі виборчі групи містять інформацію повністю";
-export const NOT_ALL_CANDIDATES_ARE_FILLED_ERROR = "Не всі кандидати мають повну інформацію";
-export const NOT_ALL_PARTIES_ARE_FILLED_ERROR = "Не всі партії мають повну інформацію";
+export const NOT_ALL_CANDIDATES_ARE_FILLED_ERROR = "Не всі кандидати мають повну інформацію або їх кількість недостатня";
+export const NOT_ALL_PARTIES_ARE_FILLED_ERROR = "Не всі партії мають повну інформацію або їх кількість недостатня";
 export const ELECTION_RAITING_COUNTRY_SUM_ERROR = "Помилка в сумі електорального рейтингу! Сумарний рейтинг по країні повинен дорівнювати 100%";
 export const ELECTION_RAITING_REGION_SUM_ERROR = "Помилка в сумі електорального рейтингу! Сумарний рейтинг в межах регіонів повинен дорівнювати 100%";
-export const CANDIDATE_AND_SEATS_BY_REGIONS_MISMATCH_ERROR = "Порушено співвідношення кандидатів та мандатів у регіонах";
-export const AGE_AND_SEX_DISTRIBUTION_ERROR = "Демографічна структура регіонів не збалансована (відсутні деякі вікові категорії або категорії за статтю)";
+export const CANDIDATE_AND_SEATS_BY_REGIONS_MISMATCH_ERROR = "Порушено співвідношення кандидатів від партій та мандатів у регіонах";
+export const AGE_AND_SEX_DISTRIBUTION_ERROR = "Демографічна структура регіонів не збалансована, бо відсутні деякі вікові категорії або категорії за статтю";
 export const EMPTY_REGIONS_ERROR = "Є порожні регіони!";
-export const BALANCED_DISTRIBUTION_ERROR = "Розподіл населення між віковими групами або статями є дисбалансним"; 
+export const BALANCED_DISTRIBUTION_ERROR = "Розподіл населення між віковими групами або статями є незбалансований за кількістю населення"; 

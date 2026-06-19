@@ -24,9 +24,7 @@ def _predict_ideal_voter_vectors(
 ) -> list[CalculationVotingGroup]:
     for voter in voters:
         row = voter.voter_to_ml_row()
-        print(row)
         df = pd.DataFrame([row])
-        print(df)
         voter_result = _predict(df)[0]
         voter.update_preferences(voter_result)
     return voters

@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from backend.voting_systems.majoritarian.us_like import USLike
+from voting_systems.majoritarian.us_like import USLike
 
 from domain.region_schemas.region import Region
 from domain.voter_schemas.calculation_voting_group import CalculationVotingGroup
@@ -13,7 +13,9 @@ def presidential_result(
     candidateIds: list[UUID],
     regions: list[Region],
 ) -> tuple[
-    dict[str, dict[str, dict[UUID, float]]], dict[UUID, list[CalculationVotingGroup]]
+    dict[str, dict[str, dict[UUID, float]]],
+    dict[UUID, list[CalculationVotingGroup]],
+    dict[UUID, UUID],
 ]:
     voting_result: dict[str, dict[str, dict[UUID, float]]] = {}
     # FPTP
@@ -30,7 +32,7 @@ def presidential_result(
     voting_result["trs"] = trs_result_by_tours
     # US_like
     us_like = USLike()
-    us_result, voters_by_regions = us_like.calculate(
+    us_result, voters_by_regions, win_by_reg_us_like = us_like.calculate(
         voters_by_regions, candidateIds, regions
     )
     voting_result["us_like"] = {"tour_1": us_result}
@@ -38,4 +40,4 @@ def presidential_result(
 
     # Condorcet
 
-    return voting_result, voters_by_regions
+    return voting_result, voters_by_regions, win_by_reg_us_like

@@ -15,5 +15,4 @@ export interface CountryResult {
     id: UUID;
     componentId: CountryComponentId;
     label: string;
-    electionMode: ElectionMode;
 }

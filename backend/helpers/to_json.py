@@ -1,5 +1,6 @@
 from uuid import UUID
 
+from domain.candidate_schemas.candidates_rank import CandidatesRank
 from domain.voter_schemas.calculation_voting_group import CalculationVotingGroup
 
 
@@ -22,6 +23,9 @@ def to_json_safe(obj):
             "probability_take_part": obj.preferences.probability_take_part
             if obj.preferences
             else None,
+            "president_candidate_similarity": obj.president_candidate_similarity,
             "voting_systems_presidential": obj.voting_systems_presidential,
         }
+    if isinstance(obj, CandidatesRank):
+        return {obj.priority}
     return obj

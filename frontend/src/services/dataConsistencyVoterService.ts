@@ -42,9 +42,9 @@ export function updateGroupService(voterId: string, data: Partial<VotingGroup>) 
 }
 
 export function deleteGroupService(voterId: UUID) {
+    const countryId = useVoterStore.getState().getCountryIdByVoterId(voterId);
     useVoterStore.getState().deleteGroup(voterId);
 
-    const countryId = useVoterStore.getState().getCountryIdByVoterId(voterId);
     if (!countryId) return;
     updateSeats(countryId);
 }

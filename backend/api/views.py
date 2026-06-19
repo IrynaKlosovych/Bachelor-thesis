@@ -53,17 +53,16 @@ def presidential_calculations(request: HttpRequest):
     candidate_ids = list(candidates.keys())
     regions = data.regions
     # by election mode count all election systems results
-    vot_sys_results, voters = presidential_result(
+    vot_sys_results, voters, other = presidential_result(
         voters_by_regions_similarities, candidate_ids, regions
     )
-
-    pprint(vot_sys_results)
 
     # send result to frontend
     result = {
         "countryId": str(data.country.id),
         "voters_by_regions": to_json_safe(voters),
         "voting_systems": to_json_safe(vot_sys_results),
+        "other": to_json_safe(other),
     }
     return JsonResponse(result)
 
