@@ -14,7 +14,7 @@ class TRS(ElectionSystem, AnotherTour):
         candidateIds: list[UUID],
         regions: list[Region] | None = None,
     ) -> tuple[dict[str, dict[UUID, float]], dict[UUID, list[CalculationVotingGroup]]]:
-        tours: dict = {}
+        tours: dict[str, dict[UUID, float]] = {}
         voters_tours: dict = {}
         candidate_results_num = {cid: 0.0 for cid in candidateIds}
         total_people_take_part: float = 0.0
