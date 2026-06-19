@@ -1,7 +1,9 @@
+from typing import Any
 from uuid import UUID
 
 from domain.region_schemas.region import Region
 from domain.voter_schemas.calculation_voting_group import CalculationVotingGroup
+from voting_systems.majoritarian.condorcet import Condorcet
 from voting_systems.majoritarian.fptp import FPTP
 from voting_systems.majoritarian.rcv import RCV
 from voting_systems.majoritarian.trs import TRS
@@ -17,7 +19,7 @@ def presidential_result(
     dict[UUID, list[CalculationVotingGroup]],
     dict[UUID, UUID],
 ]:
-    voting_result: dict[str, dict[str, dict[UUID, float]]] = {}
+    voting_result: dict[str, dict[str, dict[UUID, float]] | Any] = {}
     # FPTP
     fptp = FPTP()
     fptp_result, voters_by_regions = fptp.calculate(voters_by_regions, candidateIds)
@@ -43,5 +45,9 @@ def presidential_result(
     )
     voting_result["rcv"] = rcv_result_by_tours
     # Condorcet
-
+    condorcet = Condorcet()
+    condorcet_res, voters_by_regions = condorcet.calculate(
+        voters_by_regions, candidateIds
+    )
+    voting_result["condorcet"] = {"tour_1": condorcet_res}
     return voting_result, voters_by_regions, win_by_reg_us_like
