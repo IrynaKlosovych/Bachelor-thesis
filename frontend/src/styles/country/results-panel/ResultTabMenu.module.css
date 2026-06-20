@@ -1,4 +1,4 @@
-.result-tab-menu {
+.result-tab-menu.result-tab-menu {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;

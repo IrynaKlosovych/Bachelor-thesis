@@ -10,3 +10,14 @@ export const ELECTION_VOTING_SYSTEMS_VISIBLE = {
     ps: "Паралельна система / Parallel System, PS",
     mmp: "Змішана система / Mixed Member Proportional, MMP"
 };
+
+export const TABLE_RESULT_TEXT = {
+    probability_take_part: "Ймовірність прийти на вибори у %",
+    voters_prio: "Пріоритети виборців за кандидатів"
+};
+
+export const RESULT_CHART = {
+    tour: "Тур",
+    us_like: "Голосів",
+    president_other_xAxis: "Результат (%)"
+};

@@ -6,7 +6,7 @@ import { useGetRegionsByCountryId } from "../../../../hooks/region/useGetRegions
 import { useGetVotersByCountryId } from "../../../../hooks/voter/useGetVotersByCountryId";
 import { useResultStore } from "../../../../store/resultStore";
 import type { UUID } from "../../../../types/general";
-import type { VotingSystemId } from "../../../../types/results";
+import type { PresidentialResult } from "../../../../types/results";
 import { fillCheckingPresidentMode } from "../../../../utils/general/fillChecking";
 import ServerError from "../../../errors/ServerError";
 import SimulationCheckError from "../../../errors/SimulationCheckError";
@@ -19,6 +19,7 @@ interface PresidentialSendButtonProps {
 const API_URL = import.meta.env.VITE_API_URL;
 export default function PresidentialSendButton({ countryId }: PresidentialSendButtonProps) {
     const setResults = useResultStore(state => state.setResults);
+    const deleteResults = useResultStore(state => state.deleteResults);
     const country = useGetCountryById(countryId);
     const regions = useGetRegionsByCountryId(countryId);
     const voters = useGetVotersByCountryId(countryId);
@@ -35,11 +36,7 @@ export default function PresidentialSendButton({ countryId }: PresidentialSendBu
             });
             return;
         }
-        // delete prev data
-        // send data to server
-        // receive data from server
-        // save data in store
-        // use data in result block with diagrams
+        deleteResults(countryId, country.electionMode);
         try {
             const response = await fetch(
                 `${API_URL}api/presidential-calculate/`,
@@ -56,24 +53,8 @@ export default function PresidentialSendButton({ countryId }: PresidentialSendBu
                     })
                 }
             );
-
-            const data = await response.json();
-            /* test data */
-            const results = {
-                country: {
-                    id: country.id,
-                    componentId: country.componentId,
-                    label: country.label,
-                },
-                voting_systems: [
-                    { id: "fptp" as VotingSystemId },
-                    { id: "trs" as VotingSystemId },
-                    { id: "us_like" as VotingSystemId },
-                    { id: "rcv" as VotingSystemId },
-                    { id: "condorcet" as VotingSystemId },
-                ]
-            };
-            setResults(country.id, country.electionMode, results);
+            const data = await response.json() as PresidentialResult;
+            setResults(country.id, country.electionMode, data);
             console.log(data);
         } catch {
             toast(<ServerError></ServerError>, {

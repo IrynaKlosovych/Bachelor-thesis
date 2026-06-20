@@ -13,9 +13,9 @@ def to_json_safe(obj):
         return str(obj)
     if isinstance(obj, CalculationVotingGroup):
         return {
-            "id": obj.id,
-            "countryId": obj.countryId,
-            "regionId": obj.regionId,
+            "id": str(obj.id),
+            "countryId": str(obj.countryId),
+            "regionId": str(obj.regionId),
             "componentId": obj.componentId,
             "name": obj.name,
             "x": obj.x,
@@ -23,9 +23,13 @@ def to_json_safe(obj):
             "probability_take_part": obj.preferences.probability_take_part
             if obj.preferences
             else None,
-            "president_candidate_similarity": obj.president_candidate_similarity,
-            "voting_systems_presidential": obj.voting_systems_presidential,
+            "president_candidate_similarity": to_json_safe(
+                obj.president_candidate_similarity
+            ),
+            "voting_systems_presidential": to_json_safe(
+                obj.voting_systems_presidential
+            ),
         }
     if isinstance(obj, CandidatesRank):
-        return {obj.priority}
+        return {"priority":obj.priority}
     return obj

@@ -55,7 +55,9 @@ class TRS(ElectionSystem, AnotherTour):
 
         for region, voters in voters_by_regions.items():
             for voter in voters:
-                voter.set_voting_systems_presidential("trs", voters_tours[voter.id])
+                voter.set_voting_systems_presidential(
+                    "trs", voters_tours.get(voter.id, {})
+                )
 
         return tours, voters_by_regions
 

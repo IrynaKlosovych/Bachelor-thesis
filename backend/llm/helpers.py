@@ -1,4 +1,5 @@
 import json
+import time
 
 import numpy as np
 
@@ -34,27 +35,54 @@ def get_client():
 
 
 def call_llm(client, prompt: str, max_tokens: int = 300) -> dict | list | None:
-    try:
-        from google.genai import types
+    from google.genai import types
+    models = [
+        "gemini-2.5-flash-lite",
+        "gemini-3.1-flash-lite",
+    ]
+    max_attempts = 5
+    for model in models:
+        print(f"[LLM] Trying model: {model}")
+        for attempt in range(max_attempts):
+            try:
+                response = client.models.generate_content(
+                    model=model,
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        temperature=0.1,  # strict analytics
+                        max_output_tokens=max_tokens,
+                        response_mime_type="application/json",
+                    ),
+                )
+                raw = _clean_json(response.text)
+                return json.loads(raw)
 
-        response = client.models.generate_content(
-            model="gemini-2.5-flash-lite",
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                temperature=0.1,  # strict analytics
-                max_output_tokens=max_tokens,
-                response_mime_type="application/json",
-            ),
-        )
-        raw = _clean_json(response.text)
-        return json.loads(raw)
+            except json.JSONDecodeError as e:
+                print(f"[LLM] JSON parse failed: {e}")
+                continue
+            except Exception as e:
+                error = str(e)
+                if (
+                    "503" in error
+                    or "UNAVAILABLE" in error
+                    or "429" in error
+                    or "RESOURCE_EXHAUSTED" in error
+                ):
+                    wait_time = min(2**attempt, 30)
 
-    except json.JSONDecodeError as e:
-        print(f"[LLM] JSON parse failed: {e}")
-        return None
-    except Exception as e:
-        print(f"[LLM] API call failed: {e}")
-        return None
+                    print(
+                        f"[LLM] API unavailable "
+                        f"(attempt {attempt + 1}/{max_attempts}), "
+                        f"retrying in {wait_time}s..."
+                    )
+
+                    time.sleep(wait_time)
+                    continue
+                print(f"[LLM] API call failed: {e}")
+                break
+
+    print("[LLM] All retries failed")
+    return None
 
 
 def clamp(value, low: float, high: float, default: float) -> float:
