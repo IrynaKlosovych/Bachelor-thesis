@@ -1,7 +1,8 @@
-import { useGetPresidentCandidateByCountryId } from "../../../../hooks/candidate/useGetPresidentCandidateByCountryId";
-import type { UUID } from "../../../../types/general";
+import { useGetPresidentCandidateByCountryId } from "../../../../../hooks/candidate/useGetPresidentCandidateByCountryId";
+import type { UUID } from "../../../../../types/general";
+import { CONDORCET_TEXT } from "../../../../../ui/result-messages";
 
-import styles from "../../../../styles/country/results-panel/ResultTables.module.css";
+import styles from "../../../../../styles/country/results-panel/ResultTables.module.css";
 interface CondorcetProps {
     countryId: UUID;
     voting_system: Record<UUID, Record<UUID, {
@@ -41,7 +42,7 @@ export default function Condorcet({ countryId, voting_system }: CondorcetProps) 
                                         return (
                                             <td key={`td_res_candidate_{id}_candidate_${newId}`}
                                                 className={styles[`${res}`]}>
-                                                <div>{res}</div>
+                                                <div>{CONDORCET_TEXT[res]}</div>
                                                 <div>{expr}</div>
                                             </td>
                                         );

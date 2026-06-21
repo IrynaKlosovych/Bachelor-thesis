@@ -1,9 +1,9 @@
 import { useEffect, useMemo,useRef } from "react";
 import * as echarts from "echarts";
 
-import { useGetPresidentCandidateByCountryId } from "../../../../hooks/candidate/useGetPresidentCandidateByCountryId";
-import type { UUID } from "../../../../types/general";
-import { RESULT_CHART } from "../../../../ui/result-messages";
+import { useGetPresidentCandidateByCountryId } from "../../../../../hooks/candidate/useGetPresidentCandidateByCountryId";
+import type { UUID } from "../../../../../types/general";
+import { RESULT_CHART } from "../../../../../ui/result-messages";
 
 interface Props {
     countryId: UUID;

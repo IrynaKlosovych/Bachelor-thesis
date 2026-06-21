@@ -1,0 +1,50 @@
+.map-tour-container.map-tour-container {
+    box-sizing: border-box;
+
+    border: 1px solid var(--text);
+    border-radius: 8px;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    gap: 16px;
+}
+
+.map-tour-container>div:first-child {
+    font-family: 'Roboto Serif';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 130%;
+    align-content: center;
+    text-align: center;
+    color: var(--text);
+}
+
+
+.result-voter-popup.result-voter-popup {
+    position: fixed;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 70px;
+    background: var(--orchid-tint);
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 16px;
+    z-index: 1000;
+    gap: 10px
+}
+
+.map-tour-container circle {
+    cursor: pointer;
+}
+
+.no-voting {
+    opacity: 0.85;
+    stroke-dasharray: 10 5;
+    stroke-width: 2;
+}

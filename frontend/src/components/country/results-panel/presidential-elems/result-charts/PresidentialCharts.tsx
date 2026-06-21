@@ -1,4 +1,4 @@
-import type { UUID } from "../../../../types/general";
+import type { UUID } from "../../../../../types/general";
 
 import { TourChart } from "./TourChart";
 
@@ -13,9 +13,9 @@ export default function PresidentialCharts({ countryId, type, voting_system }: P
     return (
         <>
             {Object.entries(voting_system).map(([tourName, results]) => (
-                <div>
+                <div key={`chart_country${countryId}_${type}_${tourName}`} >
                     <TourChart countryId={countryId} type={type}
-                        key={`chart_${type}_${tourName}`} tourName={tourName} results={results} />
+                        tourName={tourName} results={results} />
                 </div>
             ))}
         </>

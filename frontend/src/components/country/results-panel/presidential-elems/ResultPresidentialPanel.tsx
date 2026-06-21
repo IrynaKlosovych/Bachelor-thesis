@@ -5,9 +5,10 @@ import type { UUID } from "../../../../types/general";
 import type { PresidentialVotingSystems } from "../../../../types/results";
 import ResultTabMenu from "../ResultTabMenu";
 
-import Condorcet from "./Condorcet";
-import PresidentialCharts from "./PresidentialCharts";
-import ResultPresidentialTable from "./ResultPresidentialTable";
+import Condorcet from "./result-charts/Condorcet";
+import PresidentialCharts from "./result-charts/PresidentialCharts";
+import ResultMapContainer from "./result-maps/ResultMapContainer";
+import ResultPresidentialTable from "./result-voters-table/ResultPresidentialTable";
 
 import styles from "../../../../styles/country/results-panel/ResultPanel.module.css";
 interface ResultPresidentialPanelProps {
@@ -34,9 +35,17 @@ export default function ResultPresidentialPanel({ countryId }: ResultPresidentia
                         setActiveTab={setActiveTab}
                     ></ResultTabMenu>
                 </div>
-                <div>
-
-                </div>
+                {activeTab !== "condorcet" && (
+                    <div className={styles["result-map-container"]}>
+                        <ResultMapContainer
+                            tours_num={Object.keys(votingResults.voting_systems[activeTab]).length}
+                            countryId={countryId}
+                            voters_by_regions={votingResults.voters_by_regions}
+                            activeTab={activeTab as string}
+                            us_like_regions={votingResults.other}
+                        />
+                    </div>
+                )}
             </div>
             <div className={styles["result-other-container"]}>
                 {activeTab !== "condorcet" ? (

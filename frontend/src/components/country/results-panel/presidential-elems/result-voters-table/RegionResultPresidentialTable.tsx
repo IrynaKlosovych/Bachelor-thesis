@@ -1,9 +1,9 @@
-import type { BasePersonCandidate } from "../../../../types/candidate";
-import type { Region } from "../../../../types/region";
-import type { VoterPresidentialResult } from "../../../../types/results";
-import { TABLE_RESULT_TEXT } from "../../../../ui/result-messages";
+import type { BasePersonCandidate } from "../../../../../types/candidate";
+import type { Region } from "../../../../../types/region";
+import type { VoterPresidentialResult } from "../../../../../types/results";
+import { TABLE_RESULT_TEXT } from "../../../../../ui/result-messages";
 
-import styles from "../../../../styles/country/results-panel/ResultTables.module.css";
+import styles from "../../../../../styles/country/results-panel/ResultTables.module.css";
 interface RegionResultPresidentialTableProps {
     voters: VoterPresidentialResult[];
     region: Region;

@@ -42,6 +42,7 @@ export interface PresidentialResult {
     countryId: UUID;
     voters_by_regions: Record<UUID, VoterPresidentialResult[]>;
     voting_systems: PresidentialVotingSystems;
+    other: Record<UUID, UUID>;
 }
 
 export interface ParliamentaryResult {

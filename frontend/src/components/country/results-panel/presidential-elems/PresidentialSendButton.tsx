@@ -55,7 +55,6 @@ export default function PresidentialSendButton({ countryId }: PresidentialSendBu
             );
             const data = await response.json() as PresidentialResult;
             setResults(country.id, country.electionMode, data);
-            console.log(data);
         } catch {
             toast(<ServerError></ServerError>, {
                 position: "bottom-right",

@@ -21,3 +21,11 @@ export const RESULT_CHART = {
     us_like: "Голосів",
     president_other_xAxis: "Результат (%)"
 };
+
+export const CONDORCET_TEXT = {
+    win: "Перемога",
+    loss: "Програш",
+    same: "Той самий кандидат"
+};
+
+export const PROBABILITY_TAKE_PART_TEXT = "Ймовірність участі у виборах:"

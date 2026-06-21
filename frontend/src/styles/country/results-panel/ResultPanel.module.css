@@ -18,6 +18,7 @@
 
 .result-tab-menu-container>div:first-child {
     width: 462px;
+    display: flex
 }
 
 .result-tab-menu-container>div:last-child {
@@ -67,4 +68,12 @@
     width: fit-content;
     border-radius: 12px;
     overflow: hidden;
+}
+.result-map-container{
+    overflow: scroll;
+    scrollbar-width: none;
+    gap: 10px
+}
+.result-map-container path {
+    cursor: default;
 }
