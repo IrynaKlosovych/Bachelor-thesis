@@ -56,3 +56,15 @@
     height: 300px;
     width: 100%;
 }
+
+.condorcet {
+    justify-items: center;
+}
+
+.condorcet.condorcet>div {
+    box-sizing: border-box;
+    border: 1px solid var(--mango-mojito);
+    width: fit-content;
+    border-radius: 12px;
+    overflow: hidden;
+}

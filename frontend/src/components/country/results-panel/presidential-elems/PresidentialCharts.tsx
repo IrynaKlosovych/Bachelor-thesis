@@ -15,7 +15,7 @@ export default function PresidentialCharts({ countryId, type, voting_system }: P
             {Object.entries(voting_system).map(([tourName, results]) => (
                 <div>
                     <TourChart countryId={countryId} type={type}
-                        key={tourName} tourName={tourName} results={results} />
+                        key={`chart_${type}_${tourName}`} tourName={tourName} results={results} />
                 </div>
             ))}
         </>

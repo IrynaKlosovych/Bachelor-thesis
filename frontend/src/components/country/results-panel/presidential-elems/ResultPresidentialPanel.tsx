@@ -5,6 +5,7 @@ import type { UUID } from "../../../../types/general";
 import type { PresidentialVotingSystems } from "../../../../types/results";
 import ResultTabMenu from "../ResultTabMenu";
 
+import Condorcet from "./Condorcet";
 import PresidentialCharts from "./PresidentialCharts";
 import ResultPresidentialTable from "./ResultPresidentialTable";
 
@@ -45,8 +46,10 @@ export default function ResultPresidentialPanel({ countryId }: ResultPresidentia
                             type={activeTab}
                             voting_system={votingResults.voting_systems[activeTab]} />
                     </div>
-                ) : (<div>
-
+                ) : (<div className={styles["condorcet"]}>
+                    <Condorcet countryId={countryId}
+                        voting_system={votingResults.voting_systems[activeTab].tour_1}
+                    />
                 </div>)}
             </div>
         </div>

@@ -5,7 +5,8 @@
     padding: 8px;
     gap: 12px;
 }
-.region-result-title{
+
+.region-result-title {
     font-family: 'Roboto Serif';
     font-style: normal;
     font-weight: 700;
@@ -45,7 +46,8 @@
     color: var(--stretch-limo);
 }
 
-.table th {
+.table th,
+.table .th {
     background: var(--shifting-sand);
     padding: 12px;
 }
@@ -53,4 +55,27 @@
 .table td {
     background: var(--amberlight);
     padding: 12px;
+}
+
+.win.win,
+.same.same,
+.loss.loss {
+    display: table-cell;
+    border: none
+}
+
+.win>div,
+.same>div,
+.loss>div {
+    display: block;
+}
+
+.win.win {
+    background-color: var(--veiled-vista);
+    color: var(--rose-brown)
+}
+
+.loss.loss {
+    background-color: var(--scarlet-smile);
+    color: var(--cloud-dancer)
 }
