@@ -29,3 +29,4 @@ export const CONDORCET_TEXT = {
 };
 
 export const PROBABILITY_TAKE_PART_TEXT = "Ймовірність участі у виборах:"
+export const PEOPLE_COUNT = "Кількість людей:"

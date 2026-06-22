@@ -8,10 +8,11 @@ interface ResultVotingGroupProps {
     typeSystem: string;
     tour_num: number;
     voter: VoterPresidentialResult;
+    onActiveVoter: (peopleCount: number) => void;
     onHover: (voter: VoterPresidentialResult, e: React.MouseEvent) => void;
     onLeave: () => void;
 }
-export default function ResultVotingGroup({ typeSystem, tour_num, voter, onHover, onLeave }: ResultVotingGroupProps) {
+export default function ResultVotingGroup({ typeSystem, tour_num, voter, onActiveVoter, onHover, onLeave }: ResultVotingGroupProps) {
     const firstVoter = useGetVoterByVoterId(voter.id);
     const candidate = useGetPresidentCandidateById(voter.voting_systems_presidential[typeSystem]?.[`tour_${tour_num}`]);
     if (!firstVoter) return;
@@ -39,7 +40,10 @@ export default function ResultVotingGroup({ typeSystem, tour_num, voter, onHover
                     r={size / 2}
                     fill={color}
                     stroke={"var(--shadow2)"}
-                    onMouseEnter={(e) => onHover(voter, e)}
+                    onMouseEnter={(e) => {
+                        onHover(voter, e);
+                        onActiveVoter(firstVoter.details_descr.peopleCount);
+                    }}
                     onMouseMove={(e) => onHover(voter, e)}
                     onMouseLeave={onLeave}
                 />

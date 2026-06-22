@@ -8,7 +8,7 @@ import type { UUID } from "../../../../../types/general";
 import type { Region } from "../../../../../types/region";
 import type { VoterPresidentialResult } from "../../../../../types/results";
 import { TEXT_REGIONS } from "../../../../../ui/region_messages";
-import { PROBABILITY_TAKE_PART_TEXT, RESULT_CHART } from "../../../../../ui/result-messages";
+import { PEOPLE_COUNT, PROBABILITY_TAKE_PART_TEXT, RESULT_CHART } from "../../../../../ui/result-messages";
 
 import ResultVotingGroup from "./ResultVotingGroup";
 
@@ -24,8 +24,13 @@ interface ResultMapByToursProps {
 export default function ResultMapByTours({ tour_num, countryId, voters_by_regions, activeTab, us_like_regions }: ResultMapByToursProps) {
     const [hoveredVoter, setHoveredVoter] = useState<VoterPresidentialResult | null>(null);
     const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+    const [peopleCount, setPeopleCount] = useState(0);
     const regions = useGetRegionsByCountryId(countryId);
     const candidates = useGetPresidentCandidateByCountryId(countryId);
+
+    const handleSelectVoter = (peopleCount: number) => {
+        setPeopleCount(peopleCount);
+    };
     return (
         <>
             <div className={styles["map-tour-container"]}>
@@ -71,6 +76,7 @@ export default function ResultMapByTours({ tour_num, countryId, voters_by_region
                         voters.map((voter) => (
                             <ResultVotingGroup key={`result_voter_${voter.id}`} typeSystem={activeTab} tour_num={tour_num}
                                 voter={voter}
+                                onActiveVoter={handleSelectVoter}
                                 onHover={(v, e) => {
                                     setHoveredVoter(v);
                                     setTooltipPos({ x: e.clientX, y: e.clientY });
@@ -99,6 +105,7 @@ export default function ResultMapByTours({ tour_num, countryId, voters_by_region
                         className={styles["result-voter-popup"]}>
                         <div>{hoveredVoter.name}</div>
                         <div>{PROBABILITY_TAKE_PART_TEXT} {hoveredVoter.probability_take_part.toFixed(2)}%</div>
+                        <div>{PEOPLE_COUNT} {peopleCount}</div>
                     </div>
                 )}
             </div>

@@ -62,11 +62,22 @@ class RCV(ElectionSystem, AnotherTour):
         for cand_id, res in candidate_result.items():
             if res >= pass_num:
                 return False, []
-        new_without_last = sorted(
-            candidate_result.items(), key=lambda item: item[1], reverse=True
-        )[: candidate_result.__len__() - 1]
 
-        new_ids = [cand_id for cand_id, _ in new_without_last]
+        sorted_candidates = sorted(
+            candidate_result.items(),
+            key=lambda x: x[1],
+            reverse=True,
+        )
+
+        non_zero = [(cid, res) for cid, res in sorted_candidates if res > 0]
+
+        if not non_zero:
+            return False, []
+
+        if len(non_zero) == 1:
+            return False, []
+
+        new_ids = [cid for cid, _ in non_zero[:-1]]
         return True, new_ids
 
     def next_calculation(
