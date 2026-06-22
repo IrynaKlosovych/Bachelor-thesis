@@ -1,0 +1,35 @@
+.delete-button {
+    box-sizing: border-box;
+    width: 87px;
+    height: 100px;
+    background: transparent;
+    border: none;
+    padding: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+}
+.delete-icon {
+    width: 87px;
+    height: 100px;
+    display: block;
+}
+
+.delete-icon .icon-bg {
+    fill: var(--rose-brown)
+}
+
+.delete-icon .icon-shape {
+    fill: var(--peach-dust)
+}
+
+.delete-icon:hover .icon-bg {
+    fill: var(--peach-dust)
+}
+
+.delete-icon:hover .icon-shape {
+    fill: var(--rose-brown)
+}

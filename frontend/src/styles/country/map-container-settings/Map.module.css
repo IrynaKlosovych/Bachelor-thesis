@@ -1,0 +1,187 @@
+.map-popup-choose-safety {
+    box-sizing: border-box;
+    position: fixed;
+    width: 80px;
+    top: 100px;
+    left: 4px;
+    background: var(--rose-brown);
+    border: none;
+    padding: 10px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.map-popup-choose-safety>button {
+    height: 35px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.safety-level-button-1 {
+    background-color: var(--pink-lemonade)
+}
+
+.safety-level-button-2 {
+    background-color: var(--mango-mojito)
+}
+
+.safety-level-button-3 {
+    background-color: var(--blazing-yellow)
+}
+
+.safety-level-button-4 {
+    background-color: var(--shifting-sand)
+}
+
+.safety-level-button-5 {
+    background-color: var(--almost-aqua)
+}
+
+.safety-level-path-1 {
+    fill: var(--pink-lemonade)
+}
+
+.safety-level-path-2 {
+    fill: var(--mango-mojito)
+}
+
+.safety-level-path-3 {
+    fill: var(--blazing-yellow)
+}
+
+.safety-level-path-4 {
+    fill: var(--shifting-sand)
+}
+
+.safety-level-path-5 {
+    fill: var(--almost-aqua)
+}
+
+.map-popup-choose-safety>.close-button {
+    background-color: transparent;
+    color: var(--peach-dust);
+    border: 1px solid var(--peach-dust);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+path {
+    cursor: pointer;
+}
+
+.safety-level-button {
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.safety-level-button:hover {
+    transform: translateY(-2px);
+}
+
+.safety-level-button-1:hover {
+    box-shadow:
+        0 4px 12px var(--pink-lemonade)
+}
+
+.safety-level-button-2:hover {
+    box-shadow:
+        0 4px 12px var(--mango-mojito)
+}
+
+.safety-level-button-3:hover {
+    box-shadow:
+        0 4px 12px var(--blazing-yellow)
+}
+
+.safety-level-button-4:hover {
+    box-shadow:
+        0 4px 12px var(--shifting-sand)
+}
+
+.safety-level-button-5:hover {
+    box-shadow:
+        0 4px 12px var(--almost-aqua)
+}
+
+.map-popup-choose-safety>.close-button:hover {
+    transform: rotate(15deg);
+
+    box-shadow:
+        0 0 10px var(--peach-dust);
+}
+
+.active-region {
+    stroke: var(--scarlet-smile);
+    stroke-width: 2;
+    filter: drop-shadow(0 0 3px var(--shadow2));
+    animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        filter: drop-shadow(0 0 2px var(--pulse-shadow1));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 8px var(--pulse-shadow2));
+    }
+
+    100% {
+        filter: drop-shadow(0 0 2px var(--pulse-shadow3));
+    }
+}
+
+.popup {
+    box-sizing: border-box;
+    position: fixed;
+    top: 4px;
+    left: 88px;
+    height: 92px;
+    background: var(--blue-fusion);
+    border: none;
+    padding: 6px 10px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.popup>div {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex: 1
+}
+
+.popup>div>div {
+    text-align: center;
+    align-content: center;
+    color: var(--orchid-tint)
+}
+
+.popup button {
+    box-sizing: border-box;
+    cursor: pointer;
+
+    border: 4px solid var(--scarlet-smile);
+    border-radius: 10px;
+
+    padding: 4px;
+    flex: 1;
+    background: var(--scarlet-smile);
+    color: var(--raindrops-on-roses);
+}
+
+.popup button:hover {
+    background: var(--raindrops-on-roses);
+    color: var(--scarlet-smile);
+}
+
+.popup>div>button:hover {
+    border: 4px solid var(--raindrops-on-roses);
+}

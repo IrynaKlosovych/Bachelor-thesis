@@ -1,0 +1,5 @@
+model,test_mae,test_r2,mse,evs
+Multi_RandomForestRegressor,1.593,0.503,7.706,0.503
+Chain_RandomForestRegressor,1.591,0.505,7.825,0.505
+Multi_HistGradientBoostingRegressor,1.568,0.516,7.364,0.516
+Chain_HistGradientBoostingRegressor,1.565,0.517,7.447,0.517

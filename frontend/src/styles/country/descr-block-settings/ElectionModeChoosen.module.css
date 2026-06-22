@@ -1,0 +1,79 @@
+.election-mode-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 12px;
+}
+
+.election-mode-block>div {
+    font-family: 'Roboto Slab';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 130%;
+
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: var(--text);
+}
+
+.election-mode-block>select {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 7px 16px;
+    gap: 8px;
+
+    width: 160px;
+    height: fit-content;
+
+    background: var(--amberlight);
+    border: 4px solid var(--mango-mojito);
+    box-shadow: 4px 4px 4px var(--shadow1);
+    border-radius: 16px;
+    cursor: pointer;
+
+    font-family: 'Roboto Slab';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 130%;
+
+    color: var(--stretch-limo);
+}
+
+.election-mode-block>::picker(select) {
+    border: 2px solid var(--coral-haze);
+    border-radius: 8px;
+    position: relative;
+    top: -48px;
+    left: 150px;
+    overflow: scroll;
+    scrollbar-width: none;
+}
+
+.election-mode-block>select::after {
+    box-sizing: border-box;
+    content: "";
+    width: 12px;
+    height: 100%;
+    transition: transform 0.2s ease;
+
+    pointer-events: none;
+
+    background-image: url("../../../assets/chevron.svg");
+
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.election-mode-block>select.open::after {
+    transform: rotate(180deg);
+}

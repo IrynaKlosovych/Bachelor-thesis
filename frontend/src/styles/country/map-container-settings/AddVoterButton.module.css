@@ -1,0 +1,9 @@
+.button-add-voter {
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    top: -4px;
+    left:-4px
+}

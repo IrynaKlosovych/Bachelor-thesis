@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+
+import DefaultLayout from './components/windowSize/DefaultLayout';
+import ScreenSizeWarning from './components/windowSize/ScreenSizeWarning';
+import { SCREEN } from "./constants/screen";
+import useWindowWidth from "./hooks/screen/useWindowWidth";
+import { initAutoSave, useAutoLoad } from "./utils/simulationStorage";
+
+import styles from '../src/styles/App.module.css';
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const width = useWindowWidth();
+  const isBlocked = width < SCREEN.MIN_WORKING_WIDTH_PX;
+  useEffect(() => {
+    if (isBlocked) {
+      (document.activeElement as HTMLElement | null)?.blur();
+    }
+  }, [isBlocked]);
+  useEffect(() => {
+    initAutoSave();
+  }, []);
+  useAutoLoad();
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <ToastContainer
+        autoClose={false}
+        closeOnClick={false} />
+      <div data-testid="warning"
+        aria-hidden={!isBlocked}
+        className={isBlocked ? styles.block : styles.hidden}>
+        <ScreenSizeWarning />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <div data-testid="layout"
+        aria-hidden={isBlocked}
+        className={isBlocked ? styles.hidden : styles.block}>
+        <DefaultLayout></DefaultLayout>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

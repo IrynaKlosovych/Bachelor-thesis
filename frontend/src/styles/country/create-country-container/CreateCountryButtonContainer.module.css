@@ -1,0 +1,28 @@
+.button-create-country-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    padding: 1rem 0;
+    box-sizing: border-box;
+}
+
+.button-create-country-container>div {
+    display: flex;
+    flex-direction: row;
+    width: 75%;
+    align-content: center;
+}
+
+
+.button-create-country-container>div>div {
+    width: 50%;
+    align-content: center;
+}
+
+.button-create-country-container>div>div:last-child {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}

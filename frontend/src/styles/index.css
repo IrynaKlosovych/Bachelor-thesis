@@ -1,0 +1,89 @@
+:root {
+    /*base*/
+    --cloud-dancer: #F0EEE9;
+    /*safety-levels*/
+    /*1*/
+    --pink-lemonade: #EE6E8B;
+    /*2*/
+    --mango-mojito: #D79D31;
+    /*3*/
+    --blazing-yellow: #FEE815;
+    /*4*/
+    --shifting-sand: #D8C0AD;
+    /*5*/
+    --almost-aqua: #C9D3C0;
+
+    /*voters group state fill*/
+    /*not*/
+    --bordeaux: #97637C;
+    /*almost*/
+    --papaya: #FFA266;
+    /*ready*/
+    --tea: #9A9B86;
+
+    /*shadows*/
+    --shadow1: rgba(0, 0, 0, 0.25);
+    --shadow2: rgba(0, 0, 0, 0.5);
+    --pulse-shadow1: rgba(159, 35, 54, 0.4);
+    --pulse-shadow2: rgba(159, 35, 54, 0.8);
+    --pulse-shadow3: rgba(159, 35, 54, 0.4);
+
+    /*some text*/
+    --text: #000000;
+    /*other*/
+    --veiled-vista: #C7E4CA;
+    --baltic-sea: #79B6D8;
+    --golden-mist: #D6CD95;
+    --quiet-violet: #A793AC;
+    --cloud-cover: #9A9393;
+    --hematite: #756F6A;
+    --blue-fusion: #4A6275;
+    --lemon-icing: #F5EBC8;
+    --nimbus-cloud: #D5D5D7;
+    --raindrops-on-roses: #EBD8DC;
+    --ice-melt: #D4E4F1;
+    --peach-dust: #F0D9CC;
+    --orchid-tint: #DBD3DC;
+    --stretch-limo: #2B2C30;
+    --scarlet-smile: #9F2336;
+    --dragonfly: #2A5D69;
+    --graphite: #55543B;
+    --satin-slipper: #948A76;
+    --micron: #646667;
+    --iced-coffee: #B28F6B;
+    --cocoa-creme: #876D58;
+    --caramel: #C37C54;
+    --nantucket-breeze: #B7D0EA;
+    --alaskan-blue: #6EA9D2;
+    --cosmic-sky: #AAABC4;
+    --aqua-gray: #A6B2A9;
+    --regatta: #497AB7;
+    --rinsing-rivulet: #5DC6C3;
+    --dusky-citron: #E4CC82;
+    --coral-haze: #E38E84;
+    --mountain-trail: #8A756A;
+    --amberlight: #E3BEA2;
+    --ashes-of-roses: #B5ACAB;
+    --woodrose: #AE8C8E;
+    --rose-brown: #80565B;
+    --iris-orchid: #A867A4;
+    --capri: #45BBCA;
+    --kiwi-colada: #BDCA24;
+    --sunny-lime: #E0EE88;
+    --bright-marigold: #FF8E00;
+    --paradise-pink: #E4465E;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body {
+    background-color: var(--cloud-dancer);
+}
+
+button {
+    appearance: none;
+}

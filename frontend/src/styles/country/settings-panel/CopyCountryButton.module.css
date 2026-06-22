@@ -1,0 +1,36 @@
+.copy-button {
+    box-sizing: border-box;
+    width: 88px;
+    height: 100px;
+    background: transparent;
+    border: none;
+    padding: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+}
+
+.copy-icon {
+    width: 88px;
+    height: 100px;
+    display: block;
+}
+
+.copy-icon .icon-bg {
+    fill: var(--rose-brown);
+}
+
+.copy-icon .icon-shape {
+    fill: var(--peach-dust)
+}
+
+.copy-icon:hover .icon-bg {
+    fill: var(--peach-dust);
+}
+
+.copy-icon:hover .icon-shape {
+    fill: var(--rose-brown)
+}
