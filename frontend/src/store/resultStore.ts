@@ -1,8 +1,7 @@
 import { create } from "zustand";
 
-import type { ElectionMode } from "../types/country";
 import type { UUID } from "../types/general";
-import type { ParliamentaryResult,PresidentialResult } from "../types/results";
+import type { ParliamentaryResult, PresidentialResult } from "../types/results";
 
 interface ResultStore {
     presidential_result: Record<UUID, PresidentialResult>,
@@ -12,7 +11,15 @@ interface ResultStore {
         electionMode: T,
         results: ElectionResultsMap[T]
     ) => void;
-    getResults: (countryId: UUID, electionMode: ElectionMode) => PresidentialResult | ParliamentaryResult;
+    getPresidentialResults: (
+        countryId: UUID
+    ) => PresidentialResult;
+    getParliamentaryResults: (
+        countryId: UUID
+    ) => ParliamentaryResult;
+    deleteResults: <T extends keyof ElectionResultsMap>(
+        countryId: UUID,
+        electionMode: T) => void;
 }
 type ElectionResultsMap = {
     presidential: PresidentialResult;
@@ -28,23 +35,45 @@ export const useResultStore = create<ResultStore>((set, get) => ({
                 return {
                     presidential_result: {
                         ...state.presidential_result,
-                        [countryId]: results
+                        [countryId]: results as PresidentialResult
                     }
                 };
             }
             return {
                 parliamentary_results: {
                     ...state.parliamentary_results,
-                    [countryId]: results
+                    [countryId]: results as ParliamentaryResult
                 }
             };
         });
     },
 
-    getResults: (countryId, electionMode) => {
-        if (electionMode === "parliamentary") {
-            return get().parliamentary_results[countryId];
-        }
+    getPresidentialResults: (countryId
+    ) => {
         return get().presidential_result[countryId];
+    },
+
+    getParliamentaryResults: (countryId) => {
+        return get().parliamentary_results[countryId];
+    },
+
+    deleteResults: (countryId, electionMode) => {
+        set((state) => {
+            if (electionMode === "presidential") {
+                return {
+                    presidential_result: Object.fromEntries(
+                        Object.entries(state.presidential_result)
+                            .filter(([id]) => id !== countryId)
+                    ),
+                };
+            }
+
+            return {
+                parliamentary_results: Object.fromEntries(
+                    Object.entries(state.parliamentary_results)
+                        .filter(([id]) => id !== countryId)
+                ),
+            };
+        });
     }
 }));

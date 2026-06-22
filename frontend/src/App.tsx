@@ -5,6 +5,7 @@ import DefaultLayout from './components/windowSize/DefaultLayout';
 import ScreenSizeWarning from './components/windowSize/ScreenSizeWarning';
 import { SCREEN } from "./constants/screen";
 import useWindowWidth from "./hooks/screen/useWindowWidth";
+import { initAutoSave, useAutoLoad } from "./utils/simulationStorage";
 
 import styles from '../src/styles/App.module.css';
 
@@ -16,7 +17,10 @@ function App() {
       (document.activeElement as HTMLElement | null)?.blur();
     }
   }, [isBlocked]);
-
+  useEffect(() => {
+    initAutoSave();
+  }, []);
+  useAutoLoad();
   return (
     <>
       <ToastContainer

@@ -19,8 +19,9 @@ import Map from "./map-container-settings/Map";
 import VotersTable from "./map-container-settings/VotersTable";
 import NoResultYet from "./results-panel/NoResultYet";
 import ParliamentarySendButton from "./results-panel/parliamentary-elems/ParliamentarySendButton";
+import ResultParliamentaryPanel from "./results-panel/parliamentary-elems/ResultParliamentaryPanel";
 import PresidentialSendButton from "./results-panel/presidential-elems/PresidentialSendButton";
-import ResultPanel from "./results-panel/ResultPanel";
+import ResultPresidentialPanel from "./results-panel/presidential-elems/ResultPresidentialPanel";
 import CopyCountryButton from "./settings-panel/CopyCountryButton";
 import CountryNameInput from "./settings-panel/CountryNameInput";
 import DeleteCountryButton from "./settings-panel/DeleteCountryButton";
@@ -127,11 +128,9 @@ export default function CountryLayout({ id, label }: CountryLayoutProps) {
                 </div>
                 <div className={styles["results-container"]}>
                     {country.electionMode === ELECTION_MODE_SETTINGS.presidential.key && resultExists ?
-                        <ResultPanel countryId={country.id}
-                            electionMode={country.electionMode}></ResultPanel> :
+                        <ResultPresidentialPanel countryId={country.id} /> :
                         country.electionMode === ELECTION_MODE_SETTINGS.parliamentary.key && resultExists ?
-                            <ResultPanel countryId={country.id}
-                                electionMode={country.electionMode}></ResultPanel> :
+                            <ResultParliamentaryPanel countryId={country.id} /> :
                             <NoResultYet></NoResultYet>}
                 </div>
             </div>

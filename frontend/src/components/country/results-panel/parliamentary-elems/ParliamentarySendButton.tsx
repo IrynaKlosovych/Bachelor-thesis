@@ -74,7 +74,6 @@ export default function ParliamentarySendButton({ countryId }: ParliamentarySend
     return (
         <>
             <SendButton
-                country={country}
                 handleSend={handleSend}
             ></SendButton>
         </>

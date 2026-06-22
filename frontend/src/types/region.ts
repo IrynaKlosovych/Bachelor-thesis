@@ -18,11 +18,3 @@ export interface Region {
     safety_level: SafetyLevel;
     seats: number;
 }
-
-export interface RegionResult{
-    id: UUID;
-    countryId: UUID;
-    regionKeyName: RegionKeyName;
-    displayInTable: string,
-    component_id: RegionComponentId;
-}

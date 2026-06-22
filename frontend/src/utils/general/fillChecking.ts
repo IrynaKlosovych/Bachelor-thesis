@@ -1,9 +1,10 @@
 import { BALANCE_RULES } from "../../constants/country";
+import { useCandidateStore } from "../../store/candidateStore";
 import type { BasePersonCandidate, PartyCandidate, PartyPersonCandidate } from "../../types/candidate";
 import type { Country } from "../../types/country";
 import type { Region } from "../../types/region";
 import type { VotingGroup } from "../../types/voter";
-import { AGE_AND_SEX_DISTRIBUTION_ERROR, BALANCED_DISTRIBUTION_ERROR,COUNTRY_HAS_NO_DESCRIPTION_ERROR, ELECTION_RAITING_COUNTRY_SUM_ERROR, EMPTY_REGIONS_ERROR, NOT_ALL_CANDIDATES_ARE_FILLED_ERROR, NOT_ALL_VOTERS_ARE_FILLED_ERROR } from "../../ui/error_messages";
+import { AGE_AND_SEX_DISTRIBUTION_ERROR, BALANCED_DISTRIBUTION_ERROR, CANDIDATE_AND_SEATS_BY_REGIONS_MISMATCH_ERROR, COUNTRY_HAS_NO_DESCRIPTION_ERROR, ELECTION_RAITING_COUNTRY_SUM_ERROR, ELECTION_RAITING_REGION_SUM_ERROR, EMPTY_REGIONS_ERROR, NOT_ALL_CANDIDATES_ARE_FILLED_ERROR, NOT_ALL_PARTIES_ARE_FILLED_ERROR, NOT_ALL_VOTERS_ARE_FILLED_ERROR } from "../../ui/error_messages";
 import { VOTERS_SETTINGS_TABLE } from "../../ui/voters-settings-table";
 
 function isCountryFill(country: Country): boolean {
@@ -23,11 +24,29 @@ function isPresidentialCandidatesFill(candidates: BasePersonCandidate[]): boolea
     );
 }
 
-function isPartyFill() {
-    /*later */
+function isPartyFill(candidates: PartyCandidate[]) {
+    return candidates.length >= BALANCE_RULES.minCandidates && candidates.every(candidate =>
+        candidate.name !== "" &&
+        candidate.experience !== "" &&
+        candidate.promise !== ""
+    );
 }
-function isPartyCandidatesFill() {
-    /*later */
+function isPartyCandidatesFill(candidates: PartyPersonCandidate[], regions: Region[]) {
+    return regions.every((region) => {
+        const regCand = candidates.filter(
+            (candidate) => candidate.regionId === region.id
+        );
+
+        return (
+            regCand.length >= BALANCE_RULES.minCandidates + region.seats - 1 &&
+            regCand.every(
+                (candidate) =>
+                    candidate.name !== "" &&
+                    candidate.experience !== "" &&
+                    candidate.promise !== ""
+            )
+        );
+    });
 }
 
 function checkPresidentElectionSum(candidates: BasePersonCandidate[]): boolean {
@@ -38,12 +57,21 @@ function checkPresidentElectionSum(candidates: BasePersonCandidate[]): boolean {
     return sum === BALANCE_RULES.candidateTotal;
 }
 
-function checkPartyElectionSum() {
-    /*later */
+function checkPartyElectionSum(candidates: PartyCandidate[]) {
+    let sum = 0;
+    candidates.map((candidate) => {
+        sum += candidate.election_rating;
+    });
+    return sum === BALANCE_RULES.candidateTotal;
 }
 
-function checkPartyPersonsByRegionsElectionSum() {
-    /*later */
+function checkPartyPersonsByRegionsElectionSum(candidates: PartyPersonCandidate[], regions: Region[]) {
+    return regions.every(region =>
+        candidates
+            .filter(candidate => candidate.regionId === region.id)
+            .reduce((sum, candidate) => sum + candidate.election_rating, 0)
+        === BALANCE_RULES.candidateTotal
+    );
 }
 
 function checkAgeAndSexInCountry(voters: VotingGroup[]): boolean {
@@ -138,8 +166,15 @@ function hasBalancedDistribution(voters: VotingGroup[]): boolean {
     return true;
 }
 
-function checkCandidatesAndSeatsInRegions() {
-    /*later */
+function checkCandidatesAndSeatsInRegions(candidates: PartyCandidate[], regions: Region[]) {
+    return candidates.every((candidate) => {
+        const usedSeats =
+            useCandidateStore.getState().getUsedPartyPersonRegionsSeats(candidate.id);
+
+        return regions.every(
+            (region) => region.seats >= (usedSeats[region.id] ?? 0)
+        );
+    });
 }
 
 export function defaultChecking(country: Country, regions: Region[], voters: VotingGroup[]) {
@@ -171,12 +206,15 @@ export function fillCheckingPresidentMode(country: Country, regions: Region[], v
 export function fillCheckingParliamentMode(country: Country, regions: Region[], voters: VotingGroup[], candidatesParty: PartyCandidate[], partyPersons: PartyPersonCandidate[]) {
     const messages = defaultChecking(country, regions, voters);
 
-    isPartyFill();
-    isPartyCandidatesFill();
-    checkPartyElectionSum();
-    checkPartyPersonsByRegionsElectionSum();
-    checkCandidatesAndSeatsInRegions();
-    console.log(candidatesParty)
-    console.log(partyPersons)
+    if (!isPartyFill(candidatesParty))
+        messages.push(NOT_ALL_PARTIES_ARE_FILLED_ERROR);
+    if (!isPartyCandidatesFill(partyPersons, regions))
+        messages.push(NOT_ALL_CANDIDATES_ARE_FILLED_ERROR);
+    if (!checkPartyElectionSum(candidatesParty))
+        messages.push(ELECTION_RAITING_COUNTRY_SUM_ERROR);
+    if (!checkPartyPersonsByRegionsElectionSum(partyPersons, regions))
+        messages.push(ELECTION_RAITING_REGION_SUM_ERROR);
+    if (!checkCandidatesAndSeatsInRegions(candidatesParty, regions))
+        messages.push(CANDIDATE_AND_SEATS_BY_REGIONS_MISMATCH_ERROR);
     return messages;
 }

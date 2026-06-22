@@ -197,6 +197,6 @@
     display: flex;
 }
 
-.results-container>div {
+.results-container div {
     width: 100%;
 }
