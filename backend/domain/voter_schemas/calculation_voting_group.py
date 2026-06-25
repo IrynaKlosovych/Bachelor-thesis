@@ -1,11 +1,13 @@
 from typing import Optional
 from uuid import UUID
+import numpy as np
 
 from domain.candidate_schemas.candidates_rank import CandidatesRank
 from domain.country_schemas.country_metrics import CountryMetrics
 from domain.region_schemas.types import SafetyLevel
 from domain.voter_schemas.voter_preferences import VoterPreferences
 from domain.voter_schemas.voting_group import VotingGroup
+from helpers.normalize import normalize
 
 
 class CalculationVotingGroup(VotingGroup):
@@ -31,29 +33,29 @@ class CalculationVotingGroup(VotingGroup):
 
     def update_preferences(self, voter_result):
         self.preferences = VoterPreferences(
-            understand_government_institutions=voter_result[0],
-            believe_government_institutions=voter_result[1],
-            every_person_is_expert=voter_result[2],
-            probability_take_part=voter_result[3],
-            candidate_positive_importance=voter_result[4],
-            candidate_negative_fair_importance=voter_result[5],
-            like_easy_decision=voter_result[6],
-            like_strong_leader_over_law=voter_result[7],
-            person_or_government_importance=voter_result[8],
+            understand_government_institutions=np.clip(voter_result[0], 0, 10),
+            believe_government_institutions=np.clip(voter_result[1], 0, 10),
+            every_person_is_expert=np.clip(voter_result[2], 1, 5),
+            probability_take_part=np.clip(voter_result[3], 0, 100),
+            candidate_positive_importance=np.clip(voter_result[4], 0, 10),
+            candidate_negative_fair_importance=np.clip(voter_result[5], 0, 10),
+            like_easy_decision=np.clip(voter_result[6], 0, 10),
+            like_strong_leader_over_law=np.clip(voter_result[7], 1, 5),
+            person_or_government_importance=np.clip(voter_result[8], 0, 10),
         )
 
     def get_ideal_vector(self):
         if self.preferences is None:
             raise RuntimeError("Preferences not initialized")
         return [
-            self.preferences.candidate_positive_importance,
-            self.preferences.candidate_negative_fair_importance,
-            10 - self.preferences.like_easy_decision,
-            self.preferences.like_strong_leader_over_law,
-            self.preferences.understand_government_institutions,
-            5 - self.preferences.every_person_is_expert,
-            self.preferences.person_or_government_importance,
-            self.preferences.believe_government_institutions,
+            normalize(self.preferences.candidate_positive_importance, 0, 10),
+            normalize(self.preferences.candidate_negative_fair_importance, 0, 10),
+            normalize(self.preferences.like_easy_decision, 0, 10, invert=True),
+            normalize(self.preferences.like_strong_leader_over_law, 1, 5),
+            normalize(self.preferences.understand_government_institutions, 0, 10),
+            normalize(self.preferences.every_person_is_expert, 1, 5, invert=True),
+            normalize(self.preferences.person_or_government_importance, 0, 10),
+            normalize(self.preferences.believe_government_institutions, 0, 10),
         ]
 
     def set_president_candidates_rank(self, voter_result):

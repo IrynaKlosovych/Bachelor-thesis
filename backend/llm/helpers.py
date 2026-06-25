@@ -36,11 +36,12 @@ def get_client():
 
 def call_llm(client, prompt: str, max_tokens: int = 300) -> dict | list | None:
     from google.genai import types
+
     models = [
         "gemini-2.5-flash-lite",
         "gemini-3.1-flash-lite",
     ]
-    max_attempts = 5
+    max_attempts = 3
     for model in models:
         print(f"[LLM] Trying model: {model}")
         for attempt in range(max_attempts):
@@ -68,15 +69,7 @@ def call_llm(client, prompt: str, max_tokens: int = 300) -> dict | list | None:
                     or "429" in error
                     or "RESOURCE_EXHAUSTED" in error
                 ):
-                    wait_time = min(2**attempt, 30)
-
-                    print(
-                        f"[LLM] API unavailable "
-                        f"(attempt {attempt + 1}/{max_attempts}), "
-                        f"retrying in {wait_time}s..."
-                    )
-
-                    time.sleep(wait_time)
+                    time.sleep(1)
                     continue
                 print(f"[LLM] API call failed: {e}")
                 break

@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from helpers.normalize import normalize
 
 
 class CandidateScores(BaseModel):
@@ -12,14 +13,14 @@ class CandidateScores(BaseModel):
     # 0 = complex nuanced policy,     10 = simple slogans only
     program_simplicity: float = Field(ge=0, le=10)
     # leadership_strength
-    # 1 = consensus/democratic,       5 = strong authoritarian leader
-    leadership_strength: float = Field(ge=1, le=5)
+    # 0 = consensus/democratic,       10 = strong authoritarian leader
+    leadership_strength: float = Field(ge=0, le=10)
     # institutional_competence
     # 0 = no government experience,  10 = deep institutional expertise
     institutional_competence: float = Field(ge=0, le=10)
     # anti_populism
-    # 1 = full populist,              5 = expert-driven, zero populism
-    anti_populism: float = Field(ge=1, le=5)
+    # 0 = full populist,              10 = expert-driven, zero populism
+    anti_populism: float = Field(ge=0, le=10)
     # social_focus
     # 0 = free market/individual,     10 = social programs/government role
     social_focus: float = Field(ge=0, le=10)
@@ -29,12 +30,12 @@ class CandidateScores(BaseModel):
 
     def as_vector(self):
         return [
-            self.media_positive,
-            self.transparency,
-            self.program_simplicity,
-            self.leadership_strength,
-            self.institutional_competence,
-            self.anti_populism,
-            self.social_focus,
-            self.rule_of_law,
+            normalize(self.media_positive, 0, 10),
+            normalize(self.transparency, 0, 10),
+            normalize(self.program_simplicity, 0, 10),
+            normalize(self.leadership_strength, 0, 10),
+            normalize(self.institutional_competence, 0, 10),
+            normalize(self.anti_populism, 0, 10),
+            normalize(self.social_focus, 0, 10),
+            normalize(self.rule_of_law, 0, 10),
         ]

@@ -12,21 +12,69 @@ from llm.helpers import call_llm, clamp, get_client
 from llm.ml_config import CAND_AXES, CAND_DEFAULTS, CAND_FIELD_RANGES
 
 PROMPT_TEMPLATE = """You are a political analyst. Rate each candidate based on their profile.
+You are given a set of political candidates described by their public statements, promises, and actions.
+
+Your task is NOT to rate each candidate independently.
+
+Instead, you MUST compare candidates against each other and distribute them across each dimension.
 
 Candidates:
 {candidates_text}
 
-For each candidate rate these dimensions:
-  media_positive:           0=mostly negative coverage,   10=overwhelmingly positive
-  transparency:             0=opaque/hides information,   10=fully transparent
-  program_simplicity:       0=complex nuanced policy,     10=simple slogans only
-  leadership_strength:      1=consensus/democratic,       5=strong authoritarian leader
-  institutional_competence: 0=no government experience,  10=deep institutional expertise
-  anti_populism:            1=full populist,              5=expert-driven, zero populism
-  social_focus:             0=free market/individual,     10=social programs/government role
-  rule_of_law:              0=opposes or distrusts institutions,      10=strongly supports institutions
+----------------------------
+CORE PRINCIPLE
+----------------------------
+You MUST compare candidates ONLY within this set.
+Scores are RELATIVE and CONTEXTUAL to these candidates only.
 
-Return ONLY a valid JSON array. Each object must have the candidate id and all 8 scores.
+However:
+- Do NOT force artificial spread
+- Do NOT exaggerate small differences
+- Do NOT assume missing information
+
+----------------------------
+SCORING RULES
+----------------------------
+
+1. Evidence-based scoring (STRICT)
+- Every score must be justified by explicit or strongly implied text evidence.
+- If evidence is weak → use neutral values around 4–6.
+
+2. Natural distribution
+- Use full 0–10 scale ONLY when clearly supported.
+- Similar candidates SHOULD have similar scores.
+
+3. No forced extremes
+- Do NOT artificially assign minimum or maximum values.
+- Values <3 or >8.5 require strong textual signals.
+
+4. Stability rule
+- If two candidates are similarly described, differences must be small (<1.5 points per dimension).
+
+5. Anti-hallucination constraint
+- If information is missing → default to 5.0, not extreme guesses.
+
+----------------------------
+IMPORTANT NORMALIZATION ASSUMPTION
+----------------------------
+Treat 5.0 as "unknown / neutral baseline".
+- 5.0 = no strong evidence
+- 3–4 = weak negative signal
+- 6–7 = weak positive signal
+- 1–2 or 8–9 = strong evidence required
+
+
+For each candidate rate these dimensions:
+  media_positive:           0.0=mostly negative coverage,   10.0=overwhelmingly positive
+  transparency:             0.0=opaque/hides information,   10.0=fully transparent
+  program_simplicity:       0.0=complex nuanced policy,     10.0=simple slogans only
+  leadership_strength:      0.0=consensus/democratic,       10.0=strong authoritarian leader
+  institutional_competence: 0.0=no government experience,  10.0=deep institutional expertise
+  anti_populism:            0.0=full populist,              10.0=expert-driven, zero populism
+  social_focus:             0.0=free market/individual,     10.0=social programs/government role
+  rule_of_law:              0.0=opposes or distrusts institutions,      10.0=strongly supports institutions
+
+Return a JSON array of objects. Each value must be a real number with decimal precision. Each object must have the candidate id and all 8 scores.
 No explanation, no markdown, no code fences.
 
 [{{"id": "<candidate_id>", "media_positive": <n>, "transparency": <n>, "program_simplicity": <n>, "leadership_strength": <n>, "institutional_competence": <n>, "anti_populism": <n>, "social_focus": <n>, "rule_of_law": <n>}}]"""

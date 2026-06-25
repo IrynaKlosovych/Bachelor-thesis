@@ -2,7 +2,7 @@ from uuid import UUID
 
 import numpy as np
 import pandas as pd
-from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances
 
 from domain.candidate_schemas.candidate_scores import CandidateScores
 from domain.candidate_schemas.types import CandidateScoresMap
@@ -38,6 +38,20 @@ def predict_ideal_voter_vectors_by_regions(
     return voters_by_regions
 
 
+WEIGHTS = np.array(
+    [
+        1.2,  # media_positive
+        1.5,  # transparency (дуже важливо)
+        1.0,  # program_simplicity
+        1.3,  # leadership_strength
+        1.6,  # institutional_competence
+        1.4,  # anti_populism
+        1.0,  # social_focus
+        1.8,  # rule_of_law (критично)
+    ]
+)
+
+
 def _predict_candidate_voter_similarity(
     voter: CalculationVotingGroup, candidate: CandidateScores
 ):
@@ -45,7 +59,9 @@ def _predict_candidate_voter_similarity(
     cand_vector = candidate.as_vector()
     v1 = np.array(voter_vector).reshape(1, -1)
     v2 = np.array(cand_vector).reshape(1, -1)
-    return cosine_similarity(v1, v2)[0][0]
+
+    score = cosine_similarity(v1, v2)[0][0]
+    return score
 
 
 def _predict_candidates_for_voter(voter, candidates):
