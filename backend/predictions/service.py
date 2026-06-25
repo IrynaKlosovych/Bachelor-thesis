@@ -2,21 +2,34 @@ from uuid import UUID
 
 import numpy as np
 import pandas as pd
-from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances
+from sklearn.metrics.pairwise import cosine_similarity
 
 from domain.candidate_schemas.candidate_scores import CandidateScores
 from domain.candidate_schemas.types import CandidateScoresMap
 from domain.voter_schemas.calculation_voting_group import (
     CalculationVotingGroup,
 )
-from predictions.helpers import add_priorities
+from predictions.helpers import (
+    add_priorities,
+    normalize_axes,
+    sample_calibrated_preference,
+    sample_voter_prediction,
+)
 from predictions.load_model import load_model
+from predictions.ml_config import ENABLE_REAL_CALIBRATION, ENABLE_VOTER_SAMPLING
 
-ML_MODEL = load_model()
+_ML_MODEL = None
+
+
+def _get_model():
+    global _ML_MODEL
+    if _ML_MODEL is None:
+        _ML_MODEL = load_model()
+    return _ML_MODEL
 
 
 def _predict(df):
-    return ML_MODEL.predict(df)
+    return _get_model().predict(df)
 
 
 def _predict_ideal_voter_vectors(
@@ -26,6 +39,10 @@ def _predict_ideal_voter_vectors(
         row = voter.voter_to_ml_row()
         df = pd.DataFrame([row])
         voter_result = _predict(df)[0]
+        if ENABLE_REAL_CALIBRATION:
+            voter_result = sample_calibrated_preference(voter_result, voter.id.int)
+        elif ENABLE_VOTER_SAMPLING:
+            voter_result = sample_voter_prediction(voter_result, voter.id.int)
         voter.update_preferences(voter_result)
     return voters
 
@@ -55,10 +72,10 @@ WEIGHTS = np.array(
 def _predict_candidate_voter_similarity(
     voter: CalculationVotingGroup, candidate: CandidateScores
 ):
-    voter_vector = voter.get_ideal_vector()
-    cand_vector = candidate.as_vector()
-    v1 = np.array(voter_vector).reshape(1, -1)
-    v2 = np.array(cand_vector).reshape(1, -1)
+    voter_vector = normalize_axes(voter.get_ideal_vector())
+    cand_vector = normalize_axes(candidate.as_vector())
+    v1 = voter_vector.reshape(1, -1)
+    v2 = cand_vector.reshape(1, -1)
 
     score = cosine_similarity(v1, v2)[0][0]
     return score

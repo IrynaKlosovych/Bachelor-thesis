@@ -68,9 +68,9 @@ For each candidate rate these dimensions:
   media_positive:           0.0=mostly negative coverage,   10.0=overwhelmingly positive
   transparency:             0.0=opaque/hides information,   10.0=fully transparent
   program_simplicity:       0.0=complex nuanced policy,     10.0=simple slogans only
-  leadership_strength:      0.0=consensus/democratic,       10.0=strong authoritarian leader
+  leadership_strength:      1.0=consensus/democratic,       5.0=strong authoritarian leader
   institutional_competence: 0.0=no government experience,  10.0=deep institutional expertise
-  anti_populism:            0.0=full populist,              10.0=expert-driven, zero populism
+  anti_populism:            1.0=full populist,              5.0=expert-driven, zero populism
   social_focus:             0.0=free market/individual,     10.0=social programs/government role
   rule_of_law:              0.0=opposes or distrusts institutions,      10.0=strongly supports institutions
 
