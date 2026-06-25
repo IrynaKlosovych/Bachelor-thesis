@@ -7,6 +7,18 @@ from domain.region_schemas.types import SafetyLevel
 from domain.voter_schemas.voter_preferences import VoterPreferences
 from domain.voter_schemas.voting_group import VotingGroup
 
+_PREF_RANGES = [
+    (0.0, 10.0),  # understand_government_institutions
+    (0.0, 10.0),  # believe_government_institutions
+    (1.0, 5.0),  # every_person_is_expert
+    (0.0, 100.0),  # probability_take_part
+    (0.0, 10.0),  # candidate_positive_importance
+    (0.0, 10.0),  # candidate_negative_fair_importance
+    (0.0, 10.0),  # like_easy_decision
+    (1.0, 5.0),  # like_strong_leader_over_law
+    (0.0, 10.0),  # person_or_government_importance
+]
+
 
 class CalculationVotingGroup(VotingGroup):
     safety_region: SafetyLevel
@@ -30,16 +42,20 @@ class CalculationVotingGroup(VotingGroup):
         return row
 
     def update_preferences(self, voter_result):
+        v = [
+            min(max(float(x), lo), hi)
+            for x, (lo, hi) in zip(voter_result, _PREF_RANGES)
+        ]
         self.preferences = VoterPreferences(
-            understand_government_institutions=voter_result[0],
-            believe_government_institutions=voter_result[1],
-            every_person_is_expert=voter_result[2],
-            probability_take_part=voter_result[3],
-            candidate_positive_importance=voter_result[4],
-            candidate_negative_fair_importance=voter_result[5],
-            like_easy_decision=voter_result[6],
-            like_strong_leader_over_law=voter_result[7],
-            person_or_government_importance=voter_result[8],
+            understand_government_institutions=v[0],
+            believe_government_institutions=v[1],
+            every_person_is_expert=v[2],
+            probability_take_part=v[3],
+            candidate_positive_importance=v[4],
+            candidate_negative_fair_importance=v[5],
+            like_easy_decision=v[6],
+            like_strong_leader_over_law=v[7],
+            person_or_government_importance=v[8],
         )
 
     def get_ideal_vector(self):
@@ -51,7 +67,7 @@ class CalculationVotingGroup(VotingGroup):
             10 - self.preferences.like_easy_decision,
             self.preferences.like_strong_leader_over_law,
             self.preferences.understand_government_institutions,
-            5 - self.preferences.every_person_is_expert,
+            6 - self.preferences.every_person_is_expert,
             self.preferences.person_or_government_importance,
             self.preferences.believe_government_institutions,
         ]

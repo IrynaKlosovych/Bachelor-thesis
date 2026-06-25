@@ -1,15 +1,11 @@
-from pathlib import Path
 from typing import Any
 
 import joblib
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-ML_MODELS_DIR = BASE_DIR / "backend" / "predictions" / "models"
+from predictions.ml_config import ML_MODELS_DIR
 
 
 def load_model():
-    print(f"BASE_DIR:{BASE_DIR}")
-    print(f"ML_MODELS_DIR:{ML_MODELS_DIR}")
     try:
         name = (ML_MODELS_DIR / "updated_best_model.txt").read_text().strip()
         # model = joblib.load(ML_MODELS_DIR / f"{name}.pkl")
