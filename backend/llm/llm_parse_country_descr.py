@@ -10,13 +10,16 @@ Country description:
 \"\"\"{descr}\"\"\"
  
 Scoring guide:
-  war_status:          0 = full peace,          10 = active full-scale war
-  economic_crisis:     0 = stable economy,      10 = collapse or hyperinflation
-  corruption_level:    0 = transparent/clean,   10 = systemic corruption
-  media_freedom:       0 = fully censored,      10 = fully free press
-  political_stability: 0 = chaos/failed state,  10 = stable democracy
+  war_status:          0.0 = full peace,          10.0 = active full-scale war
+  economic_crisis:     0.0 = stable economy,      10.0 = collapse or hyperinflation
+  corruption_level:    0.0 = transparent/clean,   10.0 = systemic corruption
+  media_freedom:       0.0 = fully censored,      10.0 = fully free press
+  political_stability: 0.0 = chaos/failed state,  10.0 = stable democracy
  
 Return ONLY a valid JSON object with these 6 keys and numeric values. No explanation, no markdown, no code fences.
+Use decimal values (e.g. 6.4, 8.1, 9.7)
+Keep values consistent and deterministic
+Same input must produce same output
  
 {{"war_status": <number>, "economic_crisis": <number>, "corruption_level": <number>, "media_freedom": <number>, "political_stability": <number>}}"""
 

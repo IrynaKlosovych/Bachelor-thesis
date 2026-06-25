@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { toast } from "react-toastify";
 
 import { useGetPresidentCandidateByCountryId } from "../../../../hooks/candidate/useGetPresidentCandidateByCountryId";
@@ -24,6 +25,7 @@ export default function PresidentialSendButton({ countryId }: PresidentialSendBu
     const regions = useGetRegionsByCountryId(countryId);
     const voters = useGetVotersByCountryId(countryId);
     const candidatesPresident = useGetPresidentCandidateByCountryId(countryId);
+    const [loading, setLoading] = useState(false);
     if (!country) return;
 
 
@@ -36,6 +38,7 @@ export default function PresidentialSendButton({ countryId }: PresidentialSendBu
             });
             return;
         }
+        setLoading(true);
         deleteResults(countryId, country.electionMode);
         try {
             const response = await fetch(
@@ -61,11 +64,15 @@ export default function PresidentialSendButton({ countryId }: PresidentialSendBu
                 className: styles.toast,
             });
         }
+        finally {
+            setLoading(false);
+        }
     };
     return (
         <>
             <SendButton
                 handleSend={handleSend}
+                disabled={loading}
             ></SendButton>
         </>
     );
