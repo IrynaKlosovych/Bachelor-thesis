@@ -1,14 +1,16 @@
 import { TEXT_SEND_DATA_TO_SERVER } from "../../../ui/country_messages";
 import Button from "../../Button";
 interface SendButtonProps {
-    handleSend:()=>void
+    handleSend: () => void;
+    disabled?: boolean;
 }
-export default function SendButton({handleSend }: SendButtonProps) {
+export default function SendButton({ handleSend, disabled }: SendButtonProps) {
     return (
         <>
             <Button
                 text={TEXT_SEND_DATA_TO_SERVER}
-                onClick={handleSend}>
+                onClick={handleSend}
+                disabled={disabled}>
             </Button>
         </>
     );

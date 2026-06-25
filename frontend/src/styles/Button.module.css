@@ -59,3 +59,8 @@
 .button:hover {
     background-color: var(--lemon-icing);
 }
+
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
