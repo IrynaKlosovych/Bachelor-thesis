@@ -3,8 +3,8 @@ from typing import Any
 
 import joblib
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-ML_MODELS_DIR = BASE_DIR / "backend" / "predictions" / "models"
+BASE_DIR = Path(__file__).resolve().parent.parent
+ML_MODELS_DIR = BASE_DIR / "predictions" / "models"
 
 
 def load_model():
