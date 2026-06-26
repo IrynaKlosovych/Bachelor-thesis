@@ -5,7 +5,7 @@ stages:
   - build    
   - test
   - docker
-  - deploy  
+
 # ----------------------------
 # для серверної частини
 # ----------------------------
@@ -25,7 +25,8 @@ backend_test:
   script:
     - echo "Running backend tests..."
     - cd backend
-    # - python -m unittest discover
+    - pip install -r requirements.txt
+    - python manage.py test
 
 backend_docker:
   stage: docker
@@ -75,7 +76,7 @@ frontend_docker:
        alias: docker
   variables:
     DOCKER_HOST: tcp://docker:2375
-    DOCKER_TLS_CERTDIR: ""
+    DOCKER_TLS_CERTDIR: "/certs"
   before_script:
     - docker info
   script:
