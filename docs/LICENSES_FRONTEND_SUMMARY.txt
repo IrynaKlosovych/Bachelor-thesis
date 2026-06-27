@@ -1,0 +1,5 @@
+├─ MIT: 9
+├─ Apache-2.0: 1
+├─ 0BSD: 1
+└─ BSD-3-Clause: 1
+
