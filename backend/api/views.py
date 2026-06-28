@@ -31,15 +31,10 @@ def presidential_calculations(request: HttpRequest):
 
     # parse country descr into metrics
     result_decr = llm_parse_country_descr.parse_country_descr(descr=data.country.descr)
-    print("=" * 60)
-    pprint(result_decr)
 
     # parse candidates into metrics
     # for every candidate generate vector from data
     candidates = llm_parse_candidates.parse_all_candidates(data.candidates)
-    pprint(data.candidates)
-    print("=" * 60)
-    pprint(candidates)
 
     # get voters by every region
     voters_by_regions_full_data_for_model = create_voters_vectors(
@@ -55,8 +50,6 @@ def presidential_calculations(request: HttpRequest):
     voters_by_regions_similarities = predict_president_similarities(
         voters_by_regions_ideal_vectors, candidates
     )
-    pprint("=" * 60)
-    pprint(voters_by_regions_similarities)
 
     candidate_ids = list(candidates.keys())
     regions = data.regions
